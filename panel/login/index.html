@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hejteri Panel</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1f2c39;
+      color: #bdc3c7;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #19252f;
+      color: #bdc3c7;
+      padding: 0.3cm;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      margin-right: 0.5cm;
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      margin-top: 5px;
+    }
+
+    nav ul li {
+      margin-right: 20px;
+    }
+
+    a {
+      color: #bdc3c7;
+      text-decoration: none;
+      font-weight: bold;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+      transition: border-bottom 0.3s;
+    }
+
+    a:hover {
+      border-bottom: 2px solid #256eff;
+    }
+
+    .container-box {
+      margin-top: 100px;
+      margin-left: 20%;
+      margin-right: 20%;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #19252f;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .container-box {
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+    }
+
+    section {
+      background-color: #273746;
+      padding: 20px;
+      margin: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      color: #bdc3c7;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background-color: #19252f;
+      color: #bdc3c7;
+      text-align: center;
+      padding: 0.5em;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      text-align: center;
+      margin-top: -15px;
+    }
+
+    .footer-content b {
+      margin-top: 2px;
+      font-weight: bold;
+      opacity: 0.03;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border: 1px solid #bdc3c7;
+      border-radius: 4px;
+      background-color: #19252f;
+      color: #bdc3c7;
+    }
+
+    button {
+      background-color: #19252f;
+      color: #bdc3c7;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1><a href="https://hejteri.github.io/panel">Hejteri Panel</a></h1>
+    <nav>
+      <ul>
+        <li><a href="https://hejteri.github.io">Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container-box">
+    <section>
+      <h2>Login Panel</h2>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <button onclick="login()">Login</button>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2023 Hejteri Website. All rights reserved.</p>
+    <div class="footer-content">
+      <b>Made By ROOT256</b>
+    </div>
+  </footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7HqOKwA3XilJ48Ts2cVuJH7PsuuVhzH0",
+      authDomain: "hejterii.firebaseapp.com",
+      databaseURL: "https://hejterii-default-rtdb.firebaseio.com",
+      projectId: "hejterii",
+      storageBucket: "hejterii.appspot.com",
+      messagingSenderId: "565517537560",
+      appId: "1:565517537560:web:7a71dda2e3e3c3c2680e6d"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function checkLoginStatus() {
+      auth.onAuthStateChanged(function (user) {
+        if (user) {
+          window.location.href = "https://hejteri.github.io/panel";
+        }
+      });
+    }
+
+    function logout() {
+      auth.signOut().then(function () {}).catch(function (error) {});
+    }
+
+    window.onload = function () {
+      checkLoginStatus();
+    };
+
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {})
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error('Login error:', errorCode, errorMessage);
+        });
+    }
+  </script>
+</body>
+
+</html>
