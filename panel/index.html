@@ -335,15 +335,17 @@ function saveChanges(pageNumber, countdown = 5) {
                 // Disable the "Save Changes" button during the timer
                 saveButton.disabled = true;
 
-                // Show the countdown timer
+                // Show the initial countdown timer
                 saveButton.textContent = `Confirm (${countdown} secs)`;
 
                 const intervalId = setInterval(() => {
                     countdown--;
 
-                    if (countdown < 0) {
-                        // Stop the interval and enable the "Confirm" button
-                        clearInterval(intervalId);
+                    if (countdown >= 0) {
+                        // Continue countdown
+                        saveButton.textContent = `Confirm (${countdown} secs)`;
+                    } else {
+                        // Enable the "Confirm" button after the countdown
                         saveButton.disabled = false;
                         saveButton.textContent = 'Confirm';
 
@@ -352,15 +354,15 @@ function saveChanges(pageNumber, countdown = 5) {
                         buttons.forEach((button) => {
                             button.style.display = 'none';
                         });
-                    } else {
-                        // Continue countdown
-                        saveButton.textContent = `Confirm (${countdown} secs)`;
+
+                        clearInterval(intervalId); // Stop the interval
                     }
                 }, 1000);
             });
         })
         .catch((error) => console.error("Authentication error:", error));
 }
+
 
                 function loadData() {
             for (let i = 1; i <= 4; i++) {
