@@ -311,25 +311,25 @@ function saveChanges(pageNumber) {
             const titleRef = firebase.database().ref(`pages/home/${pageNumber}/head`);
             const textRef = firebase.database().ref(`pages/home/${pageNumber}/text`);
 
-            // Create a backup before updating the data
-            const backupTitleRef = firebase.database().ref(`backups/pages/home/${pageNumber}/head`);
-            const backupTextRef = firebase.database().ref(`backups/pages/home/${pageNumber}/text`);
+            // Fetch the current data for backup
+            Promise.all([
+                titleRef.once("value"),
+                textRef.once("value")
+            ]).then(([titleSnapshot, textSnapshot]) => {
+                const titleDataBackup = titleSnapshot.val();
+                const textDataBackup = textSnapshot.val();
 
-            titleRef.once("value")
-                .then((titleSnapshot) => {
-                    const titleDataBackup = titleSnapshot.val();
-                    backupTitleRef.set(titleDataBackup);
-                });
+                // Create a backup before updating the data
+                const backupTitleRef = firebase.database().ref(`backups/pages/home/${pageNumber}/head`);
+                const backupTextRef = firebase.database().ref(`backups/pages/home/${pageNumber}/text`);
 
-            textRef.once("value")
-                .then((textSnapshot) => {
-                    const textDataBackup = textSnapshot.val();
-                    backupTextRef.set(textDataBackup);
-                });
+                backupTitleRef.set(titleDataBackup);
+                backupTextRef.set(textDataBackup);
 
-            // Update the data
-            titleRef.set(titleData);
-            textRef.set(inputData);
+                // Update the data
+                titleRef.set(titleData);
+                textRef.set(inputData);
+            });
         })
         .catch((error) => console.error("Authentication error:", error))
         .finally(() => {
