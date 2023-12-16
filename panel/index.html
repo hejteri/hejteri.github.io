@@ -336,18 +336,18 @@ function saveChanges(pageNumber, countdown = 5) {
                 saveButton.disabled = true;
 
                 // Show the initial countdown timer
-                saveButton.textContent = `Confirm (${countdown} secs)`;
+                saveButton.innerHTML = `Confirm (${countdown} secs)`;
 
                 const intervalId = setInterval(() => {
                     countdown--;
 
                     if (countdown >= 0) {
                         // Continue countdown
-                        saveButton.textContent = `Confirm (${countdown} secs)`;
+                        saveButton.innerHTML = `Confirm (${countdown} secs)`;
                     } else {
                         // Enable the "Confirm" button after the countdown
                         saveButton.disabled = false;
-                        saveButton.textContent = 'Confirm';
+                        saveButton.innerHTML = 'Confirm';
 
                         // Hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
                         const buttons = buttonGroup.querySelectorAll('button');
@@ -362,6 +362,7 @@ function saveChanges(pageNumber, countdown = 5) {
         })
         .catch((error) => console.error("Authentication error:", error));
 }
+
 
 
                 function loadData() {
