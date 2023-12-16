@@ -245,19 +245,17 @@
           const errorCode = error.code;
           let errorMessage = "";
 
-switch (errorCode) {
-  case "auth/user-not-found":
-  case "auth/invalid-email":
-  case "auth/wrong-password":
-  case "auth/internal-error":
-    errorMessage = "Incorrect Username/Password";
-    break;
-  default:
-    errorMessage = error.code;
-}
+          switch (errorCode) {
+            case "auth/user-not-found":
+            case "auth/invalid-email":
+            case "auth/wrong-password":
+            case "auth/internal-error":
+              errorMessage = "Incorrect Username/Password";
+              break;
+            default:
+              errorMessage = error.code;
+          }
 
-
-          console.error('Login error:', error.code);
           errorText.textContent = errorMessage;
           errorOverlay.style.display = 'block';
           errorBox.style.display = 'block';
