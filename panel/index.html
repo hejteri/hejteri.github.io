@@ -299,34 +299,52 @@
             });
         }
 
-        function saveChanges(pageNumber) {
-            checkLoginStatus()
-                .then(() => {
-                    const titleInput = document.getElementById(`sectionTitle${pageNumber}`);
-                    const dataInput = document.getElementById(`dataInput${pageNumber}`);
+function saveChanges(pageNumber) {
+    checkLoginStatus()
+        .then(() => {
+            const titleInput = document.getElementById(`sectionTitle${pageNumber}`);
+            const dataInput = document.getElementById(`dataInput${pageNumber}`);
 
-                    const titleData = titleInput.value.trim();
-                    const inputData = dataInput.value.trim().replace(/\n/g, '\\n');
+            const titleData = titleInput.value.trim();
+            const inputData = dataInput.value.trim().replace(/\n/g, '\\n');
 
-                    const titleRef = firebase.database().ref(`pages/home/${pageNumber}/head`);
-                    const textRef = firebase.database().ref(`pages/home/${pageNumber}/text`);
+            const titleRef = firebase.database().ref(`pages/home/${pageNumber}/head`);
+            const textRef = firebase.database().ref(`pages/home/${pageNumber}/text`);
 
-                    titleRef.set(titleData);
-                    textRef.set(inputData);
-                })
-                .catch((error) => console.error("Authentication error:", error))
-                .finally(() => {
-                    // After saving changes, hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
-                    const saveButton = document.querySelector(`#saveButton${pageNumber}`);
-                    saveButton.style.display = 'block';
+            // Create a backup before updating the data
+            const backupTitleRef = firebase.database().ref(`backups/pages/home/${pageNumber}/head`);
+            const backupTextRef = firebase.database().ref(`backups/pages/home/${pageNumber}/text`);
 
-                    const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
-                    const buttons = buttonGroup.querySelectorAll('button');
-                    buttons.forEach((button) => {
-                        button.style.display = 'none';
-                    });
+            titleRef.once("value")
+                .then((titleSnapshot) => {
+                    const titleDataBackup = titleSnapshot.val();
+                    backupTitleRef.set(titleDataBackup);
                 });
-        }
+
+            textRef.once("value")
+                .then((textSnapshot) => {
+                    const textDataBackup = textSnapshot.val();
+                    backupTextRef.set(textDataBackup);
+                });
+
+            // Update the data
+            titleRef.set(titleData);
+            textRef.set(inputData);
+        })
+        .catch((error) => console.error("Authentication error:", error))
+        .finally(() => {
+            // After saving changes, hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
+            const saveButton = document.querySelector(`#saveButton${pageNumber}`);
+            saveButton.style.display = 'block';
+
+            const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
+            const buttons = buttonGroup.querySelectorAll('button');
+            buttons.forEach((button) => {
+                button.style.display = 'none';
+            });
+        });
+}
+
 
                 function loadData() {
             for (let i = 1; i <= 4; i++) {
