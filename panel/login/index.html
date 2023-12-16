@@ -128,40 +128,42 @@
       border-radius: 4px;
       cursor: pointer;
     }
+    
+.error-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  z-index: 900;
+}
 
-    .error-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(8px);
-      z-index: 900;
-    }
+.error-box {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #273746;
+  color: #bdc3c7;
+  border: 5px solid #19252f;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 1000;
+  
+}
 
-    .error-box {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 20px;
-      background-color: #273746;
-      color: #bdc3c7;
-      border: 5px solid #19252f;
-      border-radius: 10px;
-      text-align: center;
-      z-index: 1000;
-    }
+.error-box button {
+  margin-top: 15px;
+  margin-bottom: -15px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
 
-    .error-box button {
-      margin-top: 15px;
-      margin-bottom: -15px;
-      padding: 8px 16px;
-      cursor: pointer;
-    }
   </style>
 </head>
 
@@ -179,17 +181,18 @@
 
   <div class="container-box">
     <section>
-      <h2>Login To Panel</h2>
-      <div id="error-box" class="error-box">
-        <span id="error-text"></span>
-        <button onclick="closeErrorBox()">Close</button>
-      </div>
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
-      <button onclick="login()">Login</button>
-    </section>
+  <h2>Login To Panel</h2>
+  <div id="error-box" class="error-box">
+    <span id="error-text"></span>
+    <button onclick="closeErrorBox()">Close</button>
+  </div>
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" required>
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required>
+  <button onclick="login()">Login</button>
+</section>
+
   </div>
 
   <footer>
@@ -229,29 +232,56 @@
       checkLoginStatus();
     };
 
-    function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const errorOverlay = document.getElementById('error-overlay');
-      const errorBox = document.getElementById('error-box');
-      const errorText = document.getElementById('error-text');
+function login() {
+  const emailPrefix = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const email = emailPrefix + "@hejteri.com";
+  const errorOverlay = document.getElementById('error-overlay');
+  const errorBox = document.getElementById('error-box');
+  const errorText = document.getElementById('error-text');
 
-      auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {})
-        .catch((error) => {
-          const errorMessage = error.message;
-          errorText.textContent = errorMessage;
-          errorOverlay.style.display = 'block';
-          errorBox.style.display = 'block';
-        });
-    }
+  auth.signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // You can add additional logic here if needed upon successful login
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      let errorMessage = "";
 
-    function closeErrorBox() {
-      const errorOverlay = document.getElementById('error-overlay');
-      const errorBox = document.getElementById('error-box');
-      errorOverlay.style.display = 'none';
-      errorBox.style.display = 'none';
-    }
+      switch (errorCode) {
+        case "auth/user-not-found":
+          errorMessage = "Incorrect Email";
+          break;
+        case "auth/wrong-password":
+          errorMessage = "Incorrect Password";
+          break;
+        default:
+          errorMessage = "An error occurred. Please try again.";
+      }
+
+      console.error('Login error:', errorMessage);
+      errorText.textContent = errorMessage;
+      errorOverlay.style.display = 'block';
+      errorBox.style.display = 'block';
+    });
+}
+
+
+function closeErrorBox() {
+  const errorOverlay = document.getElementById('error-overlay');
+  const errorBox = document.getElementById('error-box');
+  errorOverlay.style.display = 'none';
+  errorBox.style.display = 'none';
+}
+
+
+function closeErrorBox() {
+  const errorOverlay = document.getElementById('error-overlay');
+  const errorBox = document.getElementById('error-box');
+  errorOverlay.style.display = 'none';
+  errorBox.style.display = 'none';
+}
+
   </script>
 </body>
 
