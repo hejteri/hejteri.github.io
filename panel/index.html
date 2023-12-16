@@ -336,16 +336,14 @@ function saveChanges(pageNumber, countdown = 5) {
                 saveButton.disabled = true;
 
                 // Show the countdown timer
-                saveButton.textContent = `Confirm (${countdown})`;
+                saveButton.textContent = `Confirm (${countdown} secs)`;
 
                 const intervalId = setInterval(() => {
                     countdown--;
 
-                    if (countdown >= 0) {
-                        // Continue countdown
-                        saveButton.textContent = `Confirm (${countdown})`;
-                    } else {
-                        // Enable the "Confirm" button after the countdown
+                    if (countdown < 0) {
+                        // Stop the interval and enable the "Confirm" button
+                        clearInterval(intervalId);
                         saveButton.disabled = false;
                         saveButton.textContent = 'Confirm';
 
@@ -354,8 +352,9 @@ function saveChanges(pageNumber, countdown = 5) {
                         buttons.forEach((button) => {
                             button.style.display = 'none';
                         });
-
-                        clearInterval(intervalId); // Stop the interval
+                    } else {
+                        // Continue countdown
+                        saveButton.textContent = `Confirm (${countdown} secs)`;
                     }
                 }, 1000);
             });
