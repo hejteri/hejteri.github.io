@@ -262,6 +262,7 @@
               errorMessage = "An error occurred. Please try again.";
           }
 
+          console.error('Login error:', error.code);
           errorText.textContent = errorMessage;
           errorOverlay.style.display = 'block';
           errorBox.style.display = 'block';
