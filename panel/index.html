@@ -299,11 +299,13 @@
             });
         }
 
-function saveChanges(pageNumber) {
+function saveChanges(pageNumber, countdown = 5) {
     checkLoginStatus()
         .then(() => {
             const titleInput = document.getElementById(`sectionTitle${pageNumber}`);
             const dataInput = document.getElementById(`dataInput${pageNumber}`);
+            const saveButton = document.querySelector(`#saveButton${pageNumber}`);
+            const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
 
             const titleData = titleInput.value.trim();
             const inputData = dataInput.value.trim().replace(/\n/g, '\\n');
@@ -329,21 +331,34 @@ function saveChanges(pageNumber) {
                 // Update the data
                 titleRef.set(titleData);
                 textRef.set(inputData);
+
+                // Disable the "Save Changes" button during the timer
+                saveButton.disabled = true;
+
+                // Show the countdown timer
+                saveButton.textContent = `Confirm (${countdown})`;
+
+                if (countdown > 0) {
+                    // Continue countdown
+                    setTimeout(() => {
+                        saveChanges(pageNumber, countdown - 1);
+                    }, 1000);
+                } else {
+                    // Enable the "Confirm" button after the countdown
+                    saveButton.disabled = false;
+                    saveButton.textContent = 'Confirm';
+
+                    // Hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
+                    const buttons = buttonGroup.querySelectorAll('button');
+                    buttons.forEach((button) => {
+                        button.style.display = 'none';
+                    });
+                }
             });
         })
-        .catch((error) => console.error("Authentication error:", error))
-        .finally(() => {
-            // After saving changes, hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
-            const saveButton = document.querySelector(`#saveButton${pageNumber}`);
-            saveButton.style.display = 'block';
-
-            const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
-            const buttons = buttonGroup.querySelectorAll('button');
-            buttons.forEach((button) => {
-                button.style.display = 'none';
-            });
-        });
+        .catch((error) => console.error("Authentication error:", error));
 }
+
 
 
                 function loadData() {
