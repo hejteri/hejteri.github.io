@@ -328,6 +328,36 @@
                 });
         }
 
+                function loadData() {
+            for (let i = 1; i <= 4; i++) {
+                const titleRef = firebase.database().ref(`pages/home/${i}/head`);
+                const textRef = firebase.database().ref(`pages/home/${i}/text`);
+
+                titleRef.once("value")
+                    .then((titleSnapshot) => {
+                        const titleData = titleSnapshot.val();
+                        const titleInput = document.getElementById(`sectionTitle${i}`);
+
+                        if (titleData) {
+                            titleInput.value = titleData.trim();
+                        }
+                    })
+                    .catch((error) => console.error(`Error loading title for page ${i}:`, error));
+
+                textRef.once("value")
+                    .then((textSnapshot) => {
+                        const textData = textSnapshot.val();
+                        const dataInput = document.getElementById(`dataInput${i}`);
+
+                        if (textData) {
+                            const lines = textData.split('\\n').join('\n');
+                            dataInput.value = lines.trim();
+                        }
+                    })
+                    .catch((error) => console.error(`Error loading data for page ${i}:`, error));
+            }
+        }
+
         function logout() {
             firebase.auth().signOut();
         }
