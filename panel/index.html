@@ -299,6 +299,7 @@
             });
         }
 
+
 function saveChanges(pageNumber) {
     checkLoginStatus()
         .then(() => {
@@ -332,18 +333,19 @@ function saveChanges(pageNumber) {
                 titleRef.set(titleData);
                 textRef.set(inputData);
 
-                // Enable the "Save Changes" button after updating the data
-                saveButton.disabled = false;
-
                 // Hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
                 const buttons = buttonGroup.querySelectorAll('button');
                 buttons.forEach((button) => {
                     button.style.display = 'none';
                 });
+
+                // Enable the "Save Changes" button after updating the data
+                saveButton.style.display = 'block';
             });
         })
         .catch((error) => console.error("Authentication error:", error));
 }
+
 
 
                 function loadData() {
