@@ -150,6 +150,19 @@
                 width: 100%;
             }
         }
+      
+    .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* Add some margin to create space between buttons */
+.button-group button {
+        margin-right: 5px;
+        display: none; /* Hide the buttons initially */
+    }
+      
     </style>
 </head>
 
@@ -168,22 +181,39 @@
         <section>
             <input type="text" id="sectionTitle1" placeholder="Section-1">
             <textarea id="dataInput1" rows="10"></textarea>
-            <button onclick="saveChanges(1)">Save Changes</button>
+          <button id="saveButton1" onclick="Show(1)">Save Changes</button>
+
+<div class="button-group" id="button-group-1">
+    <button onclick="cancelChanges(1)">Cancel</button>
+    <button onclick="saveChanges(1)">Confirm</button>
+</div>
         </section>
         <section>
             <input type="text" id="sectionTitle2" placeholder="Section-2">
             <textarea id="dataInput2" rows="10"></textarea>
-            <button onclick="saveChanges(2)">Save Changes</button>
+           <button id="saveButton2" onclick="Show(2)">Save Changes</button>
+<div class="button-group" id="button-group-2">
+    <button onclick="cancelChanges(2)">Cancel</button>
+    <button onclick="saveChanges(2)">Confirm</button>
+</div>
         </section>
         <section>
             <input type="text" id="sectionTitle3" placeholder="Section-3">
             <textarea id="dataInput3" rows="10"></textarea>
-            <button onclick="saveChanges(3)">Save Changes</button>
+            <button id="saveButton3" onclick="Show(3)">Save Changes</button>
+<div class="button-group" id="button-group-3">
+    <button onclick="cancelChanges(3)">Cancel</button>
+    <button onclick="saveChanges(3)">Confirm</button>
+</div>
         </section>
         <section>
             <input type="text" id="sectionTitle4" placeholder="Section-4">
             <textarea id="dataInput4" rows="10"></textarea>
-            <button onclick="saveChanges(4)">Save Changes</button>
+            <button id="saveButton4" onclick="Show(4)">Save Changes</button>
+<div class="button-group" id="button-group-4">
+    <button onclick="cancelChanges(4)">Cancel</button>
+    <button onclick="saveChanges(4)">Confirm</button>
+</div>
         </section>
     </div>
 
@@ -229,34 +259,44 @@
             });
         }
 
-        function loadData() {
-            for (let i = 1; i <= 4; i++) {
-                const titleRef = firebase.database().ref(`pages/home/${i}/head`);
-                const textRef = firebase.database().ref(`pages/home/${i}/text`);
+        document.addEventListener("DOMContentLoaded", () => {
+            #checkLoginStatus();
+            loadData();
+            hideButtons();
+        });
 
-                titleRef.once("value")
-                    .then((titleSnapshot) => {
-                        const titleData = titleSnapshot.val();
-                        const titleInput = document.getElementById(`sectionTitle${i}`);
+        function hideButtons() {
+            const buttonGroups = document.querySelectorAll('.button-group');
+            buttonGroups.forEach((buttonGroup) => {
+                const buttons = buttonGroup.querySelectorAll('button');
+                buttons.forEach((button) => {
+                    button.style.display = 'none';
+                });
+            });
+        }
 
-                        if (titleData) {
-                            titleInput.value = titleData.trim();
-                        }
-                    })
-                    .catch((error) => console.error(`Error loading title for page ${i}:`, error));
+        function Show(pageNumber) {
+            // Hide the "Save Changes" button and show the "Cancel" and "Confirm" buttons
+            const saveButton = document.querySelector(`#saveButton${pageNumber}`);
+            saveButton.style.display = 'none';
 
-                textRef.once("value")
-                    .then((textSnapshot) => {
-                        const textData = textSnapshot.val();
-                        const dataInput = document.getElementById(`dataInput${i}`);
+            const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
+            const buttons = buttonGroup.querySelectorAll('button');
+            buttons.forEach((button) => {
+                button.style.display = 'block';
+            });
+        }
 
-                        if (textData) {
-                            const lines = textData.split('\\n').join('\n');
-                            dataInput.value = lines.trim();
-                        }
-                    })
-                    .catch((error) => console.error(`Error loading data for page ${i}:`, error));
-            }
+        function cancelChanges(pageNumber) {
+            // Hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
+            const saveButton = document.querySelector(`#saveButton${pageNumber}`);
+            saveButton.style.display = 'block';
+
+            const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
+            const buttons = buttonGroup.querySelectorAll('button');
+            buttons.forEach((button) => {
+                button.style.display = 'none';
+            });
         }
 
         function saveChanges(pageNumber) {
@@ -274,17 +314,24 @@
                     titleRef.set(titleData);
                     textRef.set(inputData);
                 })
-                .catch((error) => console.error("Authentication error:", error));
-        }
+                .catch((error) => console.error("Authentication error:", error))
+                .finally(() => {
+                    // After saving changes, hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
+                    const saveButton = document.querySelector(`#saveButton${pageNumber}`);
+                    saveButton.style.display = 'block';
 
-        document.addEventListener("DOMContentLoaded", () => {
-            checkLoginStatus();
-            loadData();
-        });
+                    const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
+                    const buttons = buttonGroup.querySelectorAll('button');
+                    buttons.forEach((button) => {
+                        button.style.display = 'none';
+                    });
+                });
+        }
 
         function logout() {
             firebase.auth().signOut();
         }
+      
     </script>
 </body>
 
