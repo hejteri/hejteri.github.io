@@ -299,7 +299,7 @@
             });
         }
 
-function saveChanges(pageNumber, countdown = 5) {
+function saveChanges(pageNumber) {
     checkLoginStatus()
         .then(() => {
             const titleInput = document.getElementById(`sectionTitle${pageNumber}`);
@@ -332,31 +332,14 @@ function saveChanges(pageNumber, countdown = 5) {
                 titleRef.set(titleData);
                 textRef.set(inputData);
 
-                // Disable the "Save Changes" button during the timer
-                saveButton.disabled = true;
+                // Enable the "Save Changes" button after updating the data
+                saveButton.disabled = false;
 
-                // Show the initial countdown timer
-                saveButton.innerHTML = `Confirm (${countdown} secs)`;
-
-                const intervalId = setInterval(() => {
-                    countdown--;
-
-                    if (countdown >= 0) {
-                        // Continue countdown
-                        saveButton.innerHTML = `Confirm (${countdown} secs)`;
-                    } else {
-                        // Enable the "Confirm" button after the countdown
-                        saveButton.disabled = false;
-
-                        // Hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
-                        const buttons = buttonGroup.querySelectorAll('button');
-                        buttons.forEach((button) => {
-                            button.style.display = 'none';
-                        });
-
-                        clearInterval(intervalId); // Stop the interval
-                    }
-                }, 1000);
+                // Hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
+                const buttons = buttonGroup.querySelectorAll('button');
+                buttons.forEach((button) => {
+                    button.style.display = 'none';
+                });
             });
         })
         .catch((error) => console.error("Authentication error:", error));
