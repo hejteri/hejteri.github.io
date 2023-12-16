@@ -338,28 +338,30 @@ function saveChanges(pageNumber, countdown = 5) {
                 // Show the countdown timer
                 saveButton.textContent = `Confirm (${countdown})`;
 
-                if (countdown > 0) {
-                    // Continue countdown
-                    setTimeout(() => {
-                        saveChanges(pageNumber, countdown - 1);
-                    }, 1000);
-                } else {
-                    // Enable the "Confirm" button after the countdown
-                    saveButton.disabled = false;
-                    saveButton.textContent = 'Confirm';
+                const intervalId = setInterval(() => {
+                    countdown--;
 
-                    // Hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
-                    const buttons = buttonGroup.querySelectorAll('button');
-                    buttons.forEach((button) => {
-                        button.style.display = 'none';
-                    });
-                }
+                    if (countdown >= 0) {
+                        // Continue countdown
+                        saveButton.textContent = `Confirm (${countdown})`;
+                    } else {
+                        // Enable the "Confirm" button after the countdown
+                        saveButton.disabled = false;
+                        saveButton.textContent = 'Confirm';
+
+                        // Hide the "Cancel" and "Confirm" buttons and show the "Save Changes" button
+                        const buttons = buttonGroup.querySelectorAll('button');
+                        buttons.forEach((button) => {
+                            button.style.display = 'none';
+                        });
+
+                        clearInterval(intervalId); // Stop the interval
+                    }
+                }, 1000);
             });
         })
         .catch((error) => console.error("Authentication error:", error));
 }
-
-
 
                 function loadData() {
             for (let i = 1; i <= 4; i++) {
