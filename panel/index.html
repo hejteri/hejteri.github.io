@@ -2,290 +2,257 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hejteri Panel</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hejteri Panel</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #1f2c39;
+      color: #bdc3c7;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1f2c39;
-            color: #bdc3c7;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    header {
+      background-color: #19252f;
+      color: #bdc3c7;
+      padding: 0.3cm;
+      text-align: center;
+    }
 
-        header {
-            background-color: #19252f;
-            color: #bdc3c7;
-            padding: 0.3cm;
-            text-align: center;
-        }
+    h1 {
+      margin: 0;
+      margin-right: 0.5cm;
+    }
 
-        h1 {
-            margin: 0;
-            margin-right: 0.5cm;
-        }
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      margin-top: 5px;
+    }
 
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            margin-top: 5px;
-        }
+    nav ul li {
+      margin-right: 20px;
+    }
 
-        nav ul li {
-            margin-right: 20px;
-        }
+    a {
+      color: #bdc3c7;
+      text-decoration: none;
+      font-weight: bold;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 4px;
+      transition: border-bottom 0.3s;
+    }
 
-        a {
-            color: #bdc3c7;
-            text-decoration: none;
-            font-weight: bold;
-            border-bottom: 2px solid transparent;
-            padding-bottom: 4px;
-            transition: border-bottom 0.3s;
-        }
+    a:hover {
+      border-bottom: 2px solid #256eff;
+    }
 
-        a:hover {
-            border-bottom: 2px solid #256eff;
-        }
+    .container-box {
+      margin-top: 100px;
+      margin-left: 20%;
+      margin-right: 20%;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #19252f;
+    }
 
-        .container-box {
-            margin: 0.6cm;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: #19252f;
-        }
+    @media only screen and (max-width: 600px) {
+      .container-box {
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+    }
 
-        section input[type="text"] {
-            border: none;
-            background: none;
-            outline: none;
-            color: #bdc3c7;
-            font-size: 1rem;
-            margin: 0 auto;
-            display: block;
-            text-align: center;
-            width: 70%;
-            font-weight: bold;
-            margin-top: -10px;
-            margin-bottom: 10px;
-        }
+    section {
+      background-color: #273746;
+      padding: 20px;
+      margin: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
 
-        section textarea {
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            background-color: #273746;
-            color: #bdc3c7;
-            border: 3px solid #19252f;
-            border-radius: 4px;
-            margin: 0 auto;
-            display: block;
-            margin-bottom: 15px;
-        }
+    h2 {
+      color: #bdc3c7;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
 
-        section {
-            background-color: #273746;
-            padding: 20px;
-            margin: 10px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
+    footer {
+      background-color: #19252f;
+      color: #bdc3c7;
+      text-align: center;
+      padding: 0.5em;
+      margin-top: auto;
+    }
 
-        section button {
-            background-color: #19252f;
-            color: #bdc3c7;
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 5px;
-        }
+    .footer-content {
+      text-align: center;
+      margin-top: -15px;
+    }
 
-        h2 {
-            color: #bdc3c7;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
+    .footer-content b {
+      margin-top: 2px;
+      font-weight: bold;
+      opacity: 0.03;
+    }
 
-        footer {
-            background-color: #19252f;
-            color: #bdc3c7;
-            text-align: center;
-            padding: 0.5em;
-            margin-top: auto;
-        }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border: 1px solid #bdc3c7;
+      border-radius: 4px;
+      background-color: #19252f;
+      color: #bdc3c7;
+    }
 
-        .footer-content {
-            text-align: center;
-            margin-top: -15px;
-        }
+    button {
+      background-color: #19252f;
+      color: #bdc3c7;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-        .footer-content p {
-            margin: 0;
-            margin-top: 10px;
-            margin-bottom: 2px;
-        }
+    .error-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      z-index: 900;
+    }
 
-        .footer-content b {
-            margin-top: 2px;
-            font-weight: bold;
-            opacity: 0.03;
-        }
+    .error-box {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      background-color: #273746;
+      color: #bdc3c7;
+      border: 5px solid #19252f;
+      border-radius: 10px;
+      text-align: center;
+      z-index: 1000;
+    }
 
-        @media screen and (max-width: 600px) {
-            section input[type="text"],
-            section textarea,
-            section button {
-                width: 100%;
-            }
-        }
-    </style>
+    .error-box button {
+      margin-top: 15px;
+      margin-bottom: -15px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
-    <header>
-        <h1><a href="https://hejteri.github.io/panel">Hejteri Panel</a></h1>
-        <nav>
-            <ul>
-                <li><a href="https://hejteri.github.io/">Home</a></li>
-                <li><a id="loginbut" href="#"> </a></li>
-            </ul>
-        </nav>
-    </header>
+  <header>
+    <h1><a href="https://hejteri.github.io/panel">Hejteri Panel</a></h1>
+    <nav>
+      <ul>
+        <li><a href="https://hejteri.github.io">Home</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <div class="container-box">
-        <section>
-            <input type="text" id="sectionTitle1" placeholder="Section-1">
-            <textarea id="dataInput1" rows="10"></textarea>
-            <button onclick="saveChanges(1)">Save Changes</button>
-        </section>
-        <section>
-            <input type="text" id="sectionTitle2" placeholder="Section-2">
-            <textarea id="dataInput2" rows="10"></textarea>
-            <button onclick="saveChanges(2)">Save Changes</button>
-        </section>
-        <section>
-            <input type="text" id="sectionTitle3" placeholder="Section-3">
-            <textarea id="dataInput3" rows="10"></textarea>
-            <button onclick="saveChanges(3)">Save Changes</button>
-        </section>
-        <section>
-            <input type="text" id="sectionTitle4" placeholder="Section-4">
-            <textarea id="dataInput4" rows="10"></textarea>
-            <button onclick="saveChanges(4)">Save Changes</button>
-        </section>
+  <div id="error-overlay" class="error-overlay"></div>
+
+  <div class="container-box">
+    <section>
+      <h2>Login To Panel</h2>
+      <div id="error-box" class="error-box">
+        <span id="error-text"></span>
+        <button onclick="closeErrorBox()">Close</button>
+      </div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <button onclick="login()">Login</button>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2023 Hejteri Website. All rights reserved.</p>
+    <div class="footer-content">
+      <b>Made By ROOT256</b>
     </div>
+  </footer>
 
-    <footer>
-        <p>&copy; 2023 Hejteri Website. All rights reserved.</p>
-        <div class="footer-content">
-            <b>Made By ROOT256</b>
-        </div>
-    </footer>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7HqOKwA3XilJ48Ts2cVuJH7PsuuVhzH0",
+      authDomain: "hejterii.firebaseapp.com",
+      databaseURL: "https://hejterii-default-rtdb.firebaseio.com",
+      projectId: "hejterii",
+      storageBucket: "hejterii.appspot.com",
+      messagingSenderId: "565517537560",
+      appId: "1:565517537560:web:7a71dda2e3e3c3c2680e6d"
+    };
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyB7HqOKwA3XilJ48Ts2cVuJH7PsuuVhzH0",
-            authDomain: "hejterii.firebaseapp.com",
-            databaseURL: "https://hejterii-default-rtdb.firebaseio.com",
-            projectId: "hejterii",
-            storageBucket: "hejterii.appspot.com",
-            messagingSenderId: "565517537560",
-            appId: "1:565517537560:web:7a71dda2e3e3c3c2680e6d"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-
-        function checkLoginStatus() {
-            return new Promise((resolve, reject) => {
-                var loginButton = document.getElementById('loginbut');
-
-                firebase.auth().onAuthStateChanged(function (user) {
-                    if (user) {
-                        loginButton.textContent = 'Logout';
-                        loginButton.setAttribute('href', '#');
-                        loginButton.setAttribute('onclick', 'logout()');
-                        resolve();
-                    } else {
-                        window.location.href = "https://hejteri.github.io/panel/login";
-                        reject(new Error("User not authenticated"));
-                    }
-                });
-            });
+    function checkLoginStatus() {
+      auth.onAuthStateChanged(function (user) {
+        if (user) {
+          window.location.href = "https://hejteri.github.io/panel";
         }
+      });
+    }
 
-        function loadData() {
-            for (let i = 1; i <= 4; i++) {
-                const titleRef = firebase.database().ref(`pages/home/${i}/head`);
-                const textRef = firebase.database().ref(`pages/home/${i}/text`);
+    function logout() {
+      auth.signOut().then(function () {}).catch(function (error) {});
+    }
 
-                titleRef.once("value")
-                    .then((titleSnapshot) => {
-                        const titleData = titleSnapshot.val();
-                        const titleInput = document.getElementById(`sectionTitle${i}`);
+    window.onload = function () {
+      checkLoginStatus();
+    };
 
-                        if (titleData) {
-                            titleInput.value = titleData.trim();
-                        }
-                    })
-                    .catch((error) => console.error(`Error loading title for page ${i}:`, error));
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorOverlay = document.getElementById('error-overlay');
+      const errorBox = document.getElementById('error-box');
+      const errorText = document.getElementById('error-text');
 
-                textRef.once("value")
-                    .then((textSnapshot) => {
-                        const textData = textSnapshot.val();
-                        const dataInput = document.getElementById(`dataInput${i}`);
-
-                        if (textData) {
-                            const lines = textData.split('\\n').join('\n');
-                            dataInput.value = lines.trim();
-                        }
-                    })
-                    .catch((error) => console.error(`Error loading data for page ${i}:`, error));
-            }
-        }
-
-        function saveChanges(pageNumber) {
-            checkLoginStatus()
-                .then(() => {
-                    const titleInput = document.getElementById(`sectionTitle${pageNumber}`);
-                    const dataInput = document.getElementById(`dataInput${pageNumber}`);
-
-                    const titleData = titleInput.value.trim();
-                    const inputData = dataInput.value.trim().replace(/\n/g, '\\n');
-
-                    const titleRef = firebase.database().ref(`pages/home/${pageNumber}/head`);
-                    const textRef = firebase.database().ref(`pages/home/${pageNumber}/text`);
-
-                    titleRef.set(titleData);
-                    textRef.set(inputData);
-                })
-                .catch((error) => console.error("Authentication error:", error));
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            checkLoginStatus();
-            loadData();
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {})
+        .catch((error) => {
+          const errorMessage = error.message;
+          errorText.textContent = errorMessage;
+          errorOverlay.style.display = 'block';
+          errorBox.style.display = 'block';
         });
+    }
 
-        function logout() {
-            firebase.auth().signOut();
-        }
-    </script>
+    function closeErrorBox() {
+      const errorOverlay = document.getElementById('error-overlay');
+      const errorBox = document.getElementById('error-box');
+      errorOverlay.style.display = 'none';
+      errorBox.style.display = 'none';
+    }
+  </script>
 </body>
 
 </html>
