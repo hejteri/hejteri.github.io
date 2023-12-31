@@ -14,3 +14,7 @@ function createParticle() {
                 particle.remove();
             });
         }
+
+function generateParticles() {
+            setInterval(createParticle, 300); // Adjust the interval as needed
+        }
