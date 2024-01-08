@@ -147,31 +147,8 @@
         bold {
             font-weight: bold;
         }
-
-        #loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.loading-text {
-    color: #fff;
-    font-size: 20px;
-}
-
     </style>
 </head>
-
-    <div id="loading-screen">
-    <p class="loading-text">Loading...</p>
-</div>
 
 <body>
     <header>
@@ -325,42 +302,17 @@
         }
 
         window.onload = function () {
-    // Show loading screen while content is loading
-    document.getElementById('loading-screen').style.display = 'flex';
-
-    // Perform other actions after the content is loaded
-    checkLoginStatus();
-
-    // Counter to keep track of loaded sections
-    let loadedSections = 0;
-
-    // Function to check if all sections are loaded
-    function checkAllSectionsLoaded() {
-        loadedSections++;
-
-        // If all sections are loaded, hide the loading screen
-        if (loadedSections === 4) { // Adjust the count based on the number of sections
-            document.getElementById('loading-screen').style.display = 'none';
-        }
-    }
-
-    // Display content for each section and update the counter
-    displayHeadingContent(1, 'Section1-0');
-    displayParagraphContent(1, 'Section1-1');
-    checkAllSectionsLoaded();
-
-    displayHeadingContent(2, 'Section2-0');
-    displayParagraphContent(2, 'Section2-1');
-    checkAllSectionsLoaded();
-
-    displayHeadingContent(3, 'Section3-0');
-    displayParagraphContent(3, 'Section3-1');
-    checkAllSectionsLoaded();
-
-    displayHeadingContent(4, 'Section4-0');
-    displayParagraphContent(4, 'Section4-1');
-    checkAllSectionsLoaded();
-};
+            checkLoginStatus();
+            
+            displayHeadingContent(1, 'Section1-0');
+            displayParagraphContent(1, 'Section1-1');
+            displayHeadingContent(2, 'Section2-0');
+            displayParagraphContent(2, 'Section2-1');
+            displayHeadingContent(3, 'Section3-0');
+            displayParagraphContent(3, 'Section3-1');
+            displayHeadingContent(4, 'Section4-0');
+            displayParagraphContent(4, 'Section4-1');
+        };
     </script>
 </body>
 
