@@ -241,9 +241,10 @@
         <b>Designed by ROOT256</b>
     </footer>
 
- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
 
     <script>
 
@@ -259,29 +260,31 @@ const firebaseConfig = {
 
         firebase.initializeApp(firebaseConfig);
 
-	function checkLoginStatus() {
-            
-            firebase.auth().onAuthStateChanged(function (user) {
+function checkLoginStatus() {
+        var loginButton = document.querySelector('nav a[href="#Login"]');
 
-		console.log(user);
-                if (user) {
-                    
-                } else {
-                    
-                }
-            });
-        }
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // User is logged in
+                loginButton.textContent = 'Logout';
+                loginButton.href = '#'; // Add the logout URL or logic here
+            } else {
+                // User is not logged in
+                loginButton.textContent = 'Login';
+                loginButton.href = '#'; // Add the login URL or logic here
+            }
+        });
+    }
 
         function toggleMenu() {
             var navElement = document.querySelector('nav');
             navElement.classList.toggle('visible');
         }
 
- window.onload = function () {
-            checkLoginStatus();
-            
-        
-        };
+document.addEventListener('DOMContentLoaded', function () {
+    checkLoginStatus();
+});
+
     </script>
 </body>
 
