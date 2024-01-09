@@ -268,12 +268,12 @@
 
   <!-- Add this script tag to include the Firebase Authentication SDK -->
 <!-- Include the Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js"></script>
-
+ <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 <!-- Your existing script -->
 <script>
-     const firebaseConfig = {
+    const firebaseConfig = {
             apiKey: "AIzaSyB7HqOKwA3XilJ48Ts2cVuJH7PsuuVhzH0",
             authDomain: "hejterii.firebaseapp.com",
             databaseURL: "https://hejterii-default-rtdb.firebaseio.com",
@@ -283,8 +283,7 @@
             appId: "1:565517537560:web:7a71dda2e3e3c3c2680e6d"
         };
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);
 
     // Function to check user login status and update UI
     function checkUserLoginStatus() {
