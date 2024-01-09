@@ -289,7 +289,7 @@
     function checkUserLoginStatus() {
         const auth = firebase.auth();
         const user = auth.currentUser;
-
+        console.log(user);
         if (user) {
             // User is logged in, show "Logout" button
             const logoutButton = document.createElement("button");
