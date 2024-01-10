@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hejteri Organization</title>
     <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #1f2c39;
             color: #bdc3c7;
+            margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -20,104 +21,173 @@
 
         header {
             background-color: #19252f;
-            color: #bdc3c7;
             padding: 0.3cm;
             text-align: center;
+            position: relative;
         }
 
-        h1 {
-            margin: 0;
-            margin-right: 0.5cm;
-            margin-bottom: 10px;
+        .title:hover {
+            color: #fff;
         }
 
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
+        nav {
             display: flex;
             justify-content: center;
-            margin-top: 5px;
+            align-items: center;
+            flex-direction: row;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease-in-out;
         }
 
-        nav ul li {
-            margin-right: 20px;
-        }
-
-        nav ul li#panelbut {
-            display: none;
-        }
-
-        a {
+        nav a {
             color: #bdc3c7;
             text-decoration: none;
+            margin: 0 1em;
             font-weight: bold;
-            border-bottom: 2px solid transparent;
-            padding-bottom: 4px;
-            transition: border-bottom 0.3s;
+            position: relative;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
         }
 
-        a:hover {
-            border-bottom: 2px solid #256eff;
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #bdc3c7;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-in-out;
         }
 
-        .container-box {
+        nav a:hover::before {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .standoff-link {
+            color: #bdc3c7;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.5s ease;
+        }
+
+        .standoff-link:hover {
+            opacity: 0.8;
+            text-decoration: none;
+        }
+
+        @media only screen and (max-width: 710px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .menu-toggle {
+                display: block;
+                cursor: pointer;
+                font-size: 30px;
+                color: #bdc3c7;
+                background: none;
+                border: none;
+                outline: none;
+                padding: 0;
+                position: absolute;
+                right: 0.3cm;
+                top: 8px;
+            }
+
+            .title {
+                margin: 0;
+                font-size: 25px;
+                cursor: pointer;
+                transition: color 0.3s ease-in-out;
+            }
+
+            nav.visible {
+                margin-top: 20px;
+                max-height: 200px;
+            }
+
+            nav a {
+                margin: 5px 0 5px;
+            }
+
+            nav.visible a {
+                opacity: 1;
+                transition-delay: 0.2s;
+            }
+
+            .footer-content b {
+                position: absolute;
+                margin-top: -7px;
+                transform: translate(-50%, -50%);
+                font-size: 13px;
+                font-weight: bold;
+                opacity: 0.05;
+                color: #bdc3c7;
+            }
+        }
+
+        @media only screen and (min-width: 711px) {
+            .footer-content b {
+                position: absolute;
+                text-align: right;
+                right: 0.3cm;
+                margin-top: -36px;
+                font-size: 13px;
+                font-weight: bold;
+                opacity: 0.05;
+                color: #bdc3c7;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            .title {
+                margin: 0;
+                font-size: 35px;
+                cursor: pointer;
+                transition: color 0.3s ease-in-out;
+            }
+
+            nav {
+                max-height: none;
+                overflow: visible;
+            }
+
+            nav a {
+                opacity: 1;
+                transition: opacity 0.3s ease-in-out;
+            }
+
+            nav a:hover::before {
+                transform: scaleX(1);
+                transform-origin: bottom left;
+            }
+        }
+
+        .container {
             margin: 0.6cm;
             border-radius: 8px;
             overflow: hidden;
             background-color: #19252f;
         }
 
-        section {
+        .section {
             background-color: #273746;
-            padding: 20px;
+            padding: 20px 15px 30px;
             margin: 10px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
-        section p {
-            color: #bdc3c7;
-            margin-top: 0;
-            margin-bottom: -10px;
-        }
-
-        section b {
-            color: #bdc3c7;
-            margin-top: 0;
-            margin-bottom: 15px;
-        }
-
-        h2 {
-            font-style: italic;
-            color: #bdc3c7;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        footer {
-            background-color: #19252f;
-            color: #bdc3c7;
-            text-align: center;
-            padding: 0.5em;
-            margin-top: auto;
-        }
-
-        .footer-content {
-            text-align: center;
-            margin-top: -15px;
-        }
-
-        .footer-content p {
-            margin: 0;
-            margin-top: 10px;
-            margin-bottom: 2px;
-        }
-
-        .footer-content b {
-            margin-top: 2px;
+        bold {
             font-weight: bold;
-            opacity: 0.03;
         }
 
         .full-size-section img {
@@ -127,79 +197,75 @@
             margin: auto;
         }
 
-        .toggle-text {
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: underline;
+        .section p {
+            color: #bdc3c7;
+            margin-top: 0;
             margin-bottom: -10px;
         }
 
-        id {
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        .loading-text {
-            color: #bdc3c7;
+        .section h2 {
             font-style: italic;
+            color: #bdc3c7;
+            margin-top: 0;
+            margin-bottom: 10px;
         }
 
-        bold {
-            font-weight: bold;
+        .footer-content {
+            text-align: center;
+            margin-top: auto;
+            background-color: #19252f;
+            padding: 0.2cm;
         }
     </style>
 </head>
 
 <body>
     <header>
-        <h1><a href="https://hejteri.github.io/">Hejteri Organization</a></h1>
+        <h1 href="#" class="title">Hejteri Organization</h1>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
         <nav>
-            <ul>
-                <li><a href="https://hejteri.github.io/mail">Mail</a></li>
-                <li><a href="https://hejteri.github.io/redirect?url=https://discord.gg/bza8BnFWdh">Discord</a></li>
-                <li><a href="https://hejteri.github.io/redirect?url=https://www.instagram.com/hejterioficial/?hl=en">Instagram</a></li>
-                <li><a id="panelbut" href="https://hejteri.github.io/panel">Panel</a></li>
-                <li><a id="loginbut" href="#"> </a></li>
-            </ul>
+            <a href="#">Mail</a>
+            <a href="#">Discord</a>
+            <a href="#">Instagram</a>
+            <a href="#">Login</a>
+            <a href="#">Panel</a>
         </nav>
     </header>
 
-    <div class="container-box">
+    <div class="container">
         <div id="particles-container"></div>
-        <section>
+        <section class="section">
             <load id="Section1-0"></load>
             <load id="Section1-1"></load>
         </section>
 
-        <section>
+        <section class="section">
             <load id="Section2-0"></load>
             <load id="Section2-1"></load>
         </section>
 
-        <section>
+        <section class="section">
             <load id="Section3-0"></load>
-            <b class="toggle-text toggle-text-pubgm" onclick="toggleVisibility('pubgmContent', 'toggle-text-pubgm')">Show</b>
+            <b style="text-decoration: underline; position: relative; top: -1px;" class="toggle-text toggle-text-pubgm" onclick="toggleVisibility('pubgmContent', 'toggle-text-pubgm')">Show</b>
             <div id="pubgmContent" style="display: none;">
                 <load id="Section3-1"></load>
             </div>
         </section>
-        <section>
+        <section class="section">
             <load id="Section4-0"></load>
-            <b class="toggle-text toggle-text-so2" onclick="toggleVisibility('so2Content', 'toggle-text-so2')">Show</b>
+            <b style="text-decoration: underline; position: relative; top: -1px;" class="toggle-text toggle-text-so2" onclick="toggleVisibility('so2Content', 'toggle-text-so2')">Show</b>
             <div id="so2Content" style="display: none;">
                 <load id="Section4-1"></load>
             </div>
         </section>
-        <section class="full-size-section">
+        <section class="full-size-section section">
             <img src="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.png" alt="Hejteri Image">
         </section>
     </div>
 
-    <footer>
-        <p>&copy; 2023 Hejteri Website. All rights reserved.</p>
-        <div class="footer-content">
-            <b>Made By ROOT256</b>
-        </div>
+    <footer class="footer-content">
+        <p>&copy; 2023 Hejteri Organization. All rights reserved.</p>
+        <b>Designed by ROOT256</b>
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -223,23 +289,25 @@
             var loginButton = document.getElementById('loginbut');
             var panelButton = document.getElementById('panelbut');
 
-            firebase.auth().onAuthStateChanged(function (user) {
-                if (user) {
-                    loginButton.textContent = 'Logout';
-                    loginButton.setAttribute('href', '#');
-                    loginButton.setAttribute('onclick', 'logout()');
-                    loginButton.style.marginLeft = '0px';
-                    panelButton.style.display = 'block';
-                    panelButton.style.visibility = 'visible';
-                } else {
-                    loginButton.textContent = 'Login';
-                    loginButton.setAttribute('href', 'https://hejteri.github.io/panel/login');
-                    loginButton.removeAttribute('onclick');
-                    panelButton.style.display = 'none';
-                    panelButton.style.visibility = 'hidden';
-                    loginButton.style.marginLeft = '-20px';
-                }
-            });
+            if (loginButton) {
+                firebase.auth().onAuthStateChanged(function (user) {
+                    if (user) {
+                        loginButton.textContent = 'Logout';
+                        loginButton.setAttribute('href', '#');
+                        loginButton.setAttribute('onclick', 'logout()');
+                        loginButton.style.marginLeft = '0px';
+                        panelButton.style.display = 'block';
+                        panelButton.style.visibility = 'visible';
+                    } else {
+                        loginButton.textContent = 'Login';
+                        loginButton.setAttribute('href', 'https://hejteri.github.io/panel/login');
+                        loginButton.removeAttribute('onclick');
+                        panelButton.style.display = 'none';
+                        panelButton.style.visibility = 'hidden';
+                        loginButton.style.marginLeft = '-20px';
+                    }
+                });
+            }
         }
 
         function logout() {
@@ -301,9 +369,32 @@
             }).catch(() => {});
         }
 
+        function toggleMenu() {
+            var navElement = document.querySelector('nav');
+            navElement.classList.toggle('visible');
+        }
+
+        function displaySO2Content(pageNumber, sectionId) {
+            const pageRef = firebase.database().ref(`/pages/home/${pageNumber}`);
+
+            pageRef.once('value').then(snapshot => {
+                const content = snapshot.val();
+
+                if (content && content.text) {
+                    const sanitizedText = content.text.replace(/\\n/g, '<br>');
+                    const sectionElement = document.getElementById(sectionId);
+
+                    if (sectionElement) {
+                        const formattedText = sanitizedText.replace(/(\d+)/g, '<span class="standoff-link" onclick="op($1)">$1</span>');
+                        sectionElement.innerHTML += `<p>${formattedText}</p>`;
+                    }
+                }
+            }).catch(() => {});
+        }
+
         window.onload = function () {
             checkLoginStatus();
-            
+
             displayHeadingContent(1, 'Section1-0');
             displayParagraphContent(1, 'Section1-1');
             displayHeadingContent(2, 'Section2-0');
@@ -311,7 +402,7 @@
             displayHeadingContent(3, 'Section3-0');
             displayParagraphContent(3, 'Section3-1');
             displayHeadingContent(4, 'Section4-0');
-            displayParagraphContent(4, 'Section4-1');
+            displaySO2Content(4, 'Section4-1');
         };
     </script>
 </body>
