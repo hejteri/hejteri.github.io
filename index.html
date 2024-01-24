@@ -374,23 +374,24 @@
             navElement.classList.toggle('visible');
         }
 
-        function displaySO2Content(pageNumber, sectionId) {
-            const pageRef = firebase.database().ref(`/pages/home/${pageNumber}`);
+function displaySO2Content(pageNumber, sectionId) {
+    const pageRef = firebase.database().ref(`/pages/home/${pageNumber}`);
 
-            pageRef.once('value').then(snapshot => {
-                const content = snapshot.val();
+    pageRef.once('value').then(snapshot => {
+        const content = snapshot.val();
 
-                if (content && content.text) {
-                    const sanitizedText = content.text.replace(/\\n/g, '<br>');
-                    const sectionElement = document.getElementById(sectionId);
+        if (content && content.text) {
+            const sanitizedText = content.text.replace(/\\n/g, '<br>');
+            const sectionElement = document.getElementById(sectionId);
 
-                    if (sectionElement) {
-                        const formattedText = sanitizedText.replace(/(\d+)/g, '<span class="standoff-link" onclick="op($1)">$1</span>');
-                        sectionElement.innerHTML += `<p>${formattedText}</p>`;
-                    }
-                }
-            }).catch(() => {});
+            if (sectionElement) {
+                const formattedText = sanitizedText.replace(/\b(\d+)\b/g, '<span class="standoff-link" onclick="op($1)">$1</span>');
+                sectionElement.innerHTML += `<p>${formattedText}</p>`;
+            }
         }
+    }).catch(() => {});
+}
+
 
         window.onload = function () {
             checkLoginStatus();
