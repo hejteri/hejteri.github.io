@@ -6,239 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hejteri Organization</title>
     <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1f2c39;
-            color: #bdc3c7;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: #19252f;
-            color: #bdc3c7;
-            padding: 0.3cm;
-            text-align: center;
-        }
-
-        h1 {
-            margin: 0;
-            margin-right: 0.5cm;
-        }
-
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            margin-top: 5px;
-        }
-
-        nav ul li {
-            margin-right: 20px;
-        }
-
-        a {
-            color: #bdc3c7;
-            text-decoration: none;
-            font-weight: bold;
-            border-bottom: 2px solid transparent;
-            padding-bottom: 4px;
-            transition: border-bottom 0.3s;
-        }
-
-        a:hover {
-            border-bottom: 2px solid #256eff;
-        }
-
-         .container-box {
-        margin-top: 100px;
-        margin-left: 20%;
-        margin-right: 20%;
-        border-radius: 8px;
-        overflow: hidden;
-        background-color: #19252f;
-    }
-
-    /* Additional styles for mobile users */
-    @media only screen and (max-width: 600px) {
-        .container-box {
-            margin-left: 5%;
-            margin-right: 5%;
-        }
-    }
-
-        section {
-            background-color: #273746;
-            padding: 20px;
-            margin: 10px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        h2 {
-            color: #bdc3c7;
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        footer {
-            background-color: #19252f;
-            color: #bdc3c7;
-            text-align: center;
-            padding: 0.5em;
-            margin-top: auto;
-        }
-
-        .footer-content {
-            text-align: center;
-            margin-top: -15px;
-        }
-
-        .footer-content b {
-            margin-top: 2px;
-            font-weight: bold;
-            opacity: 0.03;
-        }
-      
-
-        input,
-        textarea {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
-            box-sizing: border-box;
-            border: 1px solid #bdc3c7;
-            border-radius: 4px;
-            background-color: #19252f;
-            color: #bdc3c7;
-        }
-
-        button {
-            background-color: #19252f;
-            color: #bdc3c7;
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-      
-    </style>
+    <link rel="stylesheet" href="pc.css">
 </head>
 
 <body>
     <header>
-        <h1><a href="https://hejteri.github.io/">Hejteri Organization</a></h1>
+        <a href="https://hejteri.github.io" class="title">Hejteri Organization</a>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
         <nav>
-            <ul>
-                <li><a href="https://hejteri.github.io/redirect?url=https://discord.gg/bza8BnFWdh">Discord</a></li>
-                <li><a href="https://hejteri.github.io/redirect?url=https://www.instagram.com/hejterioficial/?hl=en">Instagram</a></li>
-                <li><a id="panelbut" href="https://hejteri.github.io/panel">Panel</a></li>
-                <li><a id="loginbut" href="#"> </a></li>
-            </ul>
+            <a href="https://discord.gg/XnqtNG5g97">Discord</a>
+            <a href="https://www.instagram.com/hejterioficial/">Instagram</a>
+            <a href="" id="loginbut"></a>
+            <a href="" id="panelbut"></a>
         </nav>
     </header>
 
-    <div class="container-box">
-<section>
-            <h2>Mail Us</h2>
+    <div class="mail-container">
+        <section class="mail-section">
+            <h2>Mail us</h2>
             <form action="https://formspree.io/f/xayggkgk" method="POST">
-                <label for="name">Your Name:</label>
-                <input type="text" id="name" name="name" required>
+                <p for="name">Your Name:</p>
+                <input maxlength="50" type="text" id="name" name="name" required>
 
-                <label for="email">Your Email:</label>
-                <input type="email" id="email" name="email" required>
+                <p for="email">Your Email:</p>
+                <input maxlength="50" type="email" id="email" name="email" required>
 
-                <label for="message">Your Message:</label>
-                <textarea id="message" name="message" required></textarea>
+                <p for="message">Your Message:</p>
+                <textarea style="min-height: 52px;" maxlength="500" id="message" name="message" required></textarea>
 
                 <button type="submit">Submit</button>
             </form>
         </section>
-</div>
+    </div>
 
-    <footer>
-        <p>&copy; 2023 Hejteri Website. All rights reserved.</p>
-        <div class="footer-content">
-            <b>Made By ROOT256</b>
-        </div>
+    <footer class="footer-content">
+        <p>&copy; 2018-2024 Hejteri Organization. All rights reserved.</p>
+        <b>Designed by ROOT256</b>
     </footer>
+
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
+    <script src="main.js"></script>
     <script>
-        
-    // Initialize Firebase with your project configuration
-    const firebaseConfig = {
-  apiKey: "AIzaSyB7HqOKwA3XilJ48Ts2cVuJH7PsuuVhzH0",
-  authDomain: "hejterii.firebaseapp.com",
-  databaseURL: "https://hejterii-default-rtdb.firebaseio.com",
-  projectId: "hejterii",
-  storageBucket: "hejterii.appspot.com",
-  messagingSenderId: "565517537560",
-  appId: "1:565517537560:web:7a71dda2e3e3c3c2680e6d"
-};
-
-    firebase.initializeApp(firebaseConfig);
-
-    // Function to check if the user is logged in using Firebase Authentication
-    function checkLoginStatus() {
-    // Get the login button element
-    var loginButton = document.getElementById('loginbut');
-    var panelButton = document.getElementById('panelbut');
-
-    // Add an event listener for Firebase Authentication state changes
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            // User is signed in
-            loginButton.textContent = 'Logout';
-            loginButton.setAttribute('href', '#'); // Update the href based on your actual logout logic
-            loginButton.setAttribute('onclick', 'logout()');
-            loginButton.style.marginLeft = '0px';
-            // Show the panel button
-            panelButton.style.display = 'block';
-            panelButton.style.visibility = 'visible';
-            
-        } else {
-            // User is signed out
-            loginButton.textContent = 'Login';
-            loginButton.setAttribute('href', 'https://hejteri.github.io/panel/login'); // Update the login URL if needed
-            loginButton.removeAttribute('onclick');
-
-            // Hide the panel button
-            panelButton.style.display = 'none';
-            panelButton.style.visibility = 'hidden';
-            loginButton.style.marginLeft = '-20px';
+        window.onload = function () {
+            AuthButtons();
         }
-    });
-}
-    // Function to handle logout
-    function logout() {
-        // Sign out the user using Firebase Authentication
-        firebase.auth().signOut().then(function () {
-            // Redirect or perform additional actions after logout
-            loginButton.textContent = 'Login';
-                loginButton.setAttribute('href', 'https://hejteri.github.io/panel/login'); // Update the login URL if needed
-                loginButton.removeAttribute('onclick');
-            
-        }).catch(function (error) {
-            console.error('Error during logout:', error);
-        });
-    }
-
-    // Call the function on page load
-    window.onload = function () {
-        checkLoginStatus();
-    };
-        
     </script>
 </body>
 
