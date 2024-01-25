@@ -1,332 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hejteri Organization</title>
     <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
-
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1f2c39;
-            color: #bdc3c7;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            background-color: #19252f;
-            padding: 0.3cm;
-            text-align: center;
-            position: relative;
-        }
-
-        .title:hover {
-            color: #fff;
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: row;
-            overflow: hidden;
-            max-height: 0;
-            transition: max-height 0.3s ease-in-out;
-        }
-
-        nav a {
-            color: #bdc3c7;
-            text-decoration: none;
-            margin: 0 1em;
-            font-weight: bold;
-            position: relative;
-            opacity: 1;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        nav a::before {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #bdc3c7;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        nav a:hover::before {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-
-        .standoff-link {
-            color: #bdc3c7;
-            cursor: pointer;
-            text-decoration: underline;
-            transition: color 0.5s ease;
-        }
-
-        .standoff-link:hover {
-            opacity: 0.8;
-            text-decoration: none;
-        }
-
-        @media only screen and (max-width: 710px) {
-            nav {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .menu-toggle {
-                display: block;
-                cursor: pointer;
-                font-size: 30px;
-                color: #bdc3c7;
-                background: none;
-                border: none;
-                outline: none;
-                padding: 0;
-                position: absolute;
-                right: 0.3cm;
-                top: 8px;
-            }
-
-            .title {
-                margin: 0;
-                font-size: 25px;
-                cursor: pointer;
-                transition: color 0.3s ease-in-out;
-            }
-
-            nav.visible {
-                margin-top: 20px;
-                max-height: 200px;
-            }
-
-            nav a {
-                margin: 5px 0 5px;
-            }
-
-            nav.visible a {
-                opacity: 1;
-                transition-delay: 0.2s;
-            }
-
-            .footer-content b {
-                position: absolute;
-                margin-top: -7px;
-                transform: translate(-50%, -50%);
-                font-size: 13px;
-                font-weight: bold;
-                opacity: 0.05;
-                color: #bdc3c7;
-            }
-        }
-
-        @media only screen and (min-width: 711px) {
-            .footer-content b {
-                position: absolute;
-                text-align: right;
-                right: 0.3cm;
-                margin-top: -36px;
-                font-size: 13px;
-                font-weight: bold;
-                opacity: 0.05;
-                color: #bdc3c7;
-            }
-
-            .menu-toggle {
-                display: none;
-            }
-
-            .title {
-                margin: 0;
-                font-size: 35px;
-                cursor: pointer;
-                transition: color 0.3s ease-in-out;
-            }
-
-            nav {
-                max-height: none;
-                overflow: visible;
-            }
-
-            nav a {
-                opacity: 1;
-                transition: opacity 0.3s ease-in-out;
-            }
-
-            nav a:hover::before {
-                transform: scaleX(1);
-                transform-origin: bottom left;
-            }
-        }
-
-        .container {
-            margin: 0.6cm;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: #19252f;
-        }
-
-        .section {
-            background-color: #273746;
-            padding: 20px 15px 30px;
-            margin: 10px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        bold {
-            font-weight: bold;
-        }
-
-        .full-size-section img {
-            width: 100%;
-            height: auto;
-            display: block;
-            margin: auto;
-        }
-
-        .section p {
-            color: #bdc3c7;
-            margin-top: 0;
-            margin-bottom: -10px;
-        }
-
-        .section h2 {
-            font-style: italic;
-            color: #bdc3c7;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        .footer-content {
-            text-align: center;
-            margin-top: auto;
-            background-color: #19252f;
-            padding: 0.2cm;
-        }
-    </style>
+    <link rel="stylesheet" href="pc.css">
 </head>
-
 <body>
     <header>
-        <h1 href="#" class="title">Hejteri Organization</h1>
+        <a href="https://hejteri.github.io" class="title">Hejteri Organization</a>
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
         <nav>
-            <a href="#">Mail</a>
-            <a href="#">Discord</a>
-            <a href="#">Instagram</a>
-            <a href="#">Login</a>
-            <a href="#">Panel</a>
+            <a href="https://hejteri.github.io/mail">Mail</a>
+            <a href="https://discord.gg/XnqtNG5g97">Discord</a>
+            <a href="https://www.instagram.com/hejterioficial/">Instagram</a>
+            <a href="" id="loginbut"></a>
+            <a href="" id="panelbut"></a>
         </nav>
     </header>
-
-    <div class="container">
-        <div id="particles-container"></div>
-        <section class="section">
+    <div class="home-container">
+        <section class="home-section">
             <load id="Section1-0"></load>
             <load id="Section1-1"></load>
         </section>
-
-        <section class="section">
+        <section class="home-section">
             <load id="Section2-0"></load>
             <load id="Section2-1"></load>
         </section>
-
-        <section class="section">
+        <section class="home-section">
             <load id="Section3-0"></load>
             <b style="text-decoration: underline; position: relative; top: -1px;" class="toggle-text toggle-text-pubgm" onclick="toggleVisibility('pubgmContent', 'toggle-text-pubgm')">Show</b>
             <div id="pubgmContent" style="display: none;">
                 <load id="Section3-1"></load>
             </div>
         </section>
-        <section class="section">
+        <section class="home-section">
             <load id="Section4-0"></load>
             <b style="text-decoration: underline; position: relative; top: -1px;" class="toggle-text toggle-text-so2" onclick="toggleVisibility('so2Content', 'toggle-text-so2')">Show</b>
             <div id="so2Content" style="display: none;">
                 <load id="Section4-1"></load>
             </div>
         </section>
-        <section class="full-size-section section">
+        <section class="full-size-section home-section">
             <img src="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.png" alt="Hejteri Image">
         </section>
     </div>
-
     <footer class="footer-content">
-        <p>&copy; 2023 Hejteri Organization. All rights reserved.</p>
+        <p>&copy; 2018-2024 Hejteri Organization. All rights reserved.</p>
         <b>Designed by ROOT256</b>
     </footer>
-
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
+    <script src="main.js"></script>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyB7HqOKwA3XilJ48Ts2cVuJH7PsuuVhzH0",
-            authDomain: "hejterii.firebaseapp.com",
-            databaseURL: "https://hejterii-default-rtdb.firebaseio.com",
-            projectId: "hejterii",
-            storageBucket: "hejterii.appspot.com",
-            messagingSenderId: "565517537560",
-            appId: "1:565517537560:web:7a71dda2e3e3c3c2680e6d"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-
-        function checkLoginStatus() {
-            var loginButton = document.getElementById('loginbut');
-            var panelButton = document.getElementById('panelbut');
-
-            if (loginButton) {
-                firebase.auth().onAuthStateChanged(function (user) {
-                    if (user) {
-                        loginButton.textContent = 'Logout';
-                        loginButton.setAttribute('href', '#');
-                        loginButton.setAttribute('onclick', 'logout()');
-                        loginButton.style.marginLeft = '0px';
-                        panelButton.style.display = 'block';
-                        panelButton.style.visibility = 'visible';
-                    } else {
-                        loginButton.textContent = 'Login';
-                        loginButton.setAttribute('href', 'https://hejteri.github.io/panel/login');
-                        loginButton.removeAttribute('onclick');
-                        panelButton.style.display = 'none';
-                        panelButton.style.visibility = 'hidden';
-                        loginButton.style.marginLeft = '-20px';
-                    }
-                });
-            }
-        }
-
-        function logout() {
-            firebase.auth().signOut().then(function () {
-                loginButton.textContent = 'Login';
-                loginButton.setAttribute('href', 'https://hejteri.github.io/panel/login');
-                loginButton.removeAttribute('onclick');
-            }).catch(function () {});
-        }
-
         function op(profileId) {
             var url = "https://link.standoff2.com/en/profile/view/" + profileId;
             window.open(url, '_blank');
         }
-
         function toggleVisibility(sectionId, toggleTextClass) {
             var section = document.getElementById(sectionId);
             var toggleText = document.querySelector('.' + toggleTextClass);
-
             if (section.style.display === 'none' || section.style.display === '') {
                 section.style.display = 'block';
                 toggleText.textContent = 'Hide';
@@ -335,67 +70,47 @@
                 toggleText.textContent = 'Show';
             }
         }
-
         function displayHeadingContent(pageNumber, sectionId) {
             const pageRef = firebase.database().ref(`/pages/home/${pageNumber}`);
-
             pageRef.once('value').then(snapshot => {
                 const content = snapshot.val();
-
                 if (content && content.head) {
                     const sectionElement = document.getElementById(sectionId);
-
                     if (sectionElement) {
                         sectionElement.innerHTML = `<h2>${content.head}</h2>`;
                     }
                 }
             }).catch(() => {});
         }
-
         function displayParagraphContent(pageNumber, sectionId) {
             const pageRef = firebase.database().ref(`/pages/home/${pageNumber}`);
-
             pageRef.once('value').then(snapshot => {
                 const content = snapshot.val();
-
                 if (content && content.text) {
                     const sanitizedText = content.text.replace(/\\n/g, '<br>');
                     const sectionElement = document.getElementById(sectionId);
-
                     if (sectionElement) {
                         sectionElement.innerHTML += `<p>${sanitizedText}</p>`;
                     }
                 }
             }).catch(() => {});
         }
-
-        function toggleMenu() {
-            var navElement = document.querySelector('nav');
-            navElement.classList.toggle('visible');
+        function displaySO2Content(pageNumber, sectionId) {
+            const pageRef = firebase.database().ref(`/pages/home/${pageNumber}`);
+            pageRef.once('value').then(snapshot => {
+                const content = snapshot.val();
+                if (content && content.text) {
+                    const sanitizedText = content.text.replace(/\\n/g, '<br>');
+                    const sectionElement = document.getElementById(sectionId);
+                    if (sectionElement) {
+                        const formattedText = sanitizedText.replace(/\b(\d+)\b/g, '<span class="standoff-link" onclick="op($1)">$1</span>');
+                        sectionElement.innerHTML += `<p>${formattedText}</p>`;
+                    }
+                }
+            }).catch(() => {});
         }
-
-function displaySO2Content(pageNumber, sectionId) {
-    const pageRef = firebase.database().ref(`/pages/home/${pageNumber}`);
-
-    pageRef.once('value').then(snapshot => {
-        const content = snapshot.val();
-
-        if (content && content.text) {
-            const sanitizedText = content.text.replace(/\\n/g, '<br>');
-            const sectionElement = document.getElementById(sectionId);
-
-            if (sectionElement) {
-                const formattedText = sanitizedText.replace(/\b(\d+)\b/g, '<span class="standoff-link" onclick="op($1)">$1</span>');
-                sectionElement.innerHTML += `<p>${formattedText}</p>`;
-            }
-        }
-    }).catch(() => {});
-}
-
-
         window.onload = function () {
-            checkLoginStatus();
-
+            AuthButtons();
             displayHeadingContent(1, 'Section1-0');
             displayParagraphContent(1, 'Section1-1');
             displayHeadingContent(2, 'Section2-0');
@@ -404,8 +119,7 @@ function displaySO2Content(pageNumber, sectionId) {
             displayParagraphContent(3, 'Section3-1');
             displayHeadingContent(4, 'Section4-0');
             displaySO2Content(4, 'Section4-1');
-        };
+        }
     </script>
 </body>
-
 </html>
