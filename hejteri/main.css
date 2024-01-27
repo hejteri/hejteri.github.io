@@ -80,7 +80,6 @@ nav a:hover::before {
     height: auto;
     display: block;
     margin: auto;
-    border-radius: 10px;
 }
 
 
