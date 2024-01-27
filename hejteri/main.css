@@ -338,14 +338,6 @@ nav a:hover::before {
 }
 
 @media only screen and (max-width: 710px) {
-	.video-player {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-    margin: auto;
-}
     nav {
         flex-direction: column;
         align-items: center;
@@ -401,14 +393,6 @@ nav a:hover::before {
 }
 
 @media only screen and (min-width: 711px) {
-	.video-player {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-    margin: auto;
-}
 
     .footer-content b {
         position: absolute;
