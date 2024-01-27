@@ -339,7 +339,7 @@ nav a:hover::before {
 
 @media only screen and (max-width: 710px) {
     .video-player {
-        width: 100%;
+        width: auto;
         height: auto;
         display: block;
         margin: auto;
