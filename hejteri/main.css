@@ -1,0 +1,433 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1f2c39;
+    color: #bdc3c7;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #19252f;
+    padding: 0.3cm;
+    text-align: center;
+    position: relative;
+}
+
+.title:hover {
+    color: #fff;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+}
+
+nav a {
+    color: #bdc3c7;
+    text-decoration: none;
+    margin: 0 1em;
+    font-weight: bold;
+    position: relative;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+nav a::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #bdc3c7;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-in-out;
+}
+
+nav a:hover::before {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.standoff-link {
+    color: #bdc3c7;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.5s ease;
+}
+
+.standoff-link:hover {
+    opacity: 0.8;
+    text-decoration: none;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.full-size-section img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: auto;
+}
+
+.footer-content {
+    text-align: center;
+    margin-top: auto;
+    background-color: #19252f;
+    padding: 0.2cm;
+}
+
+.home-container {
+    margin: 0.6cm;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #19252f;
+}
+
+.home-section {
+    background-color: #273746;
+    padding: 20px 15px 30px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.home-section p {
+    color: #bdc3c7;
+    margin-top: 0;
+    margin-bottom: -10px;
+}
+
+.home-section h2 {
+    font-style: italic;
+    color: #bdc3c7;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.mail-container {
+    margin: 5% 15%;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #19252f;
+}
+
+.mail-section {
+    background-color: #273746;
+    padding: 20px 15px 30px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.mail-section p {
+    color: #bdc3c7;
+    margin: 0;
+    margin-top: 15px;
+}
+
+.mail-section h2 {
+    color: #bdc3c7;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.mail-section input,
+.mail-section textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 0px;
+    box-sizing: border-box;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    background-color: #19252f;
+    color: #bdc3c7;
+    resize: vertical;
+    max-height: 200px;
+}
+
+.mail-section button {
+    margin-top: 10px;
+    background-color: #19252f;
+    color: #bdc3c7;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-container {
+    margin: 10% 15%;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #19252f;
+}
+
+.login-section {
+    background-color: #273746;
+    padding: 20px 15px 30px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.login-section p {
+    color: #bdc3c7;
+    margin: 0;
+    margin-top: 15px;
+}
+
+.login-section h2 {
+    color: #bdc3c7;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.login-section input,
+.login-section textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 0px;
+    box-sizing: border-box;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    background-color: #19252f;
+    color: #bdc3c7;
+    resize: vertical;
+    max-height: 200px;
+}
+
+.login-section button {
+    margin-top: 10px;
+    background-color: #19252f;
+    color: #bdc3c7;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.error-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    z-index: 900;
+}
+
+.error-box {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #273746;
+    color: #bdc3c7;
+    border: 5px solid #19252f;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1000;
+}
+
+.error-box button {
+    margin-top: 15px;
+    margin-bottom: -15px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.panel-container {
+    margin: 0.6cm;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #19252f;
+}
+
+.panel-section {
+    background-color: #273746;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.panel-section p {
+    color: #bdc3c7;
+    margin: 0;
+    margin-top: 15px;
+}
+
+.panel-section h2 {
+    color: #bdc3c7;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.panel-section input[type="text"] {
+    border: none;
+    background: none;
+    outline: none;
+    color: #bdc3c7;
+    font-size: 1rem;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    width: 70%;
+    font-weight: bold;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.panel-section textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #273746;
+    color: #bdc3c7;
+    border: 3px solid #19252f;
+    border-radius: 4px;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.panel-section button {
+    background-color: #19252f;
+    color: #bdc3c7;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: -15px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.button-group button {
+    margin-bottom: -5px;
+    margin-right: 5px;
+    display: none;
+}
+
+@media only screen and (max-width: 710px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menu-toggle {
+        display: block;
+        cursor: pointer;
+        font-size: 30px;
+        color: #bdc3c7;
+        background: none;
+        border: none;
+        outline: none;
+        padding: 0;
+        position: absolute;
+        right: 0.3cm;
+        top: 8px;
+    }
+
+    .title {
+        color: #bdc3c7;
+        font-weight: bold;
+        margin: 0;
+        font-size: 25px;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+        text-decoration: none;
+    }
+
+    nav.visible {
+        margin-top: 20px;
+        max-height: 200px;
+    }
+
+    nav a {
+        margin: 5px 0 5px;
+    }
+
+    nav.visible a {
+        opacity: 1;
+        transition-delay: 0.2s;
+    }
+
+    .footer-content b {
+        position: absolute;
+        margin-top: -7px;
+        transform: translate(-50%, -50%);
+        font-size: 13px;
+        font-weight: bold;
+        opacity: 0.05;
+        color: #bdc3c7;
+    }
+}
+
+@media only screen and (min-width: 711px) {
+    .footer-content b {
+        position: absolute;
+        text-align: right;
+        right: 0.3cm;
+        margin-top: -36px;
+        font-size: 13px;
+        font-weight: bold;
+        opacity: 0.05;
+        color: #bdc3c7;
+    }
+
+    .menu-toggle {
+        display: none;
+    }
+
+    .title {
+        color: #bdc3c7;
+        font-weight: bold;
+        margin: 0;
+        font-size: 32px;
+        cursor: pointer;
+        transition: color 0.3s ease-in-out;
+        text-decoration: none;
+    }
+
+    nav {
+        max-height: none;
+        overflow: visible;
+    }
+
+    nav a {
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    nav a:hover::before {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+    }
+}
