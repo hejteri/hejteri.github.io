@@ -329,7 +329,7 @@ nav a:hover::before {
 }
 
 .full-size-section img {
-    border-radius: 5px;
+    
     width: 100%;
     height: auto;
     display: block;
