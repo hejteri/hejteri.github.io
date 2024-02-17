@@ -74,16 +74,6 @@ nav a:hover::before {
     font-weight: bold;
 }
 
-
-.full-size-section img {
-    border-radius: 5px;
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: auto;
-}
-
-
 .footer-content {
     text-align: center;
     margin-top: auto;
@@ -336,6 +326,14 @@ nav a:hover::before {
     margin-bottom: -5px;
     margin-right: 5px;
     display: none;
+}
+
+.full-size-section img {
+    border-radius: 5px;
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: auto;
 }
 
 @media only screen and (max-width: 710px) {
