@@ -64,7 +64,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -105%);
-            font-size: 26px; 
+            font-size: 24px; 
             font-weight: bold;
             font-family: Rokkitt;
             text-align: center;
@@ -207,7 +207,7 @@ function LoadSection(Collection, Doc, Field) {
                     document.getElementById(ElementId).innerHTML = TypeA + formattedText + TypeB;
                     setTimeout(function() {
                         loadingBox.parentNode.removeChild(loadingBox);
-                    }, 1500);
+                    }, 300);
                 }
             }
         } else {
@@ -261,10 +261,13 @@ function LoadSectionMaps() {
 
             mapsSection.appendChild(box);
         } else {
+		
+			
             querySnapshot.forEach((doc) => {
                 var map = doc.data().map;
                 var clan1 = doc.data().clan1;
                 var clan2 = doc.data().clan2;
+				
 
                 var mapsSection = document.querySelector('.maps');
                 var box = document.createElement('div');
@@ -293,6 +296,16 @@ function LoadSectionMaps() {
                 var clan2Text = document.createElement('p');
                 clan2Text.classList.add('a-right');
                 clan2Text.textContent = clan2;
+				
+				if (map === "TBA") {
+				
+				image.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
+				image.alt = 'TBA Image';
+				
+				imageText.classList.add('image-text');
+				imageText.textContent = 'TBA';
+				}
+
 
                 box.appendChild(image);
                 box.appendChild(fadeBox);
@@ -312,6 +325,7 @@ function LoadSectionMaps() {
 
 window.onload = function () {
 	AuthButtons();
+	LoadSectionMaps();
     LoadSection("panel-main", "1", "head");
     LoadSection("panel-main", "1", "text");
     LoadSection("panel-main", "2", "head");
@@ -320,7 +334,6 @@ window.onload = function () {
     LoadSection("panel-main", "3", "text");
     LoadSection("panel-main", "4", "head");
     LoadSection("panel-main", "4", "text");
-    LoadSectionMaps();
 }
     </script>
 </body>
