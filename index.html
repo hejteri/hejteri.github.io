@@ -6,32 +6,106 @@
     <title>Hejteri Organization</title>
     <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io/hejteri/main.css">
-	<style>
-	@media only screen and (max-width: 710px) {
-	.video-player {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-    margin: auto;
-	border-radius: 10px;
-}
-}
-@media only screen and (min-width: 711px) {
-	.video-player {
-    width: 85%;
-    height: 85%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-    margin: auto;
-	border-radius: 10px;
-}
-}
-	</style>
+    <style>
+         .maps img {
+            width: 100%;
+            position: relative;
+            display: inline-block;
+            height: 50%;
+        }
+        
+        .box {
+            border-radius: 5px;
+            height: 68px; 
+            background-color: transparent;
+            border: 5.5px solid #19252f; 
+            z-index: 0; 
+            margin-top: 7px;
+            position: relative; 
+        }
+        
+        .a-right, .a-center, .a-left {
+            font-weight: bold;
+            position: absolute; 
+            display: inline-block; 
+            top: 50px; 
+            transform: translateY(-50%); 
+        }
+
+        .a-right {
+            right: 10px; 
+        }
+
+        .a-center {
+            text-decoration: underline;
+            left: 50%; 
+            transform: translateX(-50%) translateY(-50%); 
+        }
+
+        .a-left {
+            left: 10px; 
+        }
+        
+         .fade-box {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            z-index: 1;
+            background: linear-gradient(to left, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0.6) 100%);
+            pointer-events: none; 
+        }
+
+        .image-text {
+            position: absolute;
+            opacity: 0.8;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -105%);
+            font-size: 26px; 
+            font-weight: bold;
+            font-family: Rokkitt;
+            text-align: center;
+            z-index: 2; 
+        }
+        
+        .loading-box {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #19252f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #273746;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
+    
+    <div id="loadingBox" class="loading-box">
+        <div class="loading-spinner"></div>
+    </div>
+    
     <header>
         <a href="https://hejteri.github.io" class="title">Hejteri Organization</a>
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
@@ -39,8 +113,12 @@
             <a href="https://hejteri.github.io/mail">Mail</a>
             <a href="https://discord.gg/XnqtNG5g97">Discord</a>
             <a href="https://www.instagram.com/hejterioficial/">Instagram</a>
-            <a href="" id="loginbut"></a>
+            <a href="https://hejteri.github.io/panel/">Sponsors</a>
+
             <a href="" id="panelbut"></a>
+            
+            <a href="" id="loginbut"></a>
+            
         </nav>
     </header>
     <div class="home-container">
@@ -48,28 +126,35 @@
             <load id="Section1-0"></load>
             <load id="Section1-1"></load>
         </section>
-        <section class="home-section">
+                <section class="home-section">
             <load id="Section2-0"></load>
             <load id="Section2-1"></load>
         </section>
-	            <section class="home-section">
+             <section class="home-section">
             <load id="Section3-0"></load>
             <b style="text-decoration: underline; position: relative; top: -1px;" class="toggle-text toggle-text-pubgm" onclick="toggleVisibility('pubgmContent', 'toggle-text-pubgm')">Show</b>
             <div id="pubgmContent" style="display: none;">
                 <load id="Section3-1"></load>
             </div>
         </section>
-        <section class="home-section">
+             <section class="home-section">
             <load id="Section4-0"></load>
+            
             <b style="text-decoration: underline; position: relative; top: -1px;" class="toggle-text toggle-text-so2" onclick="toggleVisibility('so2Content', 'toggle-text-so2')">Show</b>
             <div id="so2Content" style="display: none;">
                 <load id="Section4-1"></load>
             </div>
         </section>
-        <section class="home-section" class="video-player">
-        </section>
+        
+        <section class="maps home-section">
+            <h2>• Maps</h2>
+            <p style="margin-bottom: 20px;">*Swiss Round 3 (Teams With A 1-1 Record).<br>Winner Qualifies For So2 Major HEJTCUP 2024.</p>
+    
+
+    </section>
+
         <section class="full-size-section home-section">
-            <img src="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.png" alt="Hejteri Image">
+            <img style="border-radius: 5px;" src="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.png" alt="Hejteri Image">
         </section>
     </div>
     <footer class="footer-content">
@@ -78,47 +163,9 @@
     </footer>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io/hejteri/main.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io/hejteri/main.js"></script>
     <script>
-        function getRandomVideoUrl(callback) {
-            const baseUrl = "https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io/hejteri/videos/";
-            const randomNumber = Math.floor(Math.random() * 50) + 1;
-            const videoUrl = baseUrl + randomNumber + ".mp4";
-
-            fetch(videoUrl)
-                .then(response => {
-                    if (response.ok) {
-                        callback(videoUrl);
-                    } else {
-                        getRandomVideoUrl(callback);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error checking video URL:', error);
-                    getRandomVideoUrl(callback);
-                });
-        }
-
-        function addVideoPlayer() {
-            const section = document.querySelector('.home-container section:nth-child(5)');
-
-
-            function playNewVideo(videoUrl) {
-                const videoPlayer = document.createElement('video');
-                videoPlayer.classList.add('video-player');
-                videoPlayer.src = videoUrl;
-                videoPlayer.controls = true;
-                videoPlayer.autoplay = true;
-                videoPlayer.loop = true;
-
-                section.innerHTML = "";
-                section.appendChild(videoPlayer);
-            }
-
-            getRandomVideoUrl(playNewVideo);
-        }
-
         function op(profileId) {
             var url = "https://link.standoff2.com/en/profile/view/" + profileId;
             window.open(url, '_blank');
@@ -134,57 +181,106 @@
                 toggleText.textContent = 'Show';
             }
         }
-        function displayHeadingContent(pageNumber, sectionId) {
-            const pageRef = firebase.database().ref(`/pages/home/${pageNumber}`);
-            pageRef.once('value').then(snapshot => {
-                const content = snapshot.val();
-                if (content && content.head) {
-                    const sectionElement = document.getElementById(sectionId);
-                    if (sectionElement) {
-                        sectionElement.innerHTML = `<h2>${content.head}</h2>`;
-                    }
+
+function LoadSection(Collection, Doc, Field) {
+    var db = firebase.firestore();
+    var docRef = db.collection(Collection).doc(Doc);
+    
+    if (Field === "head") {
+        var TypeA = "<h2>";
+        var TypeB = "</h2>";
+        var ElementId = "Section" + Doc + "-0";
+    }
+    if (Field === "text") {
+        var TypeA = "<p>";
+        var TypeB = "</p>";
+        var ElementId = "Section" + Doc + "-1";
+    }
+
+    docRef.get().then((doc) => {
+        if (doc.exists) {
+            var textData = doc.data()[Field];
+            document.getElementById(ElementId).innerHTML = TypeA + textData + TypeB;
+            if (Field === "text") {
+                if (Doc === "4") {
+                    const formattedText = textData.replace(/\b(\d+)\b/g, '<span class="standoff-link" onclick="op($1)">$1</span>');
+                    document.getElementById(ElementId).innerHTML = TypeA + formattedText + TypeB;
+                    setTimeout(function() {
+                        loadingBox.parentNode.removeChild(loadingBox);
+                    }, 1500);
                 }
-            }).catch(() => {});
+            }
+        } else {
+            console.log("No such document!");
         }
-        function displayParagraphContent(pageNumber, sectionId) {
-            const pageRef = firebase.database().ref(`/pages/home/${pageNumber}`);
-            pageRef.once('value').then(snapshot => {
-                const content = snapshot.val();
-                if (content && content.text) {
-                    const sanitizedText = content.text.replace(/\\n/g, '<br>');
-                    const sectionElement = document.getElementById(sectionId);
-                    if (sectionElement) {
-                        sectionElement.innerHTML += `<p>${sanitizedText}</p>`;
-                    }
-                }
-            }).catch(() => {});
-        }
-        function displaySO2Content(pageNumber, sectionId) {
-            const pageRef = firebase.database().ref(`/pages/home/${pageNumber}`);
-            pageRef.once('value').then(snapshot => {
-                const content = snapshot.val();
-                if (content && content.text) {
-                    const sanitizedText = content.text.replace(/\\n/g, '<br>');
-                    const sectionElement = document.getElementById(sectionId);
-                    if (sectionElement) {
-                        const formattedText = sanitizedText.replace(/\b(\d+)\b/g, '<span class="standoff-link" onclick="op($1)">$1</span>');
-                        sectionElement.innerHTML += `<p>${formattedText}</p>`;
-                    }
-                }
-            }).catch(() => {});
-        }
-        window.onload = function () {
-            AuthButtons();
-            addVideoPlayer();
-            displayHeadingContent(1, 'Section1-0');
-            displayParagraphContent(1, 'Section1-1');
-            displayHeadingContent(2, 'Section2-0');
-            displayParagraphContent(2, 'Section2-1');
-            displayHeadingContent(3, 'Section3-0');
-            displayParagraphContent(3, 'Section3-1');
-            displayHeadingContent(4, 'Section4-0');
-            displaySO2Content(4, 'Section4-1');
-        }
+    }).catch((error) => {
+        console.log("Error getting document:", error);
+    });
+}
+
+function LoadSectionMaps() {
+    var db = firebase.firestore();
+    var collectionRef = db.collection("panel-maps");
+
+    collectionRef.get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            var map = doc.data().map;
+            var clan1 = doc.data().clan1;
+            var clan2 = doc.data().clan2;
+
+            var mapsSection = document.querySelector('.maps');
+            var box = document.createElement('div');
+            box.classList.add('box');
+
+            var image = document.createElement('img');
+            var mapLowerCase = map.toLowerCase();
+            image.src = "https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejtcup/" + mapLowerCase + '.png';
+            image.alt = mapLowerCase + ' Image';
+
+            var fadeBox = document.createElement('div');
+            fadeBox.classList.add('fade-box');
+
+            var imageText = document.createElement('div');
+            imageText.classList.add('image-text');
+            imageText.textContent = map;
+
+            var clan1Text = document.createElement('p');
+            clan1Text.classList.add('a-left');
+            clan1Text.textContent = clan1;
+
+            var vsText = document.createElement('p');
+            vsText.classList.add('a-center');
+            vsText.textContent = 'VS';
+
+            var clan2Text = document.createElement('p');
+            clan2Text.classList.add('a-right');
+            clan2Text.textContent = clan2;
+
+            box.appendChild(image);
+            box.appendChild(fadeBox);
+            box.appendChild(imageText);
+            box.appendChild(clan1Text);
+            box.appendChild(vsText);
+            box.appendChild(clan2Text);
+
+            mapsSection.appendChild(box);
+        });
+    }).catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+}
+
+window.onload = function () {
+    LoadSection("panel-main", "1", "head");
+    LoadSection("panel-main", "1", "text");
+    LoadSection("panel-main", "2", "head");
+    LoadSection("panel-main", "2", "text");
+    LoadSection("panel-main", "3", "head");
+    LoadSection("panel-main", "3", "text");
+    LoadSection("panel-main", "4", "head");
+    LoadSection("panel-main", "4", "text");
+    LoadSectionMaps();
+}
     </script>
 </body>
 </html>
