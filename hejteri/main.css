@@ -70,10 +70,6 @@ nav a:hover::before {
     text-decoration: none;
 }
 
-.bold {
-    font-weight: bold;
-}
-
 .footer-content {
     text-align: center;
     margin-top: auto;
