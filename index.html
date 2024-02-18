@@ -164,7 +164,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io/hejteri/main.js"></script>
+<script src="main.js"></script>
     <script>
         function op(profileId) {
             var url = "https://link.standoff2.com/en/profile/view/" + profileId;
@@ -223,55 +223,95 @@ function LoadSectionMaps() {
     var collectionRef = db.collection("panel-maps");
 
     collectionRef.get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            var map = doc.data().map;
-            var clan1 = doc.data().clan1;
-            var clan2 = doc.data().clan2;
-
+        if (querySnapshot.empty) {
+            // If no maps available, create a map with transparent image and text "TBA"
             var mapsSection = document.querySelector('.maps');
             var box = document.createElement('div');
             box.classList.add('box');
 
             var image = document.createElement('img');
-            var mapLowerCase = map.toLowerCase();
-            image.src = "https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejtcup/" + mapLowerCase + '.png';
-            image.alt = mapLowerCase + ' Image';
+            image.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
+            image.alt = 'TBA Image';
 
             var fadeBox = document.createElement('div');
             fadeBox.classList.add('fade-box');
 
             var imageText = document.createElement('div');
             imageText.classList.add('image-text');
-            imageText.textContent = map;
+            imageText.textContent = 'TBA';
 
-            var clan1Text = document.createElement('p');
-            clan1Text.classList.add('a-left');
-            clan1Text.textContent = clan1;
+                var clan1Text = document.createElement('p');
+                clan1Text.classList.add('a-left');
+                clan1Text.textContent = "???";
 
-            var vsText = document.createElement('p');
-            vsText.classList.add('a-center');
-            vsText.textContent = 'VS';
+                var vsText = document.createElement('p');
+                vsText.classList.add('a-center');
+                vsText.textContent = 'VS';
 
-            var clan2Text = document.createElement('p');
-            clan2Text.classList.add('a-right');
-            clan2Text.textContent = clan2;
+                var clan2Text = document.createElement('p');
+                clan2Text.classList.add('a-right');
+                clan2Text.textContent = "???";
 
-            box.appendChild(image);
-            box.appendChild(fadeBox);
-            box.appendChild(imageText);
-            box.appendChild(clan1Text);
-            box.appendChild(vsText);
+
+                box.appendChild(fadeBox);
+                box.appendChild(imageText);
+                box.appendChild(clan1Text);
+                box.appendChild(vsText);
             box.appendChild(clan2Text);
 
             mapsSection.appendChild(box);
-        });
+        } else {
+            querySnapshot.forEach((doc) => {
+                var map = doc.data().map;
+                var clan1 = doc.data().clan1;
+                var clan2 = doc.data().clan2;
+
+                var mapsSection = document.querySelector('.maps');
+                var box = document.createElement('div');
+                box.classList.add('box');
+
+                var image = document.createElement('img');
+                var mapLowerCase = map.toLowerCase();
+                image.src = "https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejtcup/" + mapLowerCase + '.png';
+                image.alt = mapLowerCase + ' Image';
+
+                var fadeBox = document.createElement('div');
+                fadeBox.classList.add('fade-box');
+
+                var imageText = document.createElement('div');
+                imageText.classList.add('image-text');
+                imageText.textContent = map;
+
+                var clan1Text = document.createElement('p');
+                clan1Text.classList.add('a-left');
+                clan1Text.textContent = clan1;
+
+                var vsText = document.createElement('p');
+                vsText.classList.add('a-center');
+                vsText.textContent = 'VS';
+
+                var clan2Text = document.createElement('p');
+                clan2Text.classList.add('a-right');
+                clan2Text.textContent = clan2;
+
+                box.appendChild(image);
+                box.appendChild(fadeBox);
+                box.appendChild(imageText);
+                box.appendChild(clan1Text);
+                box.appendChild(vsText);
+                box.appendChild(clan2Text);
+
+                mapsSection.appendChild(box);
+            });
+        }
     }).catch((error) => {
         console.log("Error getting documents: ", error);
     });
 }
 
+
 window.onload = function () {
-    AuthButtons();
+	AuthButtons();
     LoadSection("panel-main", "1", "head");
     LoadSection("panel-main", "1", "text");
     LoadSection("panel-main", "2", "head");
