@@ -325,8 +325,6 @@ nav a:hover::before {
 }
 
 .full-size-section img {
-    width: 98%;
-	transform: translate(-0%, 3%);
     height: auto;
     display: block;
     margin: auto;
