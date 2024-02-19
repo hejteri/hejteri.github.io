@@ -50,35 +50,22 @@ function login() {
     const usernamePrefix = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     const usernameHejteri = usernamePrefix + "@hejteri.org";
-    const usernameSponsor = usernamePrefix + "@sponsor.org";
     const errorOverlay = document.getElementById('error-overlay');
     const errorBox = document.getElementById('error-box');
     const errorText = document.getElementById('error-text');
 
-    // Attempt to sign in with both domains
     auth.signInWithEmailAndPassword(usernameHejteri, password)
-        .then((userCredential) => { location.reload() }) // Reload the page on successful login
+        .then((userCredential) => {
+            // Reload the page on successful login
+            location.reload();
+        })
         .catch((error) => {
             // Handle errors for @hejteri.org domain
             if (error.code === "auth/user-not-found" || error.code === "auth/invalid-email" || error.code === "auth/wrong-password" || error.code === "auth/internal-error") {
-                // Attempt to sign in with @sponsor.org domain
-                auth.signInWithEmailAndPassword(usernameSponsor, password)
-                    .then((userCredential) => { location.reload() }) // Reload the page on successful login
-                    .catch((error) => {
-                        // Handle errors for @sponsor.org domain
-                        if (error.code === "auth/user-not-found" || error.code === "auth/invalid-email" || error.code === "auth/wrong-password" || error.code === "auth/internal-error") {
-                            // Both domains failed, show error message
-                            errorText.textContent = "Incorrect Username/Password";
-                            errorOverlay.style.display = 'block';
-                            errorBox.style.display = 'block';
-                        } else {
-                            // Other error occurred for @sponsor.org domain
-                            errorMessage = "An error occurred.";
-                            errorText.textContent = errorMessage;
-                            errorOverlay.style.display = 'block';
-                            errorBox.style.display = 'block';
-                        }
-                    });
+                // Display error message for incorrect username/password
+                errorText.textContent = "Incorrect Username/Password";
+                errorOverlay.style.display = 'block';
+                errorBox.style.display = 'block';
             } else {
                 // Other error occurred for @hejteri.org domain
                 errorMessage = "An error occurred.";
@@ -88,6 +75,7 @@ function login() {
             }
         });
 }
+
 
 
         function closeErrorBox() {
