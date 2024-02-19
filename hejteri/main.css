@@ -325,7 +325,7 @@ nav a:hover::before {
 }
 
 .full-size-section img {
-    
+    border: 5.5px solid #19252f; 
     width: 100%;
     height: auto;
     display: block;
