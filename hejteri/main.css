@@ -341,7 +341,7 @@ nav a:hover::before {
         .box {
             border-radius: 5px;
             height: 68px; 
-            background-color: transparent;
+            background-color: #19252f; 
             border: 5.5px solid #19252f; 
             z-index: 0; 
             margin-top: 7px;
