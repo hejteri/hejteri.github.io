@@ -29,9 +29,9 @@
                 </div>
             </div>
             <p for="email">Username:</p>
-            <input type="email" id="username" name="username" required>
+            <input type="email" id="username" name="username" required autocomplete="username">
             <p for="password">Password:</p>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" required autocomplete="password">
             <button onclick="login()">Login</button>
         </section>
     </div>
@@ -47,36 +47,49 @@
 
     <script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io/hejteri/main.js"></script>
     <script>
-        function login() {
-            const usernamePrefix = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const username = usernamePrefix + "@hejteri.com";
-            const errorOverlay = document.getElementById('error-overlay');
-            const errorBox = document.getElementById('error-box');
-            const errorText = document.getElementById('error-text');
+function login() {
+    const usernamePrefix = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const usernameHejteri = usernamePrefix + "@hejteri.org";
+    const usernameSponsor = usernamePrefix + "@sponsor.org";
+    const errorOverlay = document.getElementById('error-overlay');
+    const errorBox = document.getElementById('error-box');
+    const errorText = document.getElementById('error-text');
 
-            auth.signInWithEmailAndPassword(username, password)
-                .then((userCredential) => { location.reload() })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    let errorMessage = "";
-
-                    switch (errorCode) {
-                        case "auth/user-not-found":
-                        case "auth/invalid-email":
-                        case "auth/wrong-password":
-                        case "auth/internal-error":
-                            errorMessage = "Incorrect Username/Password";
-                            break;
-                        default:
+    // Attempt to sign in with both domains
+    auth.signInWithEmailAndPassword(usernameHejteri, password)
+        .then((userCredential) => { location.reload() }) // Reload the page on successful login
+        .catch((error) => {
+            // Handle errors for @hejteri.org domain
+            if (error.code === "auth/user-not-found" || error.code === "auth/invalid-email" || error.code === "auth/wrong-password" || error.code === "auth/internal-error") {
+                // Attempt to sign in with @sponsor.org domain
+                auth.signInWithEmailAndPassword(usernameSponsor, password)
+                    .then((userCredential) => { location.reload() }) // Reload the page on successful login
+                    .catch((error) => {
+                        // Handle errors for @sponsor.org domain
+                        if (error.code === "auth/user-not-found" || error.code === "auth/invalid-email" || error.code === "auth/wrong-password" || error.code === "auth/internal-error") {
+                            // Both domains failed, show error message
+                            errorText.textContent = "Incorrect Username/Password";
+                            errorOverlay.style.display = 'block';
+                            errorBox.style.display = 'block';
+                        } else {
+                            // Other error occurred for @sponsor.org domain
                             errorMessage = "An error occurred.";
-                    }
+                            errorText.textContent = errorMessage;
+                            errorOverlay.style.display = 'block';
+                            errorBox.style.display = 'block';
+                        }
+                    });
+            } else {
+                // Other error occurred for @hejteri.org domain
+                errorMessage = "An error occurred.";
+                errorText.textContent = errorMessage;
+                errorOverlay.style.display = 'block';
+                errorBox.style.display = 'block';
+            }
+        });
+}
 
-                    errorText.textContent = errorMessage;
-                    errorOverlay.style.display = 'block';
-                    errorBox.style.display = 'block';
-                });
-        }
 
         function closeErrorBox() {
             const errorOverlay = document.getElementById('error-overlay');
