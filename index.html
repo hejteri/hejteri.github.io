@@ -12,6 +12,7 @@
             position: relative;
             display: inline-block;
             height: 50%;
+			
         }
         
         .box {
@@ -22,6 +23,7 @@
             z-index: 0; 
             margin-top: 7px;
             position: relative; 
+			
         }
         
         .a-right, .a-center, .a-left {
@@ -98,6 +100,77 @@
                 transform: rotate(360deg);
             }
         }
+		
+		.full-size-section img {
+    border: 5.5px solid #19252f; 
+	border-radius: 5px;
+        width: 98%;
+	transform: translate(-0%, 3%);
+}
+
+
+.videos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.video-box {
+	
+	
+    background-color: #19252f;
+    width: calc(25% - 20px); /* Adjust width based on desired spacing */
+    box-sizing: border-box;
+    position: block;
+    
+    border-radius: 5px;
+    border: 5.5px solid #19252f;
+}
+
+/* Make videos responsive */
+@media screen and (max-width: 850px) {
+    .videos {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Center the video boxes */
+        margin-bottom: 30px;
+    }
+
+    .video-box {
+        margin: 0 10px 20px; /* Adjust margin to create space between video boxes */
+        width: calc(50% - 20px); /* Adjust width for smaller screens */
+    }
+}
+
+
+@media screen and (max-width: 450px) {
+    .video-box {
+	margin-bottom: 20px; /* Add margin to create space between video boxes */
+        width: 100%; /* Full width for even smaller screens */
+    }
+}
+
+
+.video-box iframe {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.video-text {
+font-weight: bold;
+transform: translate(-0%, -20%);
+    background-color: transparent;
+    color: #fff;
+    padding: 5px;
+text-align: center;
+    margin: 0;
+}
+
+
+
+
     </style>
 </head>
 <body>
@@ -145,6 +218,33 @@
                 <load id="Section4-1"></load>
             </div>
         </section>
+		
+		
+		
+<section class="videos home-section">
+	<h2 style="width: 100%; margin-bottom: 15px;">Sponsors</h2>
+    <div class="video-box">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_1" frameborder="0" allowfullscreen></iframe>
+        <p class="video-text">Sponsor1</p>
+    </div>
+    <div class="video-box">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_2" frameborder="0" allowfullscreen></iframe>
+        <p class="video-text">Sponsor1</p>
+    </div>
+    <div class="video-box">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_3" frameborder="0" allowfullscreen></iframe>
+        <p class="video-text">Sponsor1</p>
+    </div>
+    <div class="video-box">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID_4" frameborder="0" allowfullscreen></iframe>
+        <p class="video-text">Sponsor1</p>
+    </div>
+	<p style="margin-top: -60px;"></p>
+</section>
+
+
+
+
         
         <section class="maps home-section">
             <h2>• Maps</h2>
