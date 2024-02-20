@@ -6,9 +6,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hejteri Panel</title>
     <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io/hejteri/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.css">
+<style>
 
+.panel-section.saving {
+    background-color: #273746;
+    position: relative;
+    overflow: hidden; /* Ensure content overflow is hidden */
+}
+
+.panel-section.saving::after {
+    content: ''; /* Create the cover layer */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #273746; /* Semi-transparent black cover */
+    z-index: 9998; /* Place the cover below the "Saved" text */
+}
+
+.panel-section.saving::before {
+    content: 'Saving...';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #bdc3c7; /* Added semicolon */
+    font-size: 35px;
+    z-index: 9999; /* Place the "Saved" text above the cover */
+    /* Additional styles for the "Saved" text */
+    padding: 5px 10px;
+}
+
+.panel-section.saved {
+    background-color: #273746;
+    position: relative;
+    overflow: hidden; /* Ensure content overflow is hidden */
+}
+
+.panel-section.saved::after {
+    content: ''; /* Create the cover layer */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #273746; /* Semi-transparent black cover */
+    z-index: 9998; /* Place the cover below the "Saved" text */
+}
+
+.panel-section.saved::before {
+    content: 'Saved ✔ ';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #bdc3c7; /* Added semicolon */
+    font-size: 35px;
+    z-index: 9999; /* Place the "Saved" text above the cover */
+    /* Additional styles for the "Saved" text */
+    padding: 5px 10px;
+    animation: fadeOut 2.5s ease-in-out 1 forwards;
+}
+
+
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+
+</style>
     <body>
+	<div id="loadingBox" class="loading-box">
+        <div class="loading-spinner"></div>
+    </div>
+	
+	
         <header>
             <a href="https://hejteri.github.io/panel" class="title">Hejteri Panel</a>
             <button class="menu-toggle" onclick="toggleMenu()">☰</button>
@@ -19,6 +99,10 @@
         </header>
         <div class="panel-container">
             <section class="panel-section">
+			<div id="loadingBox" class="loading-box" style="display: none;">
+    <div class="loading-spinner"></div>
+</div>
+
                 <input type="text" id="sectionTitle1" placeholder="Section-1">
                 <textarea id="dataInput1" rows="10"></textarea>
                 <button id="saveButton1" onclick="Show(1)">Save Changes</button>
@@ -37,6 +121,7 @@
                 </div>
             </section>
             <section class="panel-section">
+			
                 <input type="text" id="sectionTitle3" placeholder="Section-3">
                 <textarea id="dataInput3" rows="10"></textarea>
                 <button id="saveButton3" onclick="Show(3)">Save Changes</button>
@@ -61,41 +146,12 @@
         </footer>
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-        <script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io/hejteri/main.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.js"></script>
         <script>
             var redi2 = true;
 
-            function login() {
-                const usernamePrefix = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                const username = usernamePrefix + "@hejteri.com";
-                const errorOverlay = document.getElementById('error-overlay');
-                const errorBox = document.getElementById('error-box');
-                const errorText = document.getElementById('error-text');
 
-                auth.signInWithEmailAndPassword(username, password)
-                    .then((userCredential) => { location.reload() })
-                    .catch((error) => {
-                        const errorCode = error.code;
-                        let errorMessage = "";
-
-                        switch (errorCode) {
-                            case "auth/user-not-found":
-                            case "auth/invalid-email":
-                            case "auth/wrong-password":
-                            case "auth/internal-error":
-                                errorMessage = "Incorrect Username/Password";
-                                break;
-                            default:
-                                errorText.textContent = errorMessage;
-                        }
-
-                        errorText.textContent = errorMessage;
-                        errorOverlay.style.display = 'block';
-                        errorBox.style.display = 'block';
-                    });
-            }
 
             function closeErrorBox() {
                 const errorOverlay = document.getElementById('error-overlay');
@@ -136,83 +192,116 @@
                 });
             }
 
-            function saveChanges(pageNumber) {
-                AuthButtons();
-                const titleInput = document.getElementById(`sectionTitle${pageNumber}`);
-                const dataInput = document.getElementById(`dataInput${pageNumber}`);
-                const saveButton = document.querySelector(`#saveButton${pageNumber}`);
-                const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
+var db = firebase.firestore();
 
-                const titleData = titleInput.value.trim();
+// Function to load data from Firestore
+// Function to load data from Firestore into inputs
+// Function to load data from Firestore into inputs
+function loadIntoInputs() {
+    var loadingBox = document.getElementById('loadingBox');
+    
 
-                let inputData;
+    // Loop through documents 1, 2, 3, and 4
+    for (var i = 1; i <= 4; i++) {
+        // Create a closure to capture the value of i
+        (function(index) {
+            // Reference to the document in the collection
+            var docRef = db.collection("panel-main").doc(index.toString());
 
-                if (pageNumber === 3) {
-                    inputData = dataInput.value.trim().replace(/\n/g, '\\n');
+            // Get document data
+            docRef.get().then(function(doc) {
+                if (doc.exists) {
+                    // Data exists, access fields 'head' and 'text'
+                    var data = doc.data();
+                    var head = data.head;
+                    var text = data.text;
+
+                    // Replace <br> with actual line breaks
+                    text = text.replace(/<br>/g, "\n");
+
+                    // Update input fields with retrieved data
+                    document.getElementById("sectionTitle" + index).value = head;
+                    document.getElementById("dataInput" + index).value = text;
+					
+                    // Check if this is the last iteration
+                    if (index === 4) {
+                        loadingBox.parentNode.removeChild(loadingBox);
+                    }
                 } else {
-                    inputData = dataInput.value.trim().replace(/\n/g, '\n');
+                    // Document doesn't exist
+                    console.log("No such document!");
                 }
+            }).catch(function(error) {
+                // Error handling
+                console.log("Error getting document:", error);
+            });
+        })(i); // Pass the current value of i to the closure
+    }
+}
 
-                const titleRef = firebase.database().ref(`pages/home/${pageNumber}/head`);
-                const textRef = firebase.database().ref(`pages/home/${pageNumber}/text`);
+function saveChanges(pageNumber) {
+var panelSection = document.querySelector(`.panel-section:nth-child(${pageNumber})`);
+        panelSection.classList.add('saving');
+    // Get the updated values from the input fields
+    var sectionTitle = document.getElementById("sectionTitle" + pageNumber).value;
+    var dataInput = document.getElementById("dataInput" + pageNumber).value;
 
-                Promise.all([
-                    titleRef.once("value"),
-                    textRef.once("value")
-                ]).then(([titleSnapshot, textSnapshot]) => {
-                    titleRef.set(titleData);
-                    textRef.set(inputData);
+    // Split the input text into lines
+    var lines = dataInput.split('\n');
 
-                    const buttons = buttonGroup.querySelectorAll('button');
-                    buttons.forEach((button) => {
-                        button.style.display = 'none';
-                    });
+    // Remove empty lines and add <br> tag at the end of each line
+    var modifiedLines = lines.filter(line => line.trim() !== '').map(line => line.trim() + '<br>');
 
-                    saveButton.style.display = 'block';
-                    alert("Saved Section-" + pageNumber + "!");
-                });
-            }
+    // Join the modified lines back into a single string
+    var modifiedDataInput = modifiedLines.join('');
 
-            function loadData() {
-                for (let i = 1; i <= 4; i++) {
-                    const titleRef = firebase.database().ref(`pages/home/${i}/head`);
-                    const textRef = firebase.database().ref(`pages/home/${i}/text`);
+    // Reference to the document in the collection
+    var docRef = db.collection("panel-main").doc(pageNumber.toString());
 
-                    titleRef.once("value")
-                        .then((titleSnapshot) => {
-                            const titleData = titleSnapshot.val();
-                            const titleInput = document.getElementById(`sectionTitle${i}`);
+    // Update the document in Firestore
+    docRef.set({
+        head: sectionTitle,
+        text: modifiedDataInput  // Use the modified data input
+    })
+    .then(function() {
+        console.log("Document successfully written!");
+        // Optionally, you can add code here to notify the user that the changes were saved successfully.
+        
+        // Add class to panel section to change background color and show "Saved" mark
+        var panelSection = document.querySelector(`.panel-section:nth-child(${pageNumber})`);
+		panelSection.classList.remove('saving');
+        panelSection.classList.add('saved');
 
-                            if (titleData) {
-                                titleInput.value = titleData.trim();
-                            }
-                        })
-                        .catch((error) => console.error(`Error loading title for page ${i}:`, error));
+        // Hide the "Saved" mark after 300 milliseconds
+        setTimeout(function() {
+		
+            panelSection.classList.remove('saved');
+        }, 2000);
+    })
+    .catch(function(error) {
+        console.error("Error writing document: ", error);
+        // Optionally, you can add code here to notify the user about the error.
+    });
+    cancelChanges(pageNumber);
+}
 
-                    textRef.once("value")
-                        .then((textSnapshot) => {
-                            const textData = textSnapshot.val();
-                            const dataInput = document.getElementById(`dataInput${i}`);
 
-                            if (textData) {
-                                if (i === 4) {
-                                    const lines = textData.split('\\n').join('');
-                                    dataInput.value = lines.trim();
-                                } else {
-                                    const lines = textData.split('\\n').join('\n');
-                                    dataInput.value = lines.trim();
-                                }
-                            }
-                        })
-                        .catch((error) => console.error(`Error loading data for page ${i}:`, error));
-                }
-            }
+
+
+
+
 
             window.onload = function () {
-                AuthButtons();
-                loadData();
+			
+			 AuthButtons();
+                loadIntoInputs();
                 hideButtons();
             }
+			
+			
+			
+
+			
         </script>
     </body>
 
