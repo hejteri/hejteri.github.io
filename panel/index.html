@@ -6,303 +6,517 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hejteri Panel</title>
     <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.css">
-<style>
+    <link rel="stylesheet" href="main.css">
+    <style>
+        .panel-section.saving {
+            background-color: #273746;
+            position: relative;
+            overflow: hidden;
+        }
 
-.panel-section.saving {
-    background-color: #273746;
-    position: relative;
-    overflow: hidden; /* Ensure content overflow is hidden */
+        .panel-section.saving::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #273746;
+            z-index: 9998;
+        }
+
+        .panel-section.saving::before {
+            content: 'Saving...';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #bdc3c7;
+            font-size: 35px;
+            z-index: 9999;
+            padding: 5px 10px;
+        }
+
+        .panel-section.saved {
+            background-color: #273746;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel-section.saved::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #273746;
+            z-index: 9998;
+        }
+
+        .panel-section.saved::before {
+            content: 'Saved ✔ ';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #bdc3c7;
+            font-size: 35px;
+            z-index: 9999;
+            padding: 5px 10px;
+            animation: fadeOut 2.5s ease-in-out 1 forwards;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+.clan-inputs-container {
+    
+    
+    display: flex;
+	position: relative;
+	top: 15px;
+
 }
 
-.panel-section.saving::after {
-    content: ''; /* Create the cover layer */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #273746; /* Semi-transparent black cover */
-    z-index: 9998; /* Place the cover below the "Saved" text */
-}
-
-.panel-section.saving::before {
-    content: 'Saving...';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #bdc3c7; /* Added semicolon */
-    font-size: 35px;
-    z-index: 9999; /* Place the "Saved" text above the cover */
-    /* Additional styles for the "Saved" text */
-    padding: 5px 10px;
-}
-
-.panel-section.saved {
-    background-color: #273746;
-    position: relative;
-    overflow: hidden; /* Ensure content overflow is hidden */
-}
-
-.panel-section.saved::after {
-    content: ''; /* Create the cover layer */
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #273746; /* Semi-transparent black cover */
-    z-index: 9998; /* Place the cover below the "Saved" text */
-}
-
-.panel-section.saved::before {
-    content: 'Saved ✔ ';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #bdc3c7; /* Added semicolon */
-    font-size: 35px;
-    z-index: 9999; /* Place the "Saved" text above the cover */
-    /* Additional styles for the "Saved" text */
-    padding: 5px 10px;
-    animation: fadeOut 2.5s ease-in-out 1 forwards;
-}
 
 
 
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
-}
 
+    </style>
+</head>
 
-</style>
-    <body>
-	<div id="loadingBox" class="loading-box">
+<body>
+    <div id="loadingBox" class="loading-box">
         <div class="loading-spinner"></div>
     </div>
-	
-	
-        <header>
-            <a href="https://hejteri.github.io/panel" class="title">Hejteri Panel</a>
-            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-            <nav>
-                <a href="https://hejteri.github.io">Home</a>
-                <a href="" id="loginbut"></a>
-            </nav>
-        </header>
-        <div class="panel-container">
-            <section class="panel-section">
-			<div id="loadingBox" class="loading-box" style="display: none;">
-    <div class="loading-spinner"></div>
-</div>
+    <header>
+        <a href="https://hejteri.github.io/panel" class="title">Hejteri Panel</a>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <nav>
+            <a href="https://hejteri.github.io">Home</a>
+            <a href="" id="loginbut"></a>
+        </nav>
+    </header>
+    <div class="panel-container">
+        <section class="panel-section">
+            <div id="loadingBox" class="loading-box" style="display: none;">
+                <div class="loading-spinner"></div>
+            </div>
+            <input type="text" id="sectionTitle1" placeholder="Section-1">
+            <textarea id="dataInput1" rows="10"> </textarea>
 
-                <input type="text" id="sectionTitle1" placeholder="Section-1">
-                <textarea id="dataInput1" rows="10"></textarea>
-                <button id="saveButton1" onclick="Show(1)">Save Changes</button>
-                <div class="button-group" id="button-group-1">
-                    <button onclick="cancelChanges(1)">Cancel</button>
-                    <button onclick="saveChanges(1)">Confirm</button>
-                </div>
-            </section>
-            <section class="panel-section">
-                <input type="text" id="sectionTitle2" placeholder="Section-2">
-                <textarea id="dataInput2" rows="10"></textarea>
-                <button id="saveButton2" onclick="Show(2)">Save Changes</button>
-                <div class="button-group" id="button-group-2">
-                    <button onclick="cancelChanges(2)">Cancel</button>
-                    <button onclick="saveChanges(2)">Confirm</button>
-                </div>
-            </section>
-            <section class="panel-section">
+            <button id="saveButton1" onclick="Show(1)">Save Changes</button>
+            <div class="button-group" id="button-group-1">
+                <button onclick="cancelChanges(1)">Cancel</button>
+                <button onclick="saveChanges(1)">Confirm</button>
+            </div>
+        </section>
+        <section class="panel-section">
+            <input type="text" id="sectionTitle2" placeholder="Section-2">
+            <textarea id="dataInput2" rows="10"></textarea>
+            <button id="saveButton2" onclick="Show(2)">Save Changes</button>
+            <div class="button-group" id="button-group-2">
+                <button onclick="cancelChanges(2)">Cancel</button>
+                <button onclick="saveChanges(2)">Confirm</button>
+            </div>
+        </section>
+        <section class="panel-section">
+            <input type="text" id="sectionTitle3" placeholder="Section-3">
+            <textarea id="dataInput3" rows="10"></textarea>
+            <button id="saveButton3" onclick="Show(3)">Save Changes</button>
+            <div class="button-group" id="button-group-3">
+                <button onclick="cancelChanges(3)">Cancel</button>
+                <button onclick="saveChanges(3)">Confirm</button>
+            </div>
+        </section>
+        <section class="panel-section">
+            <input type="text" id="sectionTitle4" placeholder="Section-4">
+            <textarea id="dataInput4" rows="10"></textarea>
+            <button id="saveButton4" onclick="Show(4)">Save Changes</button>
+            <div class="button-group" id="button-group-4">
+                <button onclick="cancelChanges(4)">Cancel</button>
+                <button onclick="saveChanges(4)">Confirm</button>
+            </div>
+        </section>
+        <section class="maps panel-section">
+            <input type="text" id="sectionTitle5" placeholder="Section-5">
+
+            <div id="mapsContainer"></div>
+				<button style="margin-bottom: 5px; margin-top: 6px;" onclick="addMap()">Add</button>
+            <button id="saveButton5" onclick="Show(5)" style="margin-bottom: 2px;">Save Changes</button>
+            <div class="button-group" id="button-group-5" style="margin-top: 0; margin-bottom: 1px;">
+                <button onclick="cancelChanges(5)">Cancel</button>
+                <button onclick="saveChangesMaps(5);">Confirm</button>
+            </div>
 			
-                <input type="text" id="sectionTitle3" placeholder="Section-3">
-                <textarea id="dataInput3" rows="10"></textarea>
-                <button id="saveButton3" onclick="Show(3)">Save Changes</button>
-                <div class="button-group" id="button-group-3">
-                    <button onclick="cancelChanges(3)">Cancel</button>
-                    <button onclick="saveChanges(3)">Confirm</button>
-                </div>
-            </section>
-            <section class="panel-section">
-                <input type="text" id="sectionTitle4" placeholder="Section-4">
-                <textarea id="dataInput4" rows="10"></textarea>
-                <button id="saveButton4" onclick="Show(4)">Save Changes</button>
-                <div class="button-group" id="button-group-4">
-                    <button onclick="cancelChanges(4)">Cancel</button>
-                    <button onclick="saveChanges(4)">Confirm</button>
-                </div>
-            </section>
-        </div>
-        <footer class="footer-content">
-            <p>&copy; 2018-2024 Hejteri Organization. All rights reserved.</p>
-            <b>Designed by ROOT256</b>
-        </footer>
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-        <script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.js"></script>
-        <script>
-            var redi2 = true;
-
-
-
-            function closeErrorBox() {
-                const errorOverlay = document.getElementById('error-overlay');
-                const errorBox = document.getElementById('error-box');
-                errorOverlay.style.display = 'none';
-                errorBox.style.display = 'none';
-            }
-
-            function hideButtons() {
-                const buttonGroups = document.querySelectorAll('.button-group');
-                buttonGroups.forEach((buttonGroup) => {
-                    const buttons = buttonGroup.querySelectorAll('button');
-                    buttons.forEach((button) => {
-                        button.style.display = 'none';
-                    });
-                });
-            }
-
-            function Show(pageNumber) {
-                const saveButton = document.querySelector(`#saveButton${pageNumber}`);
-                saveButton.style.display = 'none';
-
-                const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
-                const buttons = buttonGroup.querySelectorAll('button');
-                buttons.forEach((button) => {
-                    button.style.display = 'block';
-                });
-            }
-
-            function cancelChanges(pageNumber) {
-                const saveButton = document.querySelector(`#saveButton${pageNumber}`);
-                saveButton.style.display = 'block';
-
-                const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
+        </section
+		</div>
+    
+	</div>
+	 <footer class="footer-content">
+        <p>&copy; 2018-2024 Hejteri Organization. All rights reserved.</p>
+        <b>Designed by ROOT256</b>
+    </footer>
+   
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.js"></script>
+    <script>
+        var redi2 = true;
+        function closeErrorBox() {
+            const errorOverlay = document.getElementById('error-overlay');
+            const errorBox = document.getElementById('error-box');
+            errorOverlay.style.display = 'none';
+            errorBox.style.display = 'none';
+        }
+        function hideButtons() {
+            const buttonGroups = document.querySelectorAll('.button-group');
+            buttonGroups.forEach((buttonGroup) => {
                 const buttons = buttonGroup.querySelectorAll('button');
                 buttons.forEach((button) => {
                     button.style.display = 'none';
                 });
-            }
-
-var db = firebase.firestore();
-
-// Function to load data from Firestore
-// Function to load data from Firestore into inputs
-// Function to load data from Firestore into inputs
+            });
+        }
+        function Show(pageNumber) {
+            const saveButton = document.querySelector(`#saveButton${pageNumber}`);
+            saveButton.style.display = 'none';
+            const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
+            const buttons = buttonGroup.querySelectorAll('button');
+            buttons.forEach((button) => {
+                button.style.display = 'block';
+            });
+        }
+        function cancelChanges(pageNumber) {
+            const saveButton = document.querySelector(`#saveButton${pageNumber}`);
+            saveButton.style.display = 'block';
+            const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
+            const buttons = buttonGroup.querySelectorAll('button');
+            buttons.forEach((button) => {
+                button.style.display = 'none';
+            });
+        }
+        var db = firebase.firestore();
 function loadIntoInputs() {
     var loadingBox = document.getElementById('loadingBox');
-    
-
-    // Loop through documents 1, 2, 3, and 4
-    for (var i = 1; i <= 4; i++) {
-        // Create a closure to capture the value of i
-        (function(index) {
-            // Reference to the document in the collection
+    for (var i = 1; i <= 5; i++) {
+        (function (index) {
             var docRef = db.collection("panel-main").doc(index.toString());
-
-            // Get document data
-            docRef.get().then(function(doc) {
+            docRef.get().then(function (doc) {
                 if (doc.exists) {
-                    // Data exists, access fields 'head' and 'text'
                     var data = doc.data();
                     var head = data.head;
-                    var text = data.text;
-
-                    // Replace <br> with actual line breaks
-                    text = text.replace(/<br>/g, "\n");
-
-                    // Update input fields with retrieved data
+                    head = head.replace(/<br>/g, "\n"); // Replace <br> with newline
+                    
                     document.getElementById("sectionTitle" + index).value = head;
-                    document.getElementById("dataInput" + index).value = text;
-					
-                    // Check if this is the last iteration
-                    if (index === 4) {
+
+                    if (index === 5) {
                         loadingBox.parentNode.removeChild(loadingBox);
+                    } else {
+                        if (data.text) {
+                            var text = data.text;
+                            text = text.replace(/<br>/g, "\n"); // Replace <br> with newline
+                            document.getElementById("dataInput" + index).value = text;
+                        }
                     }
-                } else {
-                    // Document doesn't exist
-                    console.log("No such document!");
                 }
-            }).catch(function(error) {
-                // Error handling
+            }).catch(function (error) {
                 console.log("Error getting document:", error);
             });
-        })(i); // Pass the current value of i to the closure
+        })(i);
     }
 }
 
-function saveChanges(pageNumber) {
-var panelSection = document.querySelector(`.panel-section:nth-child(${pageNumber})`);
-        panelSection.classList.add('saving');
-    // Get the updated values from the input fields
-    var sectionTitle = document.getElementById("sectionTitle" + pageNumber).value;
-    var dataInput = document.getElementById("dataInput" + pageNumber).value;
-
-    // Split the input text into lines
-    var lines = dataInput.split('\n');
-
-    // Remove empty lines and add <br> tag at the end of each line
-    var modifiedLines = lines.filter(line => line.trim() !== '').map(line => line.trim() + '<br>');
-
-    // Join the modified lines back into a single string
-    var modifiedDataInput = modifiedLines.join('');
-
-    // Reference to the document in the collection
-    var docRef = db.collection("panel-main").doc(pageNumber.toString());
-
-    // Update the document in Firestore
-    docRef.set({
-        head: sectionTitle,
-        text: modifiedDataInput  // Use the modified data input
-    })
-    .then(function() {
-        console.log("Document successfully written!");
-        // Optionally, you can add code here to notify the user that the changes were saved successfully.
-        
-        // Add class to panel section to change background color and show "Saved" mark
-        var panelSection = document.querySelector(`.panel-section:nth-child(${pageNumber})`);
-		panelSection.classList.remove('saving');
-        panelSection.classList.add('saved');
-
-        // Hide the "Saved" mark after 300 milliseconds
-        setTimeout(function() {
+        function saveChanges(pageNumber) {
+            var panelSection = document.querySelector(`.panel-section:nth-child(${pageNumber})`);
+            panelSection.classList.add('saving');
+            var sectionTitle = document.getElementById("sectionTitle" + pageNumber).value;
+            var dataInput = document.getElementById("dataInput" + pageNumber).value;
+            var lines = dataInput.split('\n');
+            var modifiedLines = lines.filter(line => line.trim() !== '').map(line => line.trim() + '<br>');
+            var modifiedDataInput = modifiedLines.join('');
+            var docRef = db.collection("panel-main").doc(pageNumber.toString());
+            docRef.set({
+                head: sectionTitle,
+                text: modifiedDataInput
+            }).then(function () {
+                var panelSection = document.querySelector(`.panel-section:nth-child(${pageNumber})`);
+                panelSection.classList.remove('saving');
+                panelSection.classList.add('saved');
+                setTimeout(function () {
+                    panelSection.classList.remove('saved');
+                }, 2000);
+            }).catch(function (error) {
+                console.error("Error writing document: ", error);
+            });
+            cancelChanges(pageNumber);
+        }
 		
-            panelSection.classList.remove('saved');
-        }, 2000);
-    })
-    .catch(function(error) {
-        console.error("Error writing document: ", error);
-        // Optionally, you can add code here to notify the user about the error.
+		
+function loadMaps() {
+    var mapsContainer = document.getElementById('mapsContainer');
+    var db = firebase.firestore();
+
+    db.collection("panel-maps").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            var mapData = doc.data();
+            var mapName = mapData.map;
+            var clan1 = mapData.clan1;
+            var clan2 = mapData.clan2;
+
+            var mapBox = document.createElement('div');
+            mapBox.classList.add('box');
+            mapBox.style.marginBottom = "10px";
+
+            var fadeBox = document.createElement('div');
+            fadeBox.classList.add('fade-box');
+
+            var mapImage = document.createElement('img');
+			var mapLow = mapName.toLowerCase();
+			if (mapLow !== "tba") {
+				mapImage.src = `https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/media/maps/${mapLow}.png`;
+				mapImage.alt = mapName;
+                } else {
+					mapImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
+				mapImage.alt = 'TBA';
+				}
+            
+
+            var mapText = document.createElement('div');
+            mapText.classList.add('image-text', 'map-text');
+            mapText.innerHTML = mapName;
+
+            mapBox.appendChild(mapText);
+
+            mapImage.addEventListener('click', function () {
+                var mapNames = ['DUNE', 'BREEZE', 'PROVINCE', 'RUST', 'SAKURA', 'SANDSTONE', 'ZONE9', 'TBA'];
+                var currentMapText = mapText.textContent;
+                var currentIndex = mapNames.indexOf(currentMapText);
+                var nextIndex = (currentIndex + 1) % mapNames.length;
+				var mapLow = mapNames[nextIndex].toLowerCase();
+				if (mapLow !== "tba") {
+				mapImage.src = `https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/media/maps/${mapLow}.png`;
+				mapImage.alt = mapNames[nextIndex];
+                } else {
+					mapImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
+				mapImage.alt = 'TBA';
+				}
+				mapText.textContent = mapNames[nextIndex];
+            });
+
+            fadeBox.addEventListener('click', function () {
+                var mapImage = mapBox.querySelector('img');
+                mapImage.click();
+            });
+
+            mapText.addEventListener('click', function () {
+                fadeBox.click();
+            });
+
+            var clan1Input = document.createElement('input');
+            clan1Input.type = 'text';
+            clan1Input.id = `clan1Input_${mapName}`;
+            clan1Input.value = clan1;
+            clan1Input.style.textAlign = "left";
+			clan1Input.style.position = "absolute";
+			clan1Input.style.left = "0";
+			clan1Input.style.width = "43%";
+
+
+            
+			
+			var vsText = document.createTextNode(" VS ");
+            var vsSpan = document.createElement('span');
+            vsSpan.appendChild(vsText);
+            vsSpan.classList.add('a-center');
+			vsSpan.style.transform = "translate(-10px, -290%)";
+			
+			
+
+
+			
+			
+			var xText = document.createTextNode(" X ");
+var xSpan = document.createElement('span');
+xSpan.appendChild(xText);
+
+xSpan.style.fontWeight = "bold";
+xSpan.style.width = "17px";
+xSpan.style.position = "absolute"; // Add position property
+xSpan.style.right = "0"; // Align to the right side
+xSpan.style.transform = "translate(-6px, -160%)";
+
+xSpan.style.color = "rgb(214, 2, 16)";
+xSpan.style.fontSize = "25px";
+xSpan.style.zIndex = "100";
+xSpan.addEventListener('click', function () {
+    // Implement deletion logic here
+    // You can use the document ID (doc.id) to delete the specific map data
+    mapBox.remove();
+});
+			
+
+
+			
+			
+            var clan2Input = document.createElement('input');
+            clan2Input.type = 'text';
+            clan2Input.id = `clan2Input_${mapName}`;
+            clan2Input.value = clan2;
+			clan2Input.style.textAlign = "right";
+			clan2Input.style.position = "absolute";
+			clan2Input.style.right = "0";
+			clan2Input.style.width = "43%";
+
+            var clanInputsContainer = document.createElement('div');
+            clanInputsContainer.classList.add('clan-inputs-container');
+            clanInputsContainer.appendChild(clan1Input);
+			clanInputsContainer.appendChild(vsSpan);
+            clanInputsContainer.appendChild(xSpan); // Add the span element containing "VS"
+            clanInputsContainer.appendChild(clan2Input);
+
+            mapBox.appendChild(mapImage);
+            mapBox.appendChild(fadeBox);
+            mapBox.appendChild(clanInputsContainer);
+
+            mapsContainer.appendChild(mapBox);
+        });
     });
-    cancelChanges(pageNumber);
+}
+
+
+function saveChangesMaps(pageNumber) {
+    var mapsContainer = document.getElementById('mapsContainer');
+    var db = firebase.firestore();
+
+    // Delete all documents from the "panel-maps" collection
+    db.collection("panel-maps").get().then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+            db.collection("panel-maps").doc(doc.id).delete().then(() => {
+              
+            }).catch(error => {
+                console.error("Error removing document: ", error);
+            });
+        });
+    }).then(() => {
+        // After deletion, save new data
+        var counter = 1;
+
+        mapsContainer.querySelectorAll('.box').forEach(mapBox => {
+            var mapText = mapBox.querySelector('.map-text').textContent;
+            var clan1 = mapBox.querySelector('input[id^="clan1Input"]').value;
+            var clan2 = mapBox.querySelector('input[id^="clan2Input"]').value;
+
+            var docRef = db.collection("panel-maps").doc(counter.toString());
+
+            docRef.set({
+                map: mapText,
+                clan1: clan1,
+                clan2: clan2
+            }).then(() => {
+                console.log("Document created successfully!");
+            }).catch(error => {
+                console.error("Error creating document: ", error);
+            });
+
+            counter++;
+        });
+    }).catch(error => {
+        console.error("Error deleting documents: ", error);
+    });
+	cancelChanges(pageNumber);
+}
+
+function addMap() {
+    var mapsContainer = document.getElementById('mapsContainer');
+
+    var mapBox = document.createElement('div');
+    mapBox.classList.add('box');
+    mapBox.style.marginBottom = "10px";
+
+    var fadeBox = document.createElement('div');
+    fadeBox.classList.add('fade-box');
+
+    var mapImage = document.createElement('img');
+    mapImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
+				mapImage.alt = 'TBA';
+
+    var mapText = document.createElement('div');
+    mapText.classList.add('image-text', 'map-text');
+    mapText.textContent = 'TBA';
+
+    mapBox.appendChild(mapText);
+    mapBox.appendChild(mapImage);
+    mapBox.appendChild(fadeBox);
+
+    var clan1Input = document.createElement('input');
+    clan1Input.type = 'text';
+    clan1Input.value = '';
+    clan1Input.style.textAlign = "left";
+    clan1Input.style.position = "absolute";
+    clan1Input.style.left = "0";
+    clan1Input.style.width = "43%";
+
+    var vsText = document.createTextNode(" VS ");
+    var vsSpan = document.createElement('span');
+    vsSpan.appendChild(vsText);
+    vsSpan.classList.add('a-center');
+    vsSpan.style.transform = "translate(-10px, -290%)";
+
+    var xText = document.createTextNode(" X ");
+    var xSpan = document.createElement('span');
+    xSpan.appendChild(xText);
+    xSpan.style.fontWeight = "bold";
+    xSpan.style.width = "17px";
+    xSpan.style.position = "absolute";
+    xSpan.style.right = "0";
+    xSpan.style.transform = "translate(-6px, -160%)";
+    xSpan.style.color = "rgb(214, 2, 16)";
+    xSpan.style.fontSize = "25px";
+    xSpan.style.zIndex = "100";
+	xSpan.addEventListener('click', function () {
+    // Implement deletion logic here
+    // You can use the document ID (doc.id) to delete the specific map data
+    mapBox.remove();
+});
+
+    var clan2Input = document.createElement('input');
+    clan2Input.type = 'text';
+    clan2Input.value = '';
+    clan2Input.style.textAlign = "right";
+    clan2Input.style.position = "absolute";
+    clan2Input.style.right = "0";
+    clan2Input.style.width = "43%";
+
+    var clanInputsContainer = document.createElement('div');
+    clanInputsContainer.classList.add('clan-inputs-container');
+    clanInputsContainer.appendChild(clan1Input);
+    clanInputsContainer.appendChild(vsSpan);
+    clanInputsContainer.appendChild(xSpan);
+    clanInputsContainer.appendChild(clan2Input);
+
+    mapBox.appendChild(clanInputsContainer);
+
+    mapsContainer.appendChild(mapBox);
 }
 
 
 
 
-
-
-
-            window.onload = function () {
-			
-			 AuthButtons();
-                loadIntoInputs();
-                hideButtons();
-            }
-			
-			
-			
-
-			
-        </script>
-    </body>
+        window.onload = function () {
+            AuthButtons();
+            loadIntoInputs();
+            loadMaps();
+            hideButtons();
+        }
+    </script>
+</body>
 
 </html>
