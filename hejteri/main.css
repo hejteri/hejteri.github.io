@@ -288,6 +288,9 @@ nav a:hover::before {
     margin-bottom: 10px;
 }
 
+
+
+
 .panel-section textarea {
     width: 100%;
     padding: 10px;
@@ -299,7 +302,54 @@ nav a:hover::before {
     margin: 0 auto;
     display: block;
     margin-bottom: 15px;
+	resize: vertical;
+    min-height: 207px;
+	 max-height: 500px;
+	
+	overflow: scroll;
+	white-space: nowrap; /* Prevent text from wrapping */
 }
+
+.panel-section textarea::-webkit-scrollbar {
+	
+    width: 10px; /* Width of the scrollbar */
+	height: 10px;
+}
+
+.panel-section textarea::-webkit-scrollbar-thumb {
+    background-color: #1f2c39; /* Color of the scrollbar thumb */
+    border-radius: 15px; /* Rounded corners for the thumb */
+
+	
+}
+
+
+
+
+
+/* Customize the appearance of the resize button */
+
+.panel-section textarea::-webkit-scrollbar-corner {
+    background-color: transparent;
+ 
+}
+
+/* Customize the appearance of the resize button */
+.panel-section textarea::-webkit-resizer {
+    width: 20px; /* Set the width of the resize button */
+    height: 20px; /* Set the height of the resize button */
+	background-color: #1f2c39;
+         border-top-left-radius: 100%;
+}
+
+
+
+
+
+
+
+
+
 
 .panel-section button {
     background-color: #19252f;
@@ -320,8 +370,15 @@ nav a:hover::before {
 
 .button-group button {
     margin-bottom: -5px;
-    margin-right: 5px;
+    
     display: none;
+
+	
+}
+.button-group button:nth-child(1) {
+    margin-right: 5px;
+
+	
 }
 
 .full-size-section img {
