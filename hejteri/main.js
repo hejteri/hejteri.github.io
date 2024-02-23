@@ -52,5 +52,14 @@ function logout() {
 
 function toggleMenu() {
     var navElement = document.querySelector('nav');
-    navElement.classList.toggle('visible');
+    
+    if (navElement.classList.contains('open')) {
+        // If navigation is open, close it
+        navElement.classList.remove('open');
+        navElement.classList.add('close');
+    } else {
+        // If navigation is closed, open it
+        navElement.classList.remove('close');
+        navElement.classList.add('open');
+    }
 }
