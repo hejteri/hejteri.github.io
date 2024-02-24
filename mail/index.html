@@ -1,59 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hejteri Organization</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io/hejteri/main.css">
-
-</head>
-
-<body>
-    <header>
-        <a href="https://hejteri.github.io" class="title">Hejteri Organization</a>
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-        <nav>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Hejteri Organization</title>
+      <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.css">
+      <link rel="stylesheet" href="mail.css">
+   </head>
+   <body>
+      <div id="loadingBox" class="loading-box">
+         <div class="loading-spinner"></div>
+         <p class="loading-text">Designed by ROOT256
+         <p>
+      </div>
+      <header>
+         <a href="https://hejteri.github.io" class="title">Hejteri Organization</a>
+         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+         <nav>
             <a href="https://discord.gg/XnqtNG5g97">Discord</a>
             <a href="https://www.instagram.com/hejterioficial/">Instagram</a>
-            <a href="" id="loginbut"></a>
+            <a href="" id="loginbut">Login</a>
             <a href="" id="panelbut"></a>
-        </nav>
-    </header>
-
-    <div class="mail-container">
-        <section class="mail-section">
+         </nav>
+      </header>
+      <container>
+         <section>
             <h2>Mail us</h2>
             <form action="https://formspree.io/f/xayggkgk" method="POST">
-                <p for="name">Your Name:</p>
-                <input maxlength="50" type="text" id="name" name="name" required>
-
-                <p for="email">Your Email:</p>
-                <input maxlength="50" type="email" id="email" name="email" required>
-
-                <p for="message">Your Message:</p>
-                <textarea style="min-height: 52px;" maxlength="500" id="message" name="message" required></textarea>
-
-                <button type="submit">Submit</button>
+               <p for="name">Your Name:</p>
+               <input maxlength="50" type="text" id="name" name="name" required>
+               <p for="email">Your Email:</p>
+               <input maxlength="50" type="email" id="email" name="email" required>
+               <p for="message">Your Message:</p>
+               <textarea style="min-height: 52px;" maxlength="500" id="message" name="message" required></textarea>
+               <button type="submit">Submit</button>
             </form>
-        </section>
-    </div>
-
-    <footer class="footer-content">
-        <p>&copy; 2018-2024 Hejteri Organization. All rights reserved.</p>
-        <b>Designed by ROOT256</b>
-    </footer>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io/hejteri/main.js"></script>
-    <script>
-        window.onload = function () {
-            AuthButtons();
-        }
-    </script>
-</body>
-
+         </section>
+      </container>
+      <footer>
+         <p>&copy; 2018-2024 Hejteri Organization.</p>
+      </footer>
+      <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+      <script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.js"></script>
+      <script>
+         window.onload = function () {
+                   AuthButtons();
+               }
+         var loadingBox = document.getElementById('loadingBox');
+         	setTimeout(function() { }, 200);
+                   loadingBox.classList.add('fade-out'); 
+         
+           setTimeout(function() {
+               loadingBox.parentNode.removeChild(loadingBox); 
+           }, 300);
+         
+      </script>
+   </body>
 </html>
