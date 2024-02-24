@@ -1,0 +1,224 @@
+ container {
+     margin: 0.6cm;
+     border-radius: 8px;
+     overflow: hidden;
+     background-color: #19252f;
+}
+ section {
+     background-color: #273746;
+     padding: 20px;
+     margin: 10px;
+     border-radius: 8px;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+ section p {
+     color: #bdc3c7;
+     margin: 0;
+     margin-top: 15px;
+}
+ section h2 {
+     color: #bdc3c7;
+     text-align: center;
+     margin-top: 0;
+     margin-bottom: 10px;
+}
+ section input[type="text"] {
+     border: none;
+     background: none;
+     outline: none;
+     color: #bdc3c7;
+     font-size: 1rem;
+     margin: 0 auto;
+     display: block;
+     text-align: center;
+     width: 70%;
+     font-weight: bold;
+     margin-top: -10px;
+     margin-bottom: 10px;
+}
+ section textarea {
+     width: 100%;
+     padding: 10px;
+     box-sizing: border-box;
+     background-color: #273746;
+     color: #bdc3c7;
+     border: 3px solid #19252f;
+     border-radius: 4px;
+     margin: 0 auto;
+     display: block;
+     margin-bottom: 15px;
+     resize: vertical;
+     min-height: 207px;
+     max-height: 500px;
+     overflow: scroll;
+     white-space: nowrap;
+    /* Prevent text from wrapping */
+}
+ section textarea::-webkit-scrollbar {
+     width: 10px;
+    /* Width of the scrollbar */
+     height: 10px;
+}
+ section textarea::-webkit-scrollbar-thumb {
+     background-color: #1f2c39;
+    /* Color of the scrollbar thumb */
+     border-radius: 15px;
+    /* Rounded corners for the thumb */
+}
+/* Customize the appearance of the resize button */
+ section textarea::-webkit-scrollbar-corner {
+     background-color: transparent;
+}
+/* Customize the appearance of the resize button */
+ section textarea::-webkit-resizer {
+     width: 20px;
+    /* Set the width of the resize button */
+     height: 20px;
+    /* Set the height of the resize button */
+     background-color: #1f2c39;
+     border-top-left-radius: 100%;
+}
+ section button {
+     background-color: #19252f;
+     color: #bdc3c7;
+     width: 100%;
+     padding: 10px;
+     border: none;
+     border-radius: 4px;
+     cursor: pointer;
+     margin-bottom: -15px;
+}
+ .button-group {
+     display: flex;
+     justify-content: space-between;
+     margin-top: 10px;
+}
+ .button-group button {
+     margin-bottom: -5px;
+     display: none;
+}
+ .button-group button:nth-child(1) {
+     margin-right: 5px;
+}
+ .maps img {
+     width: 100%;
+     position: relative;
+     display: inline-block;
+     height: 50%;
+}
+ .box {
+     border-radius: 5px;
+     height: 68px;
+     background-color: #19252f;
+     border: 5.5px solid #19252f;
+     z-index: 0;
+     margin-top: 7px;
+     position: relative;
+}
+ .a-right, .a-center, .a-left {
+     font-weight: bold;
+     position: absolute;
+     display: inline-block;
+     top: 50px;
+}
+ .a-right {
+     right: 10px;
+}
+ .a-center {
+     text-decoration: underline;
+     left: 50%;
+     transform: translateX(-50%) translateY(-300%);
+}
+ .a-left {
+     left: 10px;
+}
+ .fade-box {
+     position: absolute;
+     top: 0;
+     bottom: 0;
+     left: 0;
+     right: 0;
+     height: 50%;
+     z-index: 1;
+     background: linear-gradient(to left, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0.6) 100%);
+     pointer-events: none;
+}
+ .image-text {
+     position: absolute;
+     opacity: 0.8;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -105%);
+     font-size: 24px;
+     font-weight: bold;
+     font-family: Rokkitt;
+     text-align: center;
+     z-index: 2;
+}
+ section.saving {
+     background-color: #273746;
+     position: relative;
+     overflow: hidden;
+}
+ section.saving::after {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-color: #273746;
+     z-index: 9998;
+}
+ section.saving::before {
+     content: 'Saving...';
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     color: #bdc3c7;
+     font-size: 35px;
+     z-index: 9999;
+     padding: 5px 10px;
+}
+ section.saved {
+     background-color: #273746;
+     position: relative;
+     overflow: hidden;
+}
+ section.saved::after {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-color: #273746;
+     z-index: 9998;
+}
+ section.saved::before {
+     content: 'Saved ✔ ';
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     color: #bdc3c7;
+     font-size: 35px;
+     z-index: 9999;
+     padding: 5px 10px;
+     animation: fadeOut 2.5s ease-in-out 1 forwards;
+}
+ @keyframes fadeOut {
+     0% {
+         opacity: 1;
+    }
+     100% {
+         opacity: 0;
+    }
+}
+ .clan-inputs-container {
+     display: flex;
+     position: relative;
+     top: 15px;
+}
+ 
