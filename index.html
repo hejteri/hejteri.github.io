@@ -1,272 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hejteri Organization</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.css">
-</head>
-<body>
-    
-    <div id="loadingBox" class="loading-box">
-        <div class="loading-spinner"></div>
-    </div>
-    
-    <header>
-        <a href="https://hejteri.github.io" class="title">Hejteri Organization</a>
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-        <nav>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Hejteri Organization</title>
+      <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.css">
+      <link rel="stylesheet" href="home.css">
+   </head>
+   <body>
+      <div id="loadingBox" class="loading-box">
+         <div class="loading-spinner"></div>
+         <p class="loading-text">Designed by ROOT256
+         <p>
+      </div>
+      <header>
+         <a href="https://hejteri.github.io" class="title">Hejteri Organization</a>
+         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+         <nav>
             <a href="https://hejteri.github.io/mail">Mail</a>
             <a href="https://discord.gg/XnqtNG5g97">Discord</a>
             <a href="https://www.instagram.com/hejterioficial/">Instagram</a>
-            <a href="https://hejteri.github.io/panel/">Sponsors</a>
-
             <a href="" id="panelbut"></a>
-            
             <a href="" id="loginbut"></a>
-            
-        </nav>
-    </header>
-    <div class="home-container">
-        <section class="home-section">
+         </nav>
+      </header>
+      <container>
+         <section>
             <load id="Section1-0"></load>
             <load id="Section1-1"></load>
-        </section>
-                <section class="home-section">
+         </section>
+         <section>
             <load id="Section2-0"></load>
             <load id="Section2-1"></load>
-        </section>
-             <section class="home-section">
+         </section>
+         <section>
             <load id="Section3-0"></load>
             <b style="text-decoration: underline; position: relative; top: -1px;" class="toggle-text toggle-text-pubgm" onclick="toggleVisibility('pubgmContent', 'toggle-text-pubgm')">Show</b>
             <div id="pubgmContent" style="display: none;">
-                <load id="Section3-1"></load>
+               <load id="Section3-1"></load>
             </div>
-        </section>
-             <section class="home-section">
+         </section>
+         <section>
             <load id="Section4-0"></load>
-            
             <b style="text-decoration: underline; position: relative; top: -1px;" class="toggle-text toggle-text-so2" onclick="toggleVisibility('so2Content', 'toggle-text-so2')">Show</b>
             <div id="so2Content" style="display: none;">
-                <load id="Section4-1"></load>
+               <load id="Section4-1"></load>
             </div>
-        </section>
-		
-		
-		
-<section class="videos home-section">
-	<h2 style="width: 100%; margin-bottom: 15px;">• Sponsors</h2>
-    <div class="video-box">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/iq22i3GSrvk" frameborder="0" allowfullscreen></iframe>
-        <p class="video-text">Rizk Casino</p>
-    </div>
-    <div class="video-box">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/UjNijEzPf8U" frameborder="0" allowfullscreen></iframe>
-        <p class="video-text">AirCroatia</p>
-    </div>
-    <div class="video-box">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/WmpLzBQx3Ng" frameborder="0" allowfullscreen></iframe>
-        <p class="video-text">Paysafe</p>
-    </div>
-    <div class="video-box">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/vvIqZ_-GJcA" frameborder="0" allowfullscreen></iframe>
-        <p class="video-text">Seagm</p>
-    </div>
-	
-</section>
-
-
-
-
-        
-        <section class="maps home-section">
+         </section>
+         <section class="videos">
+            <h2>• Sponsors</h2>
+            <div>
+               <iframe src="https://firebasestorage.googleapis.com/v0/b/hejterii.appspot.com/o/rizk_casino.mp4?alt=media&token=f899d390-f396-413c-a702-170b19acc06f" frameborder="0" allowfullscreen></iframe>
+               <p>Rizk Casino</p>
+            </div>
+            <div>
+               <iframe src="https://firebasestorage.googleapis.com/v0/b/hejterii.appspot.com/o/aircroatia.mp4?alt=media&token=ecd2be7b-21ca-4c57-8090-eca65b4ef324" frameborder="0" allowfullscreen></iframe>
+               <p>AirCroatia</p>
+            </div>
+            <div>
+               <iframe src="https://firebasestorage.googleapis.com/v0/b/hejterii.appspot.com/o/paysafe.mp4?alt=media&token=3dfd8d63-8f92-4dcf-ba91-d6e59fd33dcb" frameborder="0" allowfullscreen></iframe>
+               <p>Paysafe</p>
+            </div>
+            <div>
+               <iframe src="https://firebasestorage.googleapis.com/v0/b/hejterii.appspot.com/o/seagm.mp4?alt=media&token=161fa09d-9715-4416-8303-01cd271d328a" frameborder="0" allowfullscreen></iframe>
+               <p>Seagm</p>
+            </div>
+         </section>
+         <section class="maps">
             <h2>• Maps</h2>
-           
-    </section>
-
-        <section class="full-size-section home-section">
-            <img style="border-radius: 5px;" src="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.png" alt="Hejteri Image">
-        </section>
-    </div>
-    <footer class="footer-content">
-        <p>&copy; 2018-2024 Hejteri Organization. All rights reserved.</p>
-        <b>Designed by ROOT256</b>
-    </footer>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.js"></script>
-    <script>
-        function op(profileId) {
-            var url = "https://link.standoff2.com/en/profile/view/" + profileId;
-            window.open(url, '_blank');
-        }
-        function toggleVisibility(sectionId, toggleTextClass) {
-            var section = document.getElementById(sectionId);
-            var toggleText = document.querySelector('.' + toggleTextClass);
-            if (section.style.display === 'none' || section.style.display === '') {
-                section.style.display = 'block';
-                toggleText.textContent = 'Hide';
-            } else {
-                section.style.display = 'none';
-                toggleText.textContent = 'Show';
-            }
-        }
-
-function LoadSection(Collection, Doc, Field) {
-    var db = firebase.firestore();
-    var docRef = db.collection(Collection).doc(Doc);
-    
-    if (Field === "head") {
-        var TypeA = "<h2>";
-        var TypeB = "</h2>";
-        var ElementId = "Section" + Doc + "-0";
-    }
-    if (Field === "text") {
-        var TypeA = "<p>";
-        var TypeB = "</p>";
-        var ElementId = "Section" + Doc + "-1";
-    }
-
-    docRef.get().then((doc) => {
-        if (doc.exists) {
-            var textData = doc.data()[Field];
-            document.getElementById(ElementId).innerHTML = TypeA + textData + TypeB;
-            if (Field === "text") {
-                if (Doc === "4") {
-                    const formattedText = textData.replace(/\b(\d+)\b/g, '<span class="standoff-link" onclick="op($1)">$1</span>');
-                    document.getElementById(ElementId).innerHTML = TypeA + formattedText + TypeB;
-                    setTimeout(function() {
-                        loadingBox.parentNode.removeChild(loadingBox);
-                    }, 300);
-                }
-            }
-        } else {
-            console.log("No such document!");
-        }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
-}
-
-function LoadSectionMaps() {
-    var db = firebase.firestore();
-    var collectionRef = db.collection("panel-maps");
-
-    collectionRef.get().then((querySnapshot) => {
-        if (querySnapshot.empty) {
-            // If no maps available, create a map with transparent image and text "TBA"
-            var mapsSection = document.querySelector('.maps');
-            var box = document.createElement('div');
-            box.classList.add('box');
-
-            var image = document.createElement('img');
-            image.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
-            image.alt = 'TBA Image';
-
-            var fadeBox = document.createElement('div');
-            fadeBox.classList.add('fade-box');
-
-            var imageText = document.createElement('div');
-            imageText.classList.add('image-text');
-            imageText.textContent = 'TBA';
-
-                var clan1Text = document.createElement('p');
-                clan1Text.classList.add('a-left');
-                clan1Text.textContent = "???";
-
-                var vsText = document.createElement('p');
-                vsText.classList.add('a-center');
-                vsText.textContent = 'VS';
-
-                var clan2Text = document.createElement('p');
-                clan2Text.classList.add('a-right');
-                clan2Text.textContent = "???";
-
-
-                box.appendChild(fadeBox);
-                box.appendChild(imageText);
-                box.appendChild(clan1Text);
-                box.appendChild(vsText);
-            box.appendChild(clan2Text);
-
-            mapsSection.appendChild(box);
-        } else {
-		
-			
-            querySnapshot.forEach((doc) => {
-                var map = doc.data().map;
-                var clan1 = doc.data().clan1;
-                var clan2 = doc.data().clan2;
-				
-
-                var mapsSection = document.querySelector('.maps');
-                var box = document.createElement('div');
-                box.classList.add('box');
-
-                var image = document.createElement('img');
-                var mapLowerCase = map.toLowerCase();
-                image.src = "https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/media/maps/" + mapLowerCase + '.png';
-                image.alt = mapLowerCase + ' Image';
-
-                var fadeBox = document.createElement('div');
-                fadeBox.classList.add('fade-box');
-
-                var imageText = document.createElement('div');
-                imageText.classList.add('image-text');
-                imageText.textContent = map;
-
-                var clan1Text = document.createElement('p');
-                clan1Text.classList.add('a-left');
-                clan1Text.textContent = clan1;
-
-                var vsText = document.createElement('p');
-                vsText.classList.add('a-center');
-                vsText.textContent = 'VS';
-
-                var clan2Text = document.createElement('p');
-                clan2Text.classList.add('a-right');
-                clan2Text.textContent = clan2;
-				
-				if (map === "TBA") {
-				
-				image.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
-				image.alt = 'TBA Image';
-				
-				imageText.classList.add('image-text');
-				imageText.textContent = 'TBA';
-				}
-
-
-                box.appendChild(image);
-                box.appendChild(fadeBox);
-                box.appendChild(imageText);
-                box.appendChild(clan1Text);
-                box.appendChild(vsText);
-                box.appendChild(clan2Text);
-
-                mapsSection.appendChild(box);
-            });
-        }
-    }).catch((error) => {
-        console.log("Error getting documents: ", error);
-    });
-}
-
-
-window.onload = function () {
-	AuthButtons();
-	LoadSectionMaps();
-    LoadSection("panel-main", "1", "head");
-    LoadSection("panel-main", "1", "text");
-    LoadSection("panel-main", "2", "head");
-    LoadSection("panel-main", "2", "text");
-    LoadSection("panel-main", "3", "head");
-    LoadSection("panel-main", "3", "text");
-    LoadSection("panel-main", "4", "head");
-    LoadSection("panel-main", "4", "text");
-}
-    </script>
-</body>
+         </section>
+         <section>
+            <img class="hejter-img" style="border-radius: 5px;" src="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.png" alt="Hejteri Image">
+         </section>
+      </container>
+      <footer>
+         <p>&copy; 2018-2024 Hejteri Organization.</p>
+      </footer>
+      <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+      <script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.js"></script>
+      <script>
+         Loaded = 0;
+         
+         function op(profileId) {
+             var url = "https://link.standoff2.com/en/profile/view/" + profileId;
+             window.open(url, '_blank');
+         }
+         
+         function toggleVisibility(sectionId, toggleTextClass) {
+             var section = document.getElementById(sectionId);
+             var toggleText = document.querySelector('.' + toggleTextClass);
+             if (section.style.display === 'none' || section.style.display === '') {
+                 section.style.display = 'block';
+                 toggleText.textContent = 'Hide';
+             } else {
+                 section.style.display = 'none';
+                 toggleText.textContent = 'Show';
+             }
+         }
+         
+         function LoadSection(Collection, Doc, Field) {
+             Loaded++;
+         
+             var db = firebase.firestore();
+             var docRef = db.collection(Collection).doc(Doc);
+         
+             if (Field === "head") {
+                 var TypeA = "<h2>";
+                 var TypeB = "</h2>";
+                 var ElementId = "Section" + Doc + "-0";
+             }
+             if (Field === "text") {
+                 var TypeA = "<p>";
+                 var TypeB = "</p>";
+                 var ElementId = "Section" + Doc + "-1";
+             }
+         
+             docRef.get().then((doc) => {
+                 if (doc.exists) {
+                     var textData = doc.data()[Field];
+                     document.getElementById(ElementId).innerHTML = TypeA + textData + TypeB;
+                     if (Field === "text") {
+                         if (Doc === "4") {
+                             const formattedText = textData.replace(/\b(\d+)\b/g, '<span class="standoff-link" onclick="op($1)">$1</span>');
+                             document.getElementById(ElementId).innerHTML = TypeA + formattedText + TypeB;
+         
+                         }
+                     }
+                 } else {
+                     console.log("No such document!");
+                 }
+                 Loaded--; 
+                 if (Loaded === 0) {
+         
+                     var loadingBox = document.getElementById('loadingBox');
+         if (loadingBox) {
+         	setTimeout(function() { }, 200);
+             loadingBox.classList.add('fade-out'); 
+             setTimeout(function() {
+                 loadingBox.parentNode.removeChild(loadingBox); 
+             }, 300); 
+         }
+         
+                 }
+             }).catch((error) => {
+                 console.log("Error getting document:", error);
+             });
+         }
+         
+         function LoadSectionMaps() {
+             Loaded++;
+             var db = firebase.firestore();
+             var collectionRef = db.collection("panel-maps");
+         
+             collectionRef.get().then((querySnapshot) => {
+                 if (querySnapshot.empty) {
+         
+                     var mapsSection = document.querySelector('.maps');
+                     var box = document.createElement('box');
+                     box.classList.add('box');
+         
+                     var image = document.createElement('img');
+                     image.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
+                     image.alt = 'TBA Image';
+         
+                     var fadeBox = document.createElement('div');
+                     fadeBox.classList.add('fade-box');
+         
+                     var imageText = document.createElement('div');
+                     imageText.classList.add('image-text');
+                     imageText.textContent = 'TBA';
+         
+                     var clan1Text = document.createElement('p');
+                     clan1Text.classList.add('a-left');
+                     clan1Text.textContent = "???";
+         
+                     var vsText = document.createElement('p');
+                     vsText.classList.add('a-center');
+                     vsText.textContent = 'VS';
+         
+                     var clan2Text = document.createElement('p');
+                     clan2Text.classList.add('a-right');
+                     clan2Text.textContent = "???";
+         
+                     box.appendChild(fadeBox);
+                     box.appendChild(imageText);
+                     box.appendChild(clan1Text);
+                     box.appendChild(vsText);
+                     box.appendChild(clan2Text);
+         
+                     mapsSection.appendChild(box);
+                 } else {
+                     querySnapshot.forEach((doc) => {
+                         var map = doc.data().map;
+                         var clan1 = doc.data().clan1;
+                         var clan2 = doc.data().clan2;
+         
+                         var mapsSection = document.querySelector('.maps');
+                         var box = document.createElement('div');
+                         box.classList.add('box');
+         
+                         var image = document.createElement('img');
+                         var mapLowerCase = map.toLowerCase();
+                         image.src = "https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/media/maps/" + mapLowerCase + '.png';
+                         image.alt = mapLowerCase + ' Image';
+         
+                         var fadeBox = document.createElement('div');
+                         fadeBox.classList.add('fade-box');
+         
+                         var imageText = document.createElement('div');
+                         imageText.classList.add('image-text');
+                         imageText.textContent = map;
+         
+                         var clan1Text = document.createElement('p');
+                         clan1Text.classList.add('a-left');
+                         clan1Text.textContent = clan1;
+         
+                         var vsText = document.createElement('p');
+                         vsText.classList.add('a-center');
+                         vsText.textContent = 'VS';
+         
+                         var clan2Text = document.createElement('p');
+                         clan2Text.classList.add('a-right');
+                         clan2Text.textContent = clan2;
+         
+                         if (map === "TBA") {
+                             image.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
+                             image.alt = 'TBA Image';
+         
+                             imageText.classList.add('image-text');
+                             imageText.textContent = 'TBA';
+                         }
+         
+                         box.appendChild(image);
+                         box.appendChild(fadeBox);
+                         box.appendChild(imageText);
+                         box.appendChild(clan1Text);
+                         box.appendChild(vsText);
+                         box.appendChild(clan2Text);
+         
+                         mapsSection.appendChild(box);
+                     });
+                 }
+                 Loaded--; 
+                 if (Loaded === 0) {
+         
+                     var loadingBox = document.getElementById('loadingBox');
+         			setTimeout(function() { }, 200);
+                     loadingBox.classList.add('fade-out'); 
+         
+             setTimeout(function() {
+                 loadingBox.parentNode.removeChild(loadingBox); 
+             }, 300);
+                 }
+             }).catch((error) => {
+                 console.log("Error getting documents: ", error);
+             });
+         }
+         
+         window.onload = function () {
+             AuthButtons();
+             LoadSectionMaps();
+             LoadSection("panel-main", "1", "head");
+             LoadSection("panel-main", "1", "text");
+             LoadSection("panel-main", "2", "head");
+             LoadSection("panel-main", "2", "text");
+             LoadSection("panel-main", "3", "head");
+             LoadSection("panel-main", "3", "text");
+             LoadSection("panel-main", "4", "head");
+             LoadSection("panel-main", "4", "text");
+         }
+         
+             
+      </script>
+   </body>
 </html>
