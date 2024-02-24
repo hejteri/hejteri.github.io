@@ -1,0 +1,46 @@
+ container {
+     margin: 5% 10%;
+     border-radius: 8px;
+     overflow: hidden;
+     background-color: #19252f;
+}
+ section {
+     background-color: #273746;
+     padding: 20px 15px 30px;
+     margin: 10px;
+     border-radius: 8px;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 03);
+}
+ section p {
+     color: #bdc3c7;
+     margin: 0;
+     margin-top: 15px;
+}
+ section h2 {
+     color: #bdc3c7;
+     text-align: center;
+     margin-top: 0;
+     margin-bottom: 10px;
+}
+ section input, section textarea {
+     width: 100%;
+     padding: 8px;
+     margin-bottom: 0px;
+     box-sizing: border-box;
+     border: 1px solid #bdc3c7;
+     border-radius: 4px;
+     background-color: #19252f;
+     resize: vertical;
+     max-height: 200px;
+}
+ section button {
+     margin-top: 10px;
+     background-color: #19252f;
+     color: #bdc3c7;
+     width: 100%;
+     padding: 10px;
+     border: none;
+     border-radius: 4px;
+     cursor: pointer;
+}
+ 
