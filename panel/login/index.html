@@ -1,96 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hejteri Panel</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.css">
-</head>
-
-<body>
-    <header>
-        <a href="https://hejteri.github.io/panel" class="title">Hejteri Panel</a>
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-        <nav>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Hejteri Panel</title>
+      <link rel="icon" href="https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/hejteri.ico" type="image/x-icon">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.css">
+      <link rel="stylesheet" href="login.css">
+   </head>
+   <body>
+      <header>
+         <a href="https://hejteri.github.io/panel" class="title">Hejteri Panel</a>
+         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+         <nav>
             <a href="https://hejteri.github.io">Home</a>
-        </nav>
-    </header>
-
-    <div class="login-container">
-        <section class="login-section">
+         </nav>
+      </header>
+      <container>
+         <section>
             <h2>Login To Panel</h2>
-            <div id="error-overlay" class="error-overlay">
-                <div id="error-box" class="error-box">
-                    <span id="error-text"></span>
-                    <button onclick="closeErrorBox()">Close</button>
-                </div>
-            </div>
             <p for="email">Username:</p>
             <input type="email" id="username" name="username" required autocomplete="username">
             <p for="password">Password:</p>
             <input type="password" id="password" name="password" required autocomplete="password">
             <button onclick="login()">Login</button>
-        </section>
-    </div>
-
-    <footer class="footer-content">
-        <p>&copy; 2018-2024 Hejteri Organization. All rights reserved.</p>
-        <b>Designed by ROOT256</b>
-    </footer>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.js"></script>
-    <script>
-function login() {
-    const usernamePrefix = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const usernameHejteri = usernamePrefix + "@hejteri.org";
-    const errorOverlay = document.getElementById('error-overlay');
-    const errorBox = document.getElementById('error-box');
-    const errorText = document.getElementById('error-text');
-
-    auth.signInWithEmailAndPassword(usernameHejteri, password)
-        .then((userCredential) => {
-            // Reload the page on successful login
-            location.reload();
-        })
-        .catch((error) => {
-            // Handle errors for @hejteri.org domain
-            if (error.code === "auth/user-not-found" || error.code === "auth/invalid-email" || error.code === "auth/wrong-password" || error.code === "auth/internal-error") {
-                // Display error message for incorrect username/password
-                errorText.textContent = "Incorrect Username/Password";
-                errorOverlay.style.display = 'block';
-                errorBox.style.display = 'block';
-            } else {
-                // Other error occurred for @hejteri.org domain
-                errorMessage = "An error occurred.";
-                errorText.textContent = errorMessage;
-                errorOverlay.style.display = 'block';
-                errorBox.style.display = 'block';
-            }
-        });
-}
-
-
-
-        function closeErrorBox() {
-            const errorOverlay = document.getElementById('error-overlay');
-            const errorBox = document.getElementById('error-box');
-            errorOverlay.style.display = 'none';
-            errorBox.style.display = 'none';
-        }
-
-        var redi1 = true;
-
-        window.onload = function () {
-            AuthButtons();
-        }
-    </script>
-</body>
-
+         </section>
+      </container>
+      <footer>
+         <p>&copy; 2018-2024 Hejteri Organization.</p>
+      </footer>
+      <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+      <script src="https://cdn.jsdelivr.net/gh/hejteri/hejteri.github.io@latest/hejteri/main.js"></script>
+      <script>
+         function login() {
+             const usernamePrefix = document.getElementById('username').value;
+             const password = document.getElementById('password').value;
+             const usernameHejteri = usernamePrefix + "@hejteri.org";
+         
+             auth.signInWithEmailAndPassword(usernameHejteri, password)
+                 .then((userCredential) => {
+         
+                     location.reload();
+                 })
+                 .catch((error) => {
+         
+                     if (error.code === "auth/user-not-found" || error.code === "auth/invalid-email" || error.code === "auth/wrong-password" || error.code === "auth/internal-error") {
+         
+             alert("Incorrect Username/Password");
+         } else {
+         
+             alert("An error occurred.");
+         }
+         
+                 });
+         }
+         
+                 var redi1 = true;
+         
+                 window.onload = function () {
+                     AuthButtons();
+                 }
+         
+      </script>
+   </body>
 </html>
