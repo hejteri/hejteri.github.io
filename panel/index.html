@@ -1,5 +1,4 @@
-
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
    <head>
       <meta charset="UTF-8">
@@ -12,8 +11,7 @@
    <body>
       <div id="loadingBox" class="loading-box">
          <div class="loading-spinner"></div>
-         <p class="loading-text">Designed by ROOT256
-         <p>
+         <p class="loading-text">Designed by ROOT256</p>
       </div>
       <header>
          <a href="https://hejteri.github.io/panel" class="title">Hejteri Panel</a>
@@ -26,7 +24,7 @@
       <container>
          <section>
             <input type="text" id="sectionTitle1" placeholder="Section-1">
-            <textarea id="dataInput1" rows="10"> </textarea>
+            <textarea id="dataInput1" rows="10"></textarea>
             <button id="saveButton1" onclick="Show(1)">Save Changes</button>
             <div class="button-group" id="button-group-1">
                <button onclick="cancelChanges(1)">Cancel</button>
@@ -60,7 +58,6 @@
                <button onclick="saveChanges(4)">Confirm</button>
             </div>
          </section>
-         </div>
       </container>
       <footer>
          <p>&copy; 2018-2024 Hejteri Organization.</p>
@@ -87,18 +84,18 @@
              });
          }
          function Show(pageNumber) {
-             const saveButton = document.querySelector(#saveButton${pageNumber});
+             const saveButton = document.querySelector(`#saveButton${pageNumber}`);
              saveButton.style.display = 'none';
-             const buttonGroup = document.querySelector(#button-group-${pageNumber});
+             const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
              const buttons = buttonGroup.querySelectorAll('button');
              buttons.forEach((button) => {
                  button.style.display = 'block';
              });
          }
          function cancelChanges(pageNumber) {
-             const saveButton = document.querySelector(#saveButton${pageNumber});
+             const saveButton = document.querySelector(`#saveButton${pageNumber}`);
              saveButton.style.display = 'block';
-             const buttonGroup = document.querySelector(#button-group-${pageNumber});
+             const buttonGroup = document.querySelector(`#button-group-${pageNumber}`);
              const buttons = buttonGroup.querySelectorAll('button');
              buttons.forEach((button) => {
                  button.style.display = 'none';
@@ -107,7 +104,7 @@
          var db = firebase.firestore();
          function loadIntoInputs() {
          var loadingBox = document.getElementById('loadingBox');
-         for (var i = 1; i <= 5; i++) {
+         for (var i = 1; i <= 4; i++) {
          (function (index) {
              var docRef = db.collection("panel-main").doc(index.toString());
              docRef.get().then(function (doc) {
@@ -118,14 +115,10 @@
          
                      document.getElementById("sectionTitle" + index).value = head;
          
-                     if (index === 5) {
-                         loadingBox.parentNode.removeChild(loadingBox);
-                     } else {
-                         if (data.text) {
-                             var text = data.text;
-                             text = text.replace(/<br>/g, "\n"); 
-                             document.getElementById("dataInput" + index).value = text;
-                         }
+                     if (data.text) {
+                         var text = data.text;
+                         text = text.replace(/<br>/g, "\n"); 
+                         document.getElementById("dataInput" + index).value = text;
                      }
                  }
              }).catch(function (error) {
@@ -136,7 +129,7 @@
          }
          
          function saveChanges(pageNumber) {
-             var panelSection = document.querySelector(section:nth-child(${pageNumber}));
+             var panelSection = document.querySelector(`section:nth-child(${pageNumber})`);
          
              panelSection.classList.add('saving');
              var sectionTitle = document.getElementById("sectionTitle" + pageNumber).value;
@@ -149,7 +142,7 @@
                  head: sectionTitle,
                  text: modifiedDataInput
              }).then(function () {
-                 var panelSection = document.querySelector(section:nth-child(${pageNumber}));
+                 var panelSection = document.querySelector(`section:nth-child(${pageNumber})`);
                  panelSection.classList.remove('saving');
                  panelSection.classList.add('saved');
                  setTimeout(function () {
@@ -159,235 +152,6 @@
                  console.error("Error writing document: ", error);
              });
              cancelChanges(pageNumber);
-         }
-         
-         function loadMaps() {
-         var mapsContainer = document.getElementById('mapsContainer');
-         var db = firebase.firestore();
-         
-         db.collection("panel-maps").get().then((querySnapshot) => {
-         querySnapshot.forEach((doc) => {
-             var mapData = doc.data();
-             var mapName = mapData.map;
-             var clan1 = mapData.clan1;
-             var clan2 = mapData.clan2;
-         
-             var mapBox = document.createElement('div');
-             mapBox.classList.add('box');
-             mapBox.style.marginBottom = "10px";
-         
-             var fadeBox = document.createElement('div');
-             fadeBox.classList.add('fade-box');
-         
-             var mapImage = document.createElement('img');
-         var mapLow = mapName.toLowerCase();
-         if (mapLow !== "tba") {
-         mapImage.src = https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/media/maps/${mapLow}.png;
-         mapImage.alt = mapName;
-                 } else {
-         mapImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
-         mapImage.alt = 'TBA';
-         }
-         
-             var mapText = document.createElement('div');
-             mapText.classList.add('image-text', 'map-text');
-             mapText.innerHTML = mapName;
-         
-             mapBox.appendChild(mapText);
-         
-             mapImage.addEventListener('click', function () {
-                 var mapNames = ['DUNE', 'BREEZE', 'PROVINCE', 'RUST', 'SAKURA', 'SANDSTONE', 'ZONE9', 'TBA'];
-                 var currentMapText = mapText.textContent;
-                 var currentIndex = mapNames.indexOf(currentMapText);
-                 var nextIndex = (currentIndex + 1) % mapNames.length;
-         var mapLow = mapNames[nextIndex].toLowerCase();
-         if (mapLow !== "tba") {
-         mapImage.src = https://raw.githubusercontent.com/hejteri/hejteri.github.io/main/hejteri/media/maps/${mapLow}.png;
-         mapImage.alt = mapNames[nextIndex];
-                 } else {
-         mapImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
-         mapImage.alt = 'TBA';
-         }
-         mapText.textContent = mapNames[nextIndex];
-             });
-         
-             fadeBox.addEventListener('click', function () {
-                 var mapImage = mapBox.querySelector('img');
-                 mapImage.click();
-             });
-         
-             mapText.addEventListener('click', function () {
-                 fadeBox.click();
-             });
-         
-             var clan1Input = document.createElement('input');
-             clan1Input.type = 'text';
-             clan1Input.id = clan1Input_${mapName};
-             clan1Input.value = clan1;
-             clan1Input.style.textAlign = "left";
-         clan1Input.style.position = "absolute";
-         clan1Input.style.left = "0";
-         clan1Input.style.width = "43%";
-         
-         var vsText = document.createTextNode(" VS ");
-             var vsSpan = document.createElement('span');
-             vsSpan.appendChild(vsText);
-             vsSpan.classList.add('a-center');
-         
-         var xText = document.createTextNode(" X ");
-         var xSpan = document.createElement('span');
-         xSpan.appendChild(xText);
-         
-         xSpan.style.fontWeight = "bold";
-         xSpan.style.width = "17px";
-         xSpan.style.position = "absolute"; 
-         xSpan.style.right = "0"; 
-         xSpan.style.transform = "translate(-6px, -160%)";
-         
-         xSpan.style.color = "rgb(214, 2, 16)";
-         xSpan.style.fontSize = "25px";
-         xSpan.style.zIndex = "100";
-         xSpan.addEventListener('click', function () {
-         
-         mapBox.remove();
-         });
-         
-             var clan2Input = document.createElement('input');
-             clan2Input.type = 'text';
-             clan2Input.id = clan2Input_${mapName};
-             clan2Input.value = clan2;
-         clan2Input.style.textAlign = "right";
-         clan2Input.style.position = "absolute";
-         clan2Input.style.right = "0";
-         clan2Input.style.width = "43%";
-         
-             var clanInputsContainer = document.createElement('div');
-             clanInputsContainer.classList.add('clan-inputs-container');
-             clanInputsContainer.appendChild(clan1Input);
-         clanInputsContainer.appendChild(vsSpan);
-             clanInputsContainer.appendChild(xSpan); 
-             clanInputsContainer.appendChild(clan2Input);
-         
-             mapBox.appendChild(mapImage);
-             mapBox.appendChild(fadeBox);
-             mapBox.appendChild(clanInputsContainer);
-         
-             mapsContainer.appendChild(mapBox);
-         });
-         });
-         }
-         
-         function saveChangesMaps(pageNumber) {
-         var mapsContainer = document.getElementById('mapsContainer');
-         var db = firebase.firestore();
-         
-         db.collection("panel-maps").get().then(querySnapshot => {
-         querySnapshot.forEach(doc => {
-             db.collection("panel-maps").doc(doc.id).delete().then(() => {
-         
-             }).catch(error => {
-                 console.error("Error removing document: ", error);
-             });
-         });
-         }).then(() => {
-         
-         var counter = 1;
-         
-         mapsContainer.querySelectorAll('.box').forEach(mapBox => {
-             var mapText = mapBox.querySelector('.map-text').textContent;
-             var clan1 = mapBox.querySelector('input[id^="clan1Input"]').value;
-             var clan2 = mapBox.querySelector('input[id^="clan2Input"]').value;
-         
-             var docRef = db.collection("panel-maps").doc(counter.toString());
-         
-             docRef.set({
-                 map: mapText,
-                 clan1: clan1,
-                 clan2: clan2
-             }).then(() => {
-                 console.log("Document created successfully!");
-             }).catch(error => {
-                 console.error("Error creating document: ", error);
-             });
-         
-             counter++;
-         });
-         }).catch(error => {
-         console.error("Error deleting documents: ", error);
-         });
-         cancelChanges(pageNumber);
-         }
-         
-         function addMap() {
-         var mapsContainer = document.getElementById('mapsContainer');
-         
-         var mapBox = document.createElement('div');
-         mapBox.classList.add('box');
-         mapBox.style.marginBottom = "10px";
-         
-         var fadeBox = document.createElement('div');
-         fadeBox.classList.add('fade-box');
-         
-         var mapImage = document.createElement('img');
-         mapImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; 
-         mapImage.alt = 'TBA';
-         
-         var mapText = document.createElement('div');
-         mapText.classList.add('image-text', 'map-text');
-         mapText.textContent = 'TBA';
-         
-         mapBox.appendChild(mapText);
-         mapBox.appendChild(mapImage);
-         mapBox.appendChild(fadeBox);
-         
-         var clan1Input = document.createElement('input');
-         clan1Input.type = 'text';
-         clan1Input.value = 'TBA';
-         clan1Input.style.textAlign = "left";
-         clan1Input.style.position = "absolute";
-         clan1Input.style.left = "0";
-         clan1Input.style.width = "43%";
-         
-         var vsText = document.createTextNode(" VS ");
-         var vsSpan = document.createElement('span');
-         vsSpan.appendChild(vsText);
-         vsSpan.classList.add('a-center');
-         vsSpan.style.transform = "translate(-10px, -290%)";
-         
-         var xText = document.createTextNode(" X ");
-         var xSpan = document.createElement('span');
-         xSpan.appendChild(xText);
-         xSpan.style.fontWeight = "bold";
-         xSpan.style.width = "17px";
-         xSpan.style.position = "absolute";
-         xSpan.style.right = "0";
-         xSpan.style.transform = "translate(-6px, -160%)";
-         xSpan.style.color = "rgb(214, 2, 16)";
-         xSpan.style.fontSize = "25px";
-         xSpan.style.zIndex = "100";
-         xSpan.addEventListener('click', function () {
-         
-         mapBox.remove();
-         });
-         
-         var clan2Input = document.createElement('input');
-         clan2Input.type = 'text';
-         clan2Input.value = 'TBA';
-         clan2Input.style.textAlign = "right";
-         clan2Input.style.position = "absolute";
-         clan2Input.style.right = "0";
-         clan2Input.style.width = "43%";
-         
-         var clanInputsContainer = document.createElement('div');
-         clanInputsContainer.classList.add('clan-inputs-container');
-         clanInputsContainer.appendChild(clan1Input);
-         clanInputsContainer.appendChild(vsSpan);
-         clanInputsContainer.appendChild(xSpan);
-         clanInputsContainer.appendChild(clan2Input);
-         
-         mapBox.appendChild(clanInputsContainer);
-         
-         mapsContainer.appendChild(mapBox);
          }
          
          window.onload = function () {
