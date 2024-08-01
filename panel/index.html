@@ -103,30 +103,46 @@
          }
          var db = firebase.firestore();
          function loadIntoInputs() {
-         var loadingBox = document.getElementById('loadingBox');
-         for (var i = 1; i <= 4; i++) {
-         (function (index) {
-             var docRef = db.collection("panel-main").doc(index.toString());
-             docRef.get().then(function (doc) {
-                 if (doc.exists) {
-                     var data = doc.data();
-                     var head = data.head;
-                     head = head.replace(/<br>/g, "\n"); 
+             var loadingBox = document.getElementById('loadingBox');
+             if (!loadingBox) {
+                 console.error("Loading box element not found");
+                 return;
+             }
+             console.log("Loading box found");
          
-                     document.getElementById("sectionTitle" + index).value = head;
+             for (var i = 1; i <= 4; i++) {
+                 (function (index) {
+                     var docRef = db.collection("panel-main").doc(index.toString());
+                     console.log(`Loading data for section ${index}`);
+                     docRef.get().then(function (doc) {
+                         if (doc.exists) {
+                             console.log(`Data loaded for section ${index}`);
+                             var data = doc.data();
+                             var head = data.head;
+                             head = head.replace(/<br>/g, "\n"); 
          
-                     if (data.text) {
-                         var text = data.text;
-                         text = text.replace(/<br>/g, "\n"); 
-                         document.getElementById("dataInput" + index).value = text;
-                     }
-                 }
-             }).catch(function (error) {
-                 console.log("Error getting document:", error);
-             });
-         })(i);
+                             document.getElementById("sectionTitle" + index).value = head;
+         
+                             if (data.text) {
+                                 var text = data.text;
+                                 text = text.replace(/<br>/g, "\n"); 
+                                 document.getElementById("dataInput" + index).value = text;
+                             }
+                         } else {
+                             console.warn(`No data found for section ${index}`);
+                         }
+                     }).catch(function (error) {
+                         console.error("Error getting document:", error);
+                     }).finally(function () {
+                         if (index === 4) {
+                             console.log("All sections processed");
+                             loadingBox.parentNode.removeChild(loadingBox);
+                         }
+                     });
+                 })(i);
+             }
          }
-         }
+
          
          function saveChanges(pageNumber) {
              var panelSection = document.querySelector(`section:nth-child(${pageNumber})`);
