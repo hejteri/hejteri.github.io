@@ -105,34 +105,47 @@
          }
          var db = firebase.firestore();
          function loadIntoInputs() {
-         var loadingBox = document.getElementById('loadingBox');
-         for (var i = 1; i <= 5; i++) {
-         (function (index) {
-             var docRef = db.collection("panel-main").doc(index.toString());
-             docRef.get().then(function (doc) {
-                 if (doc.exists) {
-                     var data = doc.data();
-                     var head = data.head;
-                     head = head.replace(/<br>/g, "\n");
-         
-                     document.getElementById("sectionTitle" + index).value = head;
-         
-                     if (index === 5) {
-                         loadingBox.parentNode.removeChild(loadingBox);
-                     } else {
-                         if (data.text) {
-                             var text = data.text;
-                             text = text.replace(/<br>/g, "\n");
-                             document.getElementById("dataInput" + index).value = text;
-                         }
-                     }
-                 }
-             }).catch(function (error) {
-                 console.log("Error getting document:", error);
-             });
-         })(i);
-         }
-         }
+    var loadingBox = document.getElementById('loadingBox');
+    for (var i = 1; i <= 4; i++) { // Adjusted loop to 4 sections
+        (function (index) {
+            var docRef = db.collection("panel-main").doc(index.toString());
+            docRef.get().then(function (doc) {
+                if (doc.exists) {
+                    var data = doc.data();
+                    var head = data.head;
+                    head = head.replace(/<br>/g, "\n");
+                    
+                    var sectionTitleElem = document.getElementById("sectionTitle" + index);
+                    var dataInputElem = document.getElementById("dataInput" + index);
+                    
+                    if (sectionTitleElem) {
+                        sectionTitleElem.value = head;
+                    } else {
+                        console.warn("Element with ID 'sectionTitle" + index + "' not found.");
+                    }
+                    
+                    if (index === 4) { // Adjusted to 4 sections
+                        loadingBox.parentNode.removeChild(loadingBox);
+                    } else {
+                        if (data.text) {
+                            var text = data.text;
+                            text = text.replace(/<br>/g, "\n");
+                            
+                            if (dataInputElem) {
+                                dataInputElem.value = text;
+                            } else {
+                                console.warn("Element with ID 'dataInput" + index + "' not found.");
+                            }
+                        }
+                    }
+                }
+            }).catch(function (error) {
+                console.log("Error getting document:", error);
+            });
+        })(i);
+    }
+}
+
          
          function saveChanges(pageNumber) {
              var panelSection = document.querySelector(`section:nth-child(${pageNumber})`);
