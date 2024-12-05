@@ -144,4 +144,14 @@
      width: 99%;
      transform: translate(-1px, 3%);
 }
+
+.visits {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 12px;
+        font-weight: bold;
+        opacity: 70%;
+ }
  
