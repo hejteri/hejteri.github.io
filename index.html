@@ -16,6 +16,7 @@
          <p>
       </div>
       <header>
+         <div class="visits">Visits:<br>0</div>
          <a href="https://hejteri.github.io" class="title">Hejteri Organization</a>
          <button class="menu-toggle" onclick="toggleMenu()">☰</button>
          <nav>
@@ -147,6 +148,26 @@
              }).catch((error) => {
                  console.log("Error getting document:", error);
              });
+         }
+         const visitDocRef = db.collection('pageData').doc('visits');
+
+
+         async function updateVisitCounter() {
+              try {
+                  const doc = await visitDocRef.get();
+                  let currentVisits = 0;
+      
+                  if (doc.exists) {
+                      currentVisits = doc.data().count || 0;
+                  }
+      
+                  const newVisits = currentVisits + 1;
+                  await visitDocRef.set({ count: newVisits });
+      
+                  document.querySelector('.visits').innerHTML = `Visits:<br>${newVisits}`;
+              } catch (error) {
+                  console.error("Error updating visit count:", error);
+              }
          }
          
          
