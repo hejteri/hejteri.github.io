@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Visits Counter</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <h1>Welcome to the Page!</h1>
+    <p>Page visits: <span id="visitCount">Loading...</span></p>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7HqOKwA3XilJ48Ts2cVuJH7PsuuVhzH0",
+            authDomain: "hejterii.firebaseapp.com",
+            databaseURL: "https://hejterii-default-rtdb.firebaseio.com",
+            projectId: "hejterii",
+            storageBucket: "hejterii.appspot.com",
+            messagingSenderId: "565517537560",
+            appId: "1:565517537560:web:7a71dda2e3e3c3c2680e6d"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Firestore reference
+        const db = firebase.firestore();
+
+        // Reference to the visits document
+        const visitDocRef = db.collection('pageData').doc('visits');
+
+        async function updateVisitCount() {
+            try {
+                // Fetch the current visit count
+                const doc = await visitDocRef.get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    const currentCount = data.count || 0;
+
+                    // Increment the count
+                    const newCount = currentCount + 1;
+                    await visitDocRef.set({ count: newCount });
+
+                    // Update the displayed count
+                    document.getElementById('visitCount').innerText = newCount;
+                } else {
+                    // Initialize the count if the document doesn't exist
+                    await visitDocRef.set({ count: 1 });
+                    document.getElementById('visitCount').innerText = 1;
+                }
+            } catch (error) {
+                console.error("Error updating visit count:", error);
+            }
+        }
+
+        // Call the function to update the visit count
+        updateVisitCount();
+    </script>
+</body>
+</html>
