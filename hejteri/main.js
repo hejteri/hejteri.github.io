@@ -1,4 +1,6 @@
+
 var redi1, redi2;
+if (location.protocol === 'http:') { location.href = 'https://' + location.host + location.pathname + location.search; } // little check
 
 const firebaseConfig = {
     apiKey: "AIzaSyB7HqOKwA3XilJ48Ts2cVuJH7PsuuVhzH0",
@@ -54,11 +56,9 @@ function toggleMenu() {
     var navElement = document.querySelector('nav');
     
     if (navElement.classList.contains('open')) {
-        // If navigation is open, close it
         navElement.classList.remove('open');
         navElement.classList.add('close');
     } else {
-        // If navigation is closed, open it
         navElement.classList.remove('close');
         navElement.classList.add('open');
     }
