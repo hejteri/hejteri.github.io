@@ -18,7 +18,7 @@
       <header>
          <div class="visits">Visits:<br>0</div>
          <a href="https://hejteri.github.io" class="title">Hejteri Organization</a>
-         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+         <button class="menu-toggle" onclick="toggleMenu()">?</button>
          <nav>
             <a href="https://hejteri.github.io/mail">Mail</a>
             <a href="https://discord.com/invite/uAVQgBcJB5">Discord</a>
@@ -83,6 +83,7 @@
       <script src="https://hejteri.github.io/hejteri/main.js"></script>
       <script>
          Loaded = 0;
+		 var db = firebase.firestore();
          
          function op(profileId) {
              var url = "https://link.standoff2.com/en/profile/view/" + profileId;
@@ -104,7 +105,7 @@
          function LoadSection(Collection, Doc, Field) {
              Loaded++;
          
-             var db = firebase.firestore();
+             
              var docRef = db.collection(Collection).doc(Doc);
          
              if (Field === "head") {
