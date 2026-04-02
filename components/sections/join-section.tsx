@@ -49,7 +49,7 @@ export function JoinSection() {
                 in the UI.
               </p>
               <Link
-                href="https://discord.com/invite/example"
+                href="https://discord.gg/3jPu48B3pq"
                 target="_blank"
                 rel="noreferrer"
                 className="mt-8 inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.08] px-5 py-3 text-sm text-white transition duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.12]"

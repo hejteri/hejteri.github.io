@@ -21,7 +21,7 @@ export function HeroSection() {
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
-              href="https://discord.com/invite/example"
+              href="https://discord.gg/3jPu48B3pq"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-full border border-white/12 bg-white/[0.08] px-6 py-3 text-sm font-medium text-white transition duration-300 hover:-translate-y-0.5 hover:border-white/18 hover:bg-white/[0.12]"
