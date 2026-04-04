@@ -1,12 +1,40 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 import Image from "next/image";
 
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { getLatestClips } from "@/lib/latest-clips";
+import { latestClips as fallbackLatestClips } from "@/data/site";
+import { fetchHejteriStorageRowClient, getLatestClipsFromRow, type LatestClipItem } from "@/lib/hejteri-live";
 
-export async function GameVisualsSection() {
-  const latestClips = await getLatestClips();
+const initialClips: LatestClipItem[] = fallbackLatestClips.map((clip) => ({
+  title: clip.title,
+  username: clip.username,
+  image: clip.image,
+  date: clip.date,
+}));
+
+export function GameVisualsSection() {
+  const [latestClips, setLatestClips] = useState<LatestClipItem[]>(initialClips);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    void fetchHejteriStorageRowClient().then((row) => {
+      if (cancelled || !row) {
+        return;
+      }
+
+      setLatestClips(getLatestClipsFromRow(row));
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section className="container-shell section-space">
