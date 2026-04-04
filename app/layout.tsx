@@ -7,8 +7,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "HEJTERI Clan",
-  description:
-    "Premium dark-mode gaming community website for an EU Standoff 2 and PUBG Mobile clan active since 2018.",
+  description: "Hejteri",
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",
