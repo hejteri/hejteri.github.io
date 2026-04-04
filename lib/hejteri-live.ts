@@ -283,7 +283,7 @@ export function getClanMemberCountFromRow(row?: HejteriStorageRow | null) {
 export async function fetchHejteriStorageRowClient(): Promise<HejteriStorageRow | null> {
   try {
     const response = await fetch(
-      `${endpoint}/databases/${databaseId}/tables/${tableId}/rows/${rowId}`,
+      `${endpoint}/tablesdb/${databaseId}/tables/${tableId}/rows/${rowId}`,
       {
         headers: {
           "X-Appwrite-Project": projectId,
