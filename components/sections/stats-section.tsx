@@ -1,13 +1,39 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { communityStats } from "@/data/site";
-import { getClanMemberCount, getDiscordMemberCount } from "@/lib/community-stats";
+import {
+  fetchHejteriStorageRowClient,
+  getClanMemberCountFromRow,
+  getDiscordMemberCountFromRow,
+} from "@/lib/hejteri-live";
 
-export async function StatsSection() {
-  const discordMemberCount = await getDiscordMemberCount();
-  const clanMemberCount = await getClanMemberCount();
+export function StatsSection() {
+  const [discordMemberCount, setDiscordMemberCount] = useState<number | null>(null);
+  const [clanMemberCount, setClanMemberCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    void fetchHejteriStorageRowClient().then((row) => {
+      if (cancelled || !row) {
+        return;
+      }
+
+      setDiscordMemberCount(getDiscordMemberCountFromRow(row));
+      setClanMemberCount(getClanMemberCountFromRow(row));
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const stats = communityStats.map((stat) => {
     if (stat.label === "Discord members" && discordMemberCount !== null) {
       return {
