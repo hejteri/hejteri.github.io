@@ -1,4 +1,4 @@
-const githubRepoRef = "postmatric/hejterisite@main";
+const githubRepoRef = "hejteri/hejteri.dat@main";
 const githubBaseUrl = `https://cdn.jsdelivr.net/gh/${githubRepoRef}`;
 
 export type HejteriStorageRow = {
