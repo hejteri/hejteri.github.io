@@ -1,24 +1,24 @@
 import { latestClips as fallbackLatestClips } from "@/data/site";
+import type { Member, RosterGroupName } from "@/data/roster";
 import {
-  rosterGroups as fallbackRosterGroups,
-  rosterOrder,
-  type Member,
-  type RosterGroupName,
-} from "@/data/roster";
-
-export type HejteriStorageRow = {
-  $createdAt?: string;
-  videos?: string;
-  data?: string;
-  members?: number;
-  roster?: string;
-};
+  fetchHejteriStorageRowFromGitHub,
+  type HejteriStorageRow,
+} from "@/lib/hejteri-data-source";
+import {
+  clanGroupName,
+  createEmptyGroups,
+  getAvailableGroups,
+  normalizeClanNumbers,
+  normalizeRosterKey,
+  sortRosterGroupNames,
+} from "@/lib/roster-utils";
 
 type StoredClanMember = {
   username?: string;
   displayName?: string;
   role?: string | null;
   clan?: number;
+  clans?: number[];
 };
 
 type StoredRosterEntry = {
@@ -26,7 +26,7 @@ type StoredRosterEntry = {
   standoffId?: string;
 };
 
-type AppwriteVideoPayload = {
+type VideoPayload = {
   link?: string;
   user?: {
     username?: string;
@@ -51,21 +51,11 @@ export type RosterGroupsResult = {
   availableGroups: RosterGroupName[];
 };
 
-const endpoint = "https://fra.cloud.appwrite.io/v1";
-const projectId = "69715289000d21d6e815";
-const databaseId = "6974983c002379eba07f";
-const tableId = "hejteri";
-const rowId = "69caf74100066b2d85df";
-
 const clipImages = [
   "/games/standoff-1.svg",
   "/games/standoff-2.svg",
   "/games/standoff-3.svg",
 ];
-
-function normalizeRosterKey(username?: string) {
-  return (username ?? "").replace(/^@/, "").trim().toLowerCase();
-}
 
 function normalizeUsername(username?: string) {
   if (!username) {
@@ -84,18 +74,8 @@ function normalizeDisplayName(displayName?: string, username?: string) {
   return normalizedUsername.startsWith("@") ? normalizedUsername.slice(1) : normalizedUsername;
 }
 
-function emptyRosterGroups(): Record<RosterGroupName, Member[]> {
-  return {
-    "Clan 1": [],
-    "Clan 2": [],
-    "Clan 3": [],
-    "Clan 4": [],
-    "Clan 5": [],
-  };
-}
-
-function getAvailableGroups(groups: Record<RosterGroupName, Member[]>) {
-  return rosterOrder.filter((groupName) => groups[groupName].length > 0);
+function getMemberClans(entry: StoredClanMember) {
+  return normalizeClanNumbers(entry.clans ?? entry.clan);
 }
 
 function readRosterMap(value?: string) {
@@ -164,7 +144,7 @@ function formatClipDate(value?: string) {
   }).format(date);
 }
 
-function deriveClipTitle(payload: AppwriteVideoPayload) {
+function deriveClipTitle(payload: VideoPayload) {
   const rawContent = payload.message?.content?.trim();
   const looksLikeOnlyLink = rawContent ? /^https?:\/\/\S+$/i.test(rawContent) : false;
 
@@ -175,7 +155,7 @@ function deriveClipTitle(payload: AppwriteVideoPayload) {
   return "-";
 }
 
-function parseClipEntry(payload: AppwriteVideoPayload, index: number, fallbackDate?: string): LatestClipItem {
+function parseClipEntry(payload: VideoPayload, index: number, fallbackDate?: string): LatestClipItem {
   return {
     title: deriveClipTitle(payload),
     username: payload.user?.username ? `@${payload.user.username}` : "@hejteri",
@@ -185,13 +165,20 @@ function parseClipEntry(payload: AppwriteVideoPayload, index: number, fallbackDa
   };
 }
 
+function fallbackRosterResult(): RosterGroupsResult {
+  return {
+    groups: {},
+    availableGroups: [],
+  };
+}
+
 export function getLatestClipsFromRow(row?: HejteriStorageRow | null): LatestClipItem[] {
   if (!row?.videos) {
     return fallbackClips();
   }
 
   try {
-    const parsed = JSON.parse(row.videos) as AppwriteVideoPayload[] | AppwriteVideoPayload;
+    const parsed = JSON.parse(row.videos) as VideoPayload[] | VideoPayload;
 
     if (Array.isArray(parsed) && parsed.length > 0) {
       return parsed.slice(0, 3).map((entry, index) => parseClipEntry(entry, index, row.$createdAt));
@@ -209,10 +196,7 @@ export function getLatestClipsFromRow(row?: HejteriStorageRow | null): LatestCli
 
 export function getRosterGroupsFromRow(row?: HejteriStorageRow | null): RosterGroupsResult {
   if (!row?.data) {
-    return {
-      groups: fallbackRosterGroups,
-      availableGroups: getAvailableGroups(fallbackRosterGroups),
-    };
+    return fallbackRosterResult();
   }
 
   try {
@@ -220,35 +204,37 @@ export function getRosterGroupsFromRow(row?: HejteriStorageRow | null): RosterGr
     const rosterMap = readRosterMap(row.roster);
 
     if (!Array.isArray(parsed) || parsed.length === 0) {
-      return {
-        groups: fallbackRosterGroups,
-        availableGroups: getAvailableGroups(fallbackRosterGroups),
-      };
+      return fallbackRosterResult();
     }
 
-    const groups = emptyRosterGroups();
+    const groups = createEmptyGroups<Member>([]);
 
     for (const entry of parsed) {
-      const clan = entry.clan;
-      if (!clan || clan < 1 || clan > 5) {
+      const clans = getMemberClans(entry);
+      if (!clans.length) {
         continue;
       }
 
-      const groupName = `Clan ${clan}` as RosterGroupName;
-      groups[groupName].push({
+      const member = {
         displayName: normalizeDisplayName(entry.displayName, entry.username),
         username: normalizeUsername(entry.username),
         standoffId: rosterMap[normalizeRosterKey(entry.username)] ?? "-",
         role: entry.role ?? null,
-      });
+      };
+
+      for (const clan of clans) {
+        const groupName = clanGroupName(clan);
+        if (!groups[groupName]) {
+          groups[groupName] = [];
+        }
+
+        groups[groupName].push(member);
+      }
     }
 
-    const availableGroups = getAvailableGroups(groups);
+    const availableGroups = sortRosterGroupNames(getAvailableGroups(groups));
     if (!availableGroups.length) {
-      return {
-        groups: fallbackRosterGroups,
-        availableGroups: getAvailableGroups(fallbackRosterGroups),
-      };
+      return fallbackRosterResult();
     }
 
     return {
@@ -256,10 +242,7 @@ export function getRosterGroupsFromRow(row?: HejteriStorageRow | null): RosterGr
       availableGroups,
     };
   } catch {
-    return {
-      groups: fallbackRosterGroups,
-      availableGroups: getAvailableGroups(fallbackRosterGroups),
-    };
+    return fallbackRosterResult();
   }
 }
 
@@ -281,23 +264,5 @@ export function getClanMemberCountFromRow(row?: HejteriStorageRow | null) {
 }
 
 export async function fetchHejteriStorageRowClient(): Promise<HejteriStorageRow | null> {
-  try {
-    const response = await fetch(
-      `${endpoint}/tablesdb/${databaseId}/tables/${tableId}/rows/${rowId}`,
-      {
-        headers: {
-          "X-Appwrite-Project": projectId,
-        },
-        cache: "no-store",
-      },
-    );
-
-    if (!response.ok) {
-      return null;
-    }
-
-    return (await response.json()) as HejteriStorageRow;
-  } catch {
-    return null;
-  }
+  return fetchHejteriStorageRowFromGitHub();
 }

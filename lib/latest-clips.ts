@@ -9,7 +9,7 @@ const clipImages = [
   "/games/standoff-3.svg",
 ];
 
-type AppwriteVideoPayload = {
+type VideoPayload = {
   link?: string;
   user?: {
     username?: string;
@@ -58,7 +58,7 @@ function formatClipDate(value?: string) {
   }).format(date);
 }
 
-function deriveClipTitle(payload: AppwriteVideoPayload) {
+function deriveClipTitle(payload: VideoPayload) {
   const rawContent = payload.message?.content?.trim();
   const looksLikeOnlyLink = rawContent ? /^https?:\/\/\S+$/i.test(rawContent) : false;
 
@@ -69,7 +69,7 @@ function deriveClipTitle(payload: AppwriteVideoPayload) {
   return "-";
 }
 
-function parseClipEntry(payload: AppwriteVideoPayload, index: number, fallbackDate?: string): LatestClipItem {
+function parseClipEntry(payload: VideoPayload, index: number, fallbackDate?: string): LatestClipItem {
   return {
     title: deriveClipTitle(payload),
     username: payload.user?.username ? `@${payload.user.username}` : "@hejteri",
@@ -85,7 +85,7 @@ function parseClipRow(row: HejteriStorageRow): LatestClipItem[] {
   }
 
   try {
-    const parsed = JSON.parse(row.videos) as AppwriteVideoPayload[] | AppwriteVideoPayload;
+    const parsed = JSON.parse(row.videos) as VideoPayload[] | VideoPayload;
 
     if (Array.isArray(parsed)) {
       return parsed.slice(0, 3).map((entry, index) => parseClipEntry(entry, index, row.$createdAt));

@@ -1,13 +1,22 @@
 import "server-only";
 
 import { getHejteriStorageRow } from "@/lib/hejteri-storage";
-import { rosterGroups as fallbackRosterGroups, type Member, type RosterGroupName } from "@/data/roster";
+import type { Member, RosterGroupName } from "@/data/roster";
+import {
+  clanGroupName,
+  createEmptyGroups,
+  getAvailableGroups,
+  normalizeClanNumbers,
+  normalizeRosterKey,
+  sortRosterGroupNames,
+} from "@/lib/roster-utils";
 
 type StoredClanMember = {
   username?: string;
   displayName?: string;
   role?: string | null;
   clan?: number;
+  clans?: number[];
 };
 
 type StoredRosterEntry = {
@@ -56,27 +65,6 @@ function readRosterMap(value?: string) {
   }
 }
 
-function normalizeRosterKey(username?: string) {
-  return (username ?? "").replace(/^@/, "").trim().toLowerCase();
-}
-
-const rosterGroupNames: RosterGroupName[] = ["Clan 1", "Clan 2", "Clan 3", "Clan 4", "Clan 5"];
-
-export type RosterGroupsResult = {
-  groups: Record<RosterGroupName, Member[]>;
-  availableGroups: RosterGroupName[];
-};
-
-function emptyRosterGroups(): Record<RosterGroupName, Member[]> {
-  return {
-    "Clan 1": [],
-    "Clan 2": [],
-    "Clan 3": [],
-    "Clan 4": [],
-    "Clan 5": [],
-  };
-}
-
 function normalizeUsername(username?: string) {
   if (!username) {
     return "@hejteri";
@@ -94,14 +82,19 @@ function normalizeDisplayName(displayName?: string, username?: string) {
   return normalizedUsername.startsWith("@") ? normalizedUsername.slice(1) : normalizedUsername;
 }
 
-function getAvailableGroups(groups: Record<RosterGroupName, Member[]>) {
-  return rosterGroupNames.filter((groupName) => groups[groupName].length > 0);
+function getMemberClans(entry: StoredClanMember) {
+  return normalizeClanNumbers(entry.clans ?? entry.clan);
 }
+
+export type RosterGroupsResult = {
+  groups: Record<RosterGroupName, Member[]>;
+  availableGroups: RosterGroupName[];
+};
 
 function fallbackResult(): RosterGroupsResult {
   return {
-    groups: fallbackRosterGroups,
-    availableGroups: getAvailableGroups(fallbackRosterGroups),
+    groups: {},
+    availableGroups: [],
   };
 }
 
@@ -118,25 +111,32 @@ export async function getRosterGroups(): Promise<RosterGroupsResult> {
       return fallbackResult();
     }
 
-    const groups = emptyRosterGroups();
+    const groups = createEmptyGroups<Member>([]);
 
     for (const entry of parsed) {
-      const clan = entry.clan;
-      if (!clan || clan < 1 || clan > 5) {
+      const clans = getMemberClans(entry);
+      if (!clans.length) {
         continue;
       }
 
-      const groupName = `Clan ${clan}` as RosterGroupName;
-
-      groups[groupName].push({
+      const member = {
         displayName: normalizeDisplayName(entry.displayName, entry.username),
         username: normalizeUsername(entry.username),
         standoffId: rosterMap[normalizeRosterKey(entry.username)] ?? "-",
         role: entry.role ?? null,
-      });
+      };
+
+      for (const clan of clans) {
+        const groupName = clanGroupName(clan);
+        if (!groups[groupName]) {
+          groups[groupName] = [];
+        }
+
+        groups[groupName].push(member);
+      }
     }
 
-    const availableGroups = getAvailableGroups(groups);
+    const availableGroups = sortRosterGroupNames(getAvailableGroups(groups));
     if (!availableGroups.length) {
       return fallbackResult();
     }

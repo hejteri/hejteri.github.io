@@ -1,4 +1,6 @@
-export type RosterGroupName = "Clan 1" | "Clan 2" | "Clan 3" | "Clan 4" | "Clan 5";
+import type { RosterGroupName } from "@/lib/roster-utils";
+
+export type { RosterGroupName };
 
 export type Member = {
   displayName: string;
@@ -17,12 +19,6 @@ export const memberRoleColors: Record<string, string> = {
   Friends: "#ffffff",
 };
 
-export const rosterGroups: Record<RosterGroupName, Member[]> = {
-  "Clan 1": [],
-  "Clan 2": [],
-  "Clan 3": [],
-  "Clan 4": [],
-  "Clan 5": [],
-};
+export const rosterGroups: Record<RosterGroupName, Member[]> = {};
 
-export const rosterOrder = Object.keys(rosterGroups) as RosterGroupName[];
+export const rosterOrder: RosterGroupName[] = [];
