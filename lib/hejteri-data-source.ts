@@ -1,5 +1,8 @@
-const githubRepoRef = "hejteri/hejteri.dat@main";
-const githubBaseUrl = `https://cdn.jsdelivr.net/gh/${githubRepoRef}`;
+const githubOwner = "hejteri";
+const githubRepo = "hejteri.dat";
+const githubBranch = "main";
+const githubBaseUrl =
+  `https://raw.githubusercontent.com/${githubOwner}/${githubRepo}/refs/heads/${githubBranch}`;
 
 export type HejteriStorageRow = {
   $createdAt: string;
