@@ -7,8 +7,9 @@ import {
   createEmptyGroups,
   getAvailableGroups,
   normalizeClanNumbers,
-  normalizeRosterKey,
   sortRosterGroupNames,
+  readRosterIndex,
+  resolveRosterStandoffId,
 } from "@/lib/roster-utils";
 
 type StoredClanMember = {
@@ -18,52 +19,6 @@ type StoredClanMember = {
   clan?: number;
   clans?: number[];
 };
-
-type StoredRosterEntry = {
-  username?: string;
-  standoffId?: string;
-};
-
-function readRosterMap(value?: string) {
-  if (!value) {
-    return {} as Record<string, string>;
-  }
-
-  try {
-    const parsed = JSON.parse(value) as Record<string, string | StoredRosterEntry>;
-    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-      return {};
-    }
-
-    const rosterMap: Record<string, string> = {};
-
-    for (const [key, candidate] of Object.entries(parsed)) {
-      if (typeof candidate === "string" && candidate.trim()) {
-        rosterMap[normalizeRosterKey(key)] = candidate.trim();
-        continue;
-      }
-
-      if (!candidate || typeof candidate !== "object" || Array.isArray(candidate)) {
-        continue;
-      }
-
-      if (typeof candidate.standoffId !== "string" || !candidate.standoffId.trim()) {
-        continue;
-      }
-
-      const usernameKey = normalizeRosterKey(candidate.username || key);
-      if (!usernameKey) {
-        continue;
-      }
-
-      rosterMap[usernameKey] = candidate.standoffId.trim();
-    }
-
-    return rosterMap;
-  } catch {
-    return {};
-  }
-}
 
 function normalizeUsername(username?: string) {
   if (!username) {
@@ -106,7 +61,7 @@ export async function getRosterGroups(): Promise<RosterGroupsResult> {
 
   try {
     const parsed = JSON.parse(row.data) as StoredClanMember[];
-    const rosterMap = readRosterMap(row.roster);
+    const rosterIndex = readRosterIndex(row.roster);
     if (!Array.isArray(parsed) || parsed.length === 0) {
       return fallbackResult();
     }
@@ -119,14 +74,14 @@ export async function getRosterGroups(): Promise<RosterGroupsResult> {
         continue;
       }
 
-      const member = {
-        displayName: normalizeDisplayName(entry.displayName, entry.username),
-        username: normalizeUsername(entry.username),
-        standoffId: rosterMap[normalizeRosterKey(entry.username)] ?? "-",
-        role: entry.role ?? null,
-      };
-
       for (const clan of clans) {
+        const member = {
+          displayName: normalizeDisplayName(entry.displayName, entry.username),
+          username: normalizeUsername(entry.username),
+          standoffId: resolveRosterStandoffId(rosterIndex, entry.username, [clan]),
+          role: entry.role ?? null,
+        };
+
         const groupName = clanGroupName(clan);
         if (!groups[groupName]) {
           groups[groupName] = [];
