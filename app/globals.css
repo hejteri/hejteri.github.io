@@ -1,0 +1,133 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+:root {
+  --background: #050916;
+  --foreground: #f3f6ff;
+  --muted: rgba(243, 246, 255, 0.62);
+  --line: rgba(255, 255, 255, 0.08);
+  --font-body:
+    "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-display:
+    "Bahnschrift", "Segoe UI", "Arial Narrow", "Trebuchet MS", sans-serif;
+}
+
+@theme inline {
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 15% 15%, rgba(63, 131, 248, 0.12), transparent 28%),
+      radial-gradient(circle at 85% 0%, rgba(148, 163, 184, 0.08), transparent 25%),
+      radial-gradient(circle at 80% 50%, rgba(59, 130, 246, 0.08), transparent 32%),
+      linear-gradient(180deg, #070c18 0%, #050916 50%, #040712 100%);
+    color: var(--foreground);
+    font-family: var(--font-body), sans-serif;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: rgba(186, 230, 253, 0.18);
+    color: white;
+  }
+}
+
+@layer components {
+  .container-shell {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-space {
+    @apply py-16 sm:py-20;
+  }
+
+  .eyebrow {
+    @apply inline-flex rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] uppercase tracking-[0.32em] text-white/48;
+  }
+
+  .hero-panel {
+    background:
+      linear-gradient(180deg, rgba(14, 22, 39, 0.72), rgba(7, 11, 22, 0.92)),
+      linear-gradient(135deg, rgba(125, 211, 252, 0.08), transparent 55%);
+  }
+}
+
+.page-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.page-backdrop::before,
+.page-backdrop::after {
+  content: "";
+  position: absolute;
+  width: 32rem;
+  height: 32rem;
+  border-radius: 999px;
+  filter: blur(100px);
+  opacity: 0.18;
+}
+
+.page-backdrop::before {
+  top: 6rem;
+  left: -8rem;
+  background: rgba(59, 130, 246, 0.5);
+}
+
+.page-backdrop::after {
+  right: -10rem;
+  bottom: 8rem;
+  background: rgba(148, 163, 184, 0.26);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+@keyframes toast-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
