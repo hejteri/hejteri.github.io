@@ -39,15 +39,13 @@ function parseStatsValue(value?: string | null) {
 }
 
 export async function fetchHejteriStorageRowFromGitHub(): Promise<HejteriStorageRow | null> {
-  const [data, roster, videos, stats] = await Promise.all([
-    fetchGitHubTextFile("clan-members.json"),
+  const [roster, stats] = await Promise.all([
     fetchGitHubTextFile("data/roster.json"),
-    fetchGitHubTextFile("videos.json"),
     fetchGitHubTextFile("stats.json"),
   ]);
 
   const members = parseStatsValue(stats);
-  const hasPayload = Boolean(data || roster || videos || typeof members === "number");
+  const hasPayload = Boolean(roster || typeof members === "number");
 
   if (!hasPayload) {
     return null;
@@ -55,9 +53,7 @@ export async function fetchHejteriStorageRowFromGitHub(): Promise<HejteriStorage
 
   return {
     $createdAt: new Date().toISOString(),
-    data: data || undefined,
     roster: roster || undefined,
-    videos: videos || undefined,
     members,
   };
 }

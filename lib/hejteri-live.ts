@@ -237,16 +237,12 @@ export function getDiscordMemberCountFromRow(row?: HejteriStorageRow | null) {
 }
 
 export function getClanMemberCountFromRow(row?: HejteriStorageRow | null) {
-  if (!row?.data) {
+  if (!row?.roster) {
     return null;
   }
 
-  try {
-    const parsed = JSON.parse(row.data) as StoredClanMember[];
-    return Array.isArray(parsed) ? parsed.length : null;
-  } catch {
-    return null;
-  }
+  const members = readCompactRosterMembers(row.roster);
+  return members.length > 0 ? members.length : null;
 }
 
 export async function fetchHejteriStorageRowClient(): Promise<HejteriStorageRow | null> {

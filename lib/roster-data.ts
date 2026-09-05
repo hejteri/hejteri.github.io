@@ -86,52 +86,5 @@ export async function getRosterGroups(): Promise<RosterGroupsResult> {
     }
   }
 
-  if (!row.data) {
-    return fallbackResult();
-  }
-
-  try {
-    const parsed = JSON.parse(row.data) as StoredClanMember[];
-    const rosterIndex = readRosterIndex(row.roster);
-    if (!Array.isArray(parsed) || parsed.length === 0) {
-      return fallbackResult();
-    }
-
-    const groups = createEmptyGroups<Member>([]);
-
-    for (const entry of parsed) {
-      const clans = getMemberClans(entry);
-      if (!clans.length) {
-        continue;
-      }
-
-      for (const clan of clans) {
-        const member = {
-          displayName: normalizeDisplayName(entry.displayName, entry.username),
-          username: normalizeUsername(entry.username),
-          standoffId: resolveRosterStandoffId(rosterIndex, entry.username, [clan]),
-          role: entry.role ?? null,
-        };
-
-        const groupName = clanGroupName(clan);
-        if (!groups[groupName]) {
-          groups[groupName] = [];
-        }
-
-        groups[groupName].push(member);
-      }
-    }
-
-    const availableGroups = sortRosterGroupNames(getAvailableGroups(groups));
-    if (!availableGroups.length) {
-      return fallbackResult();
-    }
-
-    return {
-      groups,
-      availableGroups,
-    };
-  } catch {
-    return fallbackResult();
-  }
+  return fallbackResult();
 }
