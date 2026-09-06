@@ -28,6 +28,14 @@ function relativeTime(timestamp?: string) { if (!timestamp) return "???"; const 
 
 const appwriteClient = new Client().setEndpoint("https://fra.cloud.appwrite.io/v1").setProject("6a9d5be30036a20be894");
 const account = new Account(appwriteClient);
+const refreshCredits = async () => {
+  const response = await fetch(`https://fra.cloud.appwrite.io/v1/account?refresh=${Date.now()}`, { credentials: "include", cache: "no-store", headers: { "X-Appwrite-Project": "6a9d5be30036a20be894" } });
+  if (!response.ok) throw new Error("account_refresh_failed");
+  const user = await response.json();
+  const creditsValue = user.prefs?.credits;
+  const freeValue = user.prefs?.free_credits;
+  return creditsValue === "-1" ? "-1" : String(Number(creditsValue ?? 0) + Number(freeValue ?? 0));
+};
 type ApiProfile = Record<string, string | number | null> & { profile_img?: string; nickname?: string; clan?: string; hours?: number; registered?: string; login_at?: string };
 
 export default function CheckerPage() {
@@ -39,6 +47,7 @@ export default function CheckerPage() {
   const [profileData, setProfileData] = useState<ApiProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [appwriteUserId, setAppwriteUserId] = useState<string | null>(null);
   const [showBest, setShowBest] = useState(false);
   const profile = profileData ? { ...example, ...profileData, clan: profileData.clan ?? "???", hours: profileData.hours == null ? "???" : String(profileData.hours), registered: relativeTime(profileData.registered), lastLogin: relativeTime(profileData.login_at) } : example;
   const profileModes = ["5v5", "2v2", "1v1"].map((mode) => { const mmrKey = showBest ? `${mode}_best_mmr` : `${mode}_mmr`; const mmr = profileData?.[mmrKey] == null ? "0" : String(profileData[mmrKey]); const kills = profileData?.[`${mode}_kills`] == null ? "0" : String(profileData[`${mode}_kills`]); const deaths = profileData?.[`${mode}_deaths`] == null ? "0" : String(profileData[`${mode}_deaths`]); return { mode, mmr, kills, deaths, ...rankForMmr(mmr) }; });
@@ -51,6 +60,7 @@ export default function CheckerPage() {
 
     account.get()
       .then((user) => {
+        setAppwriteUserId(user.$id);
         const creditsValue = user.prefs?.credits;
         const freeValue = user.prefs?.free_credits;
         const total = Number(creditsValue ?? 0) + Number(freeValue ?? 0);
@@ -74,22 +84,22 @@ export default function CheckerPage() {
     if (/^\d{3,16}$/.test(id)) {
       setError(null); setLoading(true);
       try {
-        const user = await account.get();
+        const userId = appwriteUserId ?? (await account.get()).$id;
         const identities = await account.listIdentities();
         const discord = identities.identities.find((identity) => identity.provider === "discord")?.providerUid;
         const payload = { id: String(id), discord_id: String(discord ?? "") };
-        const response = await fetch("https://api.hejteri.site/profile", { method: "POST", headers: { "Content-Type": "application/json", "x-appwrite-user-id": user.$id }, body: JSON.stringify(payload) });
+        const response = await fetch("https://api.hejteri.site/profile", { method: "POST", headers: { "Content-Type": "application/json", "x-appwrite-user-id": userId }, body: JSON.stringify(payload) });
         const body = await response.json();
         if (!response.ok) throw new Error(body.error || "profile_failed");
         setCheckedId(id); setProfileData(body); setRequiresDiscord(false);
-      } catch (err) { const code = err instanceof Error ? err.message : "profile_failed"; const networkError = code === "Failed to fetch" || code.toLowerCase().includes("network") || code.toLowerCase().includes("certificate"); setRequiresDiscord(code === "discord_server"); setError(networkError ? "Unable to connect to the profile service. Try disabling ad-blocking DNS or switching networks." : code === "discord_server" ? "This action requires you to be a member of the Discord server." : code === "credit_none" ? "You have no credits remaining." : code === "player_not_found" ? "Profile not found." : "Unable to load this profile."); } finally { setLoading(false); }
+      } catch (err) { const code = err instanceof Error ? err.message : "profile_failed"; const networkError = code === "Failed to fetch" || code.toLowerCase().includes("network") || code.toLowerCase().includes("certificate"); setRequiresDiscord(code === "discord_server"); setError(networkError ? "Unable to connect to the profile service. Try disabling ad-blocking DNS or switching networks." : code === "discord_server" ? "This action requires you to be a member of the Discord server." : code === "credit_none" ? "You have no credits remaining." : code === "player_not_found" ? "Profile not found." : "Unable to load this profile."); } finally { refreshCredits().then(setCredits).catch(() => undefined); setLoading(false); }
     }
   };
 
   return (
     <div className="container-shell section-space space-y-8">
       <Reveal delay={70}>
-        {authState !== "signed-in" ? <GlassPanel className="relative isolate mx-auto max-w-lg overflow-hidden border-white/10 bg-[linear-gradient(135deg,rgba(12,27,50,0.98),rgba(5,11,23,0.99))] p-8 text-center"><div className="pointer-events-none absolute -right-16 -top-20 -z-10 size-48 rounded-full bg-sky-300/5 blur-3xl" /><div className="pointer-events-none absolute -bottom-24 -left-16 -z-10 size-48 rounded-full bg-indigo-400/5 blur-3xl" /><p className="text-sm text-white/65">Sign in with Discord to search player profiles.</p><button type="button" onClick={signIn} disabled={authState === "loading"} className="mt-5 rounded-xl border border-sky-100/25 bg-sky-200/10 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-sky-50 transition hover:border-sky-100/40 hover:bg-sky-200/15 disabled:opacity-50">{authState === "loading" ? "Checking session…" : "Continue with Discord"}</button></GlassPanel> : (
+        {authState === "loading" ? null : authState !== "signed-in" ? <GlassPanel className="relative isolate mx-auto max-w-lg overflow-hidden border-white/10 bg-[linear-gradient(135deg,rgba(12,27,50,0.98),rgba(5,11,23,0.99))] p-8 text-center"><div className="pointer-events-none absolute -right-16 -top-20 -z-10 size-48 rounded-full bg-sky-300/5 blur-3xl" /><div className="pointer-events-none absolute -bottom-24 -left-16 -z-10 size-48 rounded-full bg-indigo-400/5 blur-3xl" /><p className="text-sm text-white/65">Sign in with Discord to search player profiles.</p><button type="button" onClick={signIn} className="mt-5 rounded-xl border border-sky-100/25 bg-sky-200/10 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-sky-50 transition hover:border-sky-100/40 hover:bg-sky-200/15">Continue with Discord</button></GlassPanel> : (
         <>
         <form onSubmit={submit} className="relative z-20 mx-auto -mb-px flex w-full max-w-lg flex-row items-center gap-0 rounded-t-2xl border border-b-0 border-white/10 bg-[linear-gradient(120deg,rgba(19,32,57,0.9),rgba(9,16,30,0.92))] p-1.5 sm:justify-center sm:rounded-t-3xl sm:p-2">
           {(requiresDiscord || error) && <p className="pointer-events-auto absolute -top-5 left-2 text-[10px] tracking-[0.04em] text-red-300/85">{error || "This action requires you to be a member of the Discord server."}</p>}
