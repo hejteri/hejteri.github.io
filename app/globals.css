@@ -133,6 +133,12 @@ html.lenis body {
 
 .sponsor-marquee {
   animation: sponsor-marquee 30s linear infinite;
+  will-change: transform;
+  transform: translate3d(-50%, 0, 0);
+}
+
+@media (max-width: 640px) {
+  .sponsor-marquee { animation-duration: 18s; }
 }
 
 @media (prefers-reduced-motion: reduce) {
