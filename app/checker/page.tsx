@@ -64,7 +64,10 @@ export default function CheckerPage() {
         setAuthState("signed-out");
       });
   }, []);
-  const signIn = () => account.createOAuth2Session(OAuthProvider.Discord, window.location.href, window.location.href);
+  const signIn = () => {
+    const redirectUrl = `${window.location.origin}/checker/`;
+    account.createOAuth2Session(OAuthProvider.Discord, redirectUrl, redirectUrl);
+  };
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
