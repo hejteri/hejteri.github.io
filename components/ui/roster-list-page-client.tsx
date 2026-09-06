@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { RosterListTable } from "@/components/ui/roster-list-table";
-import { fetchHejteriStorageRowClient, getRosterGroupsFromRow, type RosterGroupsResult } from "@/lib/hejteri-live";
+import { fetchRosterGroupsClient, getRosterGroupsFromRow, type RosterGroupsResult } from "@/lib/hejteri-live";
 
 const fallbackRoster = getRosterGroupsFromRow(null);
 
@@ -14,12 +14,12 @@ export function RosterListPageClient() {
   useEffect(() => {
     let cancelled = false;
 
-    void fetchHejteriStorageRowClient().then((row) => {
-      if (cancelled || !row) {
+    void fetchRosterGroupsClient().then((nextRoster) => {
+      if (cancelled) {
         return;
       }
 
-      setRoster(getRosterGroupsFromRow(row));
+      setRoster(nextRoster);
     });
 
     return () => {

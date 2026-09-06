@@ -27,12 +27,12 @@ export function RosterListTable({ groups, availableGroups }: RosterListTableProp
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#0a101b]">
-        <table className="min-w-full border-collapse text-sm text-white/86">
+        <table className="w-full table-fixed border-collapse text-xs text-white/86 sm:text-sm">
           <thead>
             <tr className="border-b border-white/10 bg-white/[0.03] text-left">
-              <th className="px-4 py-3 font-medium text-white/54">Clan</th>
-              <th className="px-4 py-3 font-medium text-white/54">User</th>
-              <th className="px-4 py-3 font-medium text-white/54">So2 ID</th>
+              <th className="w-[20%] px-2 py-2 font-medium text-white/54 sm:px-4 sm:py-3">Clan</th>
+              <th className="w-[52%] px-2 py-2 font-medium text-white/54 sm:px-4 sm:py-3">User</th>
+              <th className="w-[28%] px-2 py-2 font-medium text-white/54 sm:px-4 sm:py-3">So2 ID</th>
             </tr>
           </thead>
           <tbody>
@@ -54,14 +54,14 @@ export function RosterListTable({ groups, availableGroups }: RosterListTableProp
                     key={`${group}-${member.username}`}
                     className="border-b border-white/8 last:border-b-0"
                   >
-                    <td className="px-4 py-3 text-white/92">{index === 0 ? group : ""}</td>
-                    <td className="px-4 py-3">
+                    <td className="break-words px-2 py-2 text-white/92 sm:px-4 sm:py-3">{index === 0 ? group : ""}</td>
+                    <td className="min-w-0 px-2 py-2 sm:px-4 sm:py-3">
                       <div className="flex flex-col">
-                        <span>{member.displayName}</span>
-                        <span className="text-xs text-white/38">{member.username}</span>
+                        <span className="break-words">{member.displayName}</span>
+                        <span className="break-all text-[10px] text-white/38 sm:text-xs">{member.username}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-white/76">{member.standoffId}</td>
+                    <td className="break-all px-2 py-2 text-white/76 sm:px-4 sm:py-3">{member.standoffId}</td>
                   </tr>
                 )),
             )}

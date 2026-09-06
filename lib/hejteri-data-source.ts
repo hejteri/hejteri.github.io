@@ -29,6 +29,10 @@ async function fetchGitHubTextFile(path: string): Promise<string | null> {
   }
 }
 
+export async function fetchRosterTextFromGitHub(): Promise<string | null> {
+  return fetchGitHubTextFile("data/roster.json");
+}
+
 function parseStatsValue(value?: string | null) {
   if (!value) {
     return undefined;

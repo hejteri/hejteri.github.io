@@ -10,6 +10,7 @@ const navItems = [
   { label: "Home", href: "/" },
   { label: "About", href: "/#about" },
   { label: "Roster", href: "/roster" },
+  { label: "Checker", href: "/checker" },
 ];
 
 export function SiteHeader() {

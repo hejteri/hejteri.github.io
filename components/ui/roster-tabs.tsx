@@ -104,45 +104,43 @@ export function RosterTabs({ groups, availableGroups }: RosterTabsProps) {
         />
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-white/46 sm:text-sm">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-white/46 sm:gap-3 sm:text-sm">
         <p>
           Showing {paginatedMembers.length ? (currentPage - 1) * pageSize + 1 : 0}-
           {Math.min(currentPage * pageSize, filteredMembers.length)} of {filteredMembers.length}
         </p>
-        {filteredMembers.length > pageSize ? (
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setPage((value) => Math.max(1, value - 1))}
-              disabled={currentPage === 1}
-              className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1.5 transition duration-300 hover:border-white/18 hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3 sm:py-2"
-            >
-              Prev
-            </button>
-            <span className="px-2 text-white/52">
-              {currentPage} / {totalPages}
-            </span>
-            <button
-              type="button"
-              onClick={() => setPage((value) => Math.min(totalPages, value + 1))}
-              disabled={currentPage === totalPages}
-              className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1.5 transition duration-300 hover:border-white/18 hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3 sm:py-2"
-            >
-              Next
-            </button>
-          </div>
-        ) : null}
+        <div className="flex items-center gap-1 sm:gap-2">
+          <button
+            type="button"
+            onClick={() => setPage((value) => Math.max(1, value - 1))}
+            disabled={currentPage === 1}
+            className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 transition duration-300 hover:border-white/18 hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3 sm:py-2"
+          >
+            Prev
+          </button>
+          <span className="px-1 text-white/52 sm:px-2">
+            {currentPage} / {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() => setPage((value) => Math.min(totalPages, value + 1))}
+            disabled={currentPage === totalPages}
+            className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1 transition duration-300 hover:border-white/18 hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-35 sm:px-3 sm:py-2"
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       <GlassPanel className="overflow-hidden border-white/10 bg-[linear-gradient(180deg,rgba(19,27,49,0.74),rgba(8,12,22,0.9))]">
         <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse">
+          <table className="w-full table-fixed border-collapse">
             <thead>
               <tr className="border-b border-white/8 bg-white/[0.03] text-left">
-                <th className="px-2 py-3 text-[10px] uppercase tracking-[0.16em] text-white/36 sm:px-5 sm:py-4 sm:text-xs sm:tracking-[0.24em]">#</th>
-                <th className="px-2 py-3 text-[10px] uppercase tracking-[0.16em] text-white/36 sm:px-5 sm:py-4 sm:text-xs sm:tracking-[0.24em]">Discord</th>
-                <th className="px-2 py-3 text-[10px] uppercase tracking-[0.16em] text-white/36 sm:px-5 sm:py-4 sm:text-xs sm:tracking-[0.24em]">So2 ID</th>
-                <th className="px-2 py-3 text-[10px] uppercase tracking-[0.16em] text-white/36 sm:px-5 sm:py-4 sm:text-xs sm:tracking-[0.24em]">Role</th>
+                <th className="w-[8%] px-1 py-2 text-[9px] uppercase tracking-[0.08em] text-white/36 sm:px-5 sm:py-4 sm:text-xs sm:tracking-[0.24em]">#</th>
+                <th className="w-[38%] px-1 py-2 text-[9px] uppercase tracking-[0.08em] text-white/36 sm:px-5 sm:py-4 sm:text-xs sm:tracking-[0.24em]">Discord</th>
+                <th className="w-[34%] px-1 py-2 text-center text-[9px] uppercase tracking-[0.08em] text-white/36 sm:px-5 sm:py-4 sm:text-xs sm:tracking-[0.24em]">So2 ID</th>
+                <th className="w-[20%] px-1 py-2 text-[9px] uppercase tracking-[0.08em] text-white/36 sm:px-5 sm:py-4 sm:text-xs sm:tracking-[0.24em]">Role</th>
               </tr>
             </thead>
             <tbody>
@@ -151,10 +149,10 @@ export function RosterTabs({ groups, availableGroups }: RosterTabsProps) {
                   key={`${group}-${member.username}`}
                   className="border-b border-white/6 transition duration-300 hover:bg-white/[0.03]"
                 >
-                  <td className="px-2 py-3 text-xs text-white/40 sm:px-5 sm:py-4 sm:text-sm">
+                  <td className="px-1 py-2 text-[10px] text-white/40 sm:px-5 sm:py-4 sm:text-sm">
                     {((currentPage - 1) * pageSize + index + 1).toString().padStart(2, "0")}
                   </td>
-                  <td className="px-2 py-3 sm:px-5 sm:py-4">
+                  <td className="min-w-0 px-1 py-2 sm:px-5 sm:py-4">
                     {(() => {
                       const rowKey = `${group}-${member.username}`;
                       const isRevealed = revealedUsernames[rowKey];
@@ -168,7 +166,7 @@ export function RosterTabs({ groups, availableGroups }: RosterTabsProps) {
                               [rowKey]: !current[rowKey],
                             }))
                           }
-                          className="group inline-flex max-w-[120px] items-center rounded-full border border-white/10 bg-white/[0.05] px-2 py-1 text-left text-[11px] text-white/78 transition duration-300 hover:-translate-y-0.5 hover:border-white/18 hover:bg-white/[0.08] sm:max-w-none sm:px-3 sm:text-xs"
+                          className="group inline-flex max-w-full min-w-0 items-center rounded-full border border-white/10 bg-white/[0.05] px-2 py-1 text-left text-[11px] text-white/78 transition duration-300 hover:-translate-y-0.5 hover:border-white/18 hover:bg-white/[0.08] sm:px-3 sm:text-xs"
                           aria-label={isRevealed ? "Show display name" : "Reveal Discord username"}
                         >
                           <span className="truncate font-medium text-white/92">
@@ -185,10 +183,10 @@ export function RosterTabs({ groups, availableGroups }: RosterTabsProps) {
                       );
                     })()}
                   </td>
-                  <td className="px-2 py-3 sm:px-5 sm:py-4">
-                    <CopyableText label="So2 ID" value={member.standoffId} />
+                  <td className="min-w-0 px-1 py-2 text-center sm:px-5 sm:py-4">
+                    <span className="flex justify-center truncate text-[10px] sm:text-sm"><CopyableText label="So2 ID" value={member.standoffId} /></span>
                   </td>
-                  <td className="px-2 py-3 sm:px-5 sm:py-4">
+                  <td className="min-w-0 px-1 py-2 sm:px-5 sm:py-4">
                     {(() => {
                       const displayRole = getDisplayRole(member);
 
@@ -198,7 +196,7 @@ export function RosterTabs({ groups, availableGroups }: RosterTabsProps) {
 
                       return (
                         <span
-                          className="inline-flex max-w-[94px] truncate rounded-full border px-2 py-1 text-[11px] sm:max-w-none sm:px-3 sm:text-xs"
+                          className="inline-flex max-w-full truncate rounded-full border px-2 py-1 text-[10px] sm:max-w-none sm:px-3 sm:text-xs"
                           style={{
                             color: displayRole.color,
                             backgroundColor: `${displayRole.color}1a`,

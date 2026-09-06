@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { SponsorBanner } from "@/components/layout/sponsor-banner";
 
 type AppShellProps = {
   children: ReactNode;
@@ -22,9 +23,10 @@ export function AppShell({ children }: AppShellProps) {
   return (
     <>
       <div className="page-backdrop" />
-      <div className="relative min-h-screen">
+      <div className="relative flex min-h-screen flex-col">
         <SiteHeader />
-        <main>{children}</main>
+        <SponsorBanner />
+        <main className="flex-1">{children}</main>
         <SiteFooter />
       </div>
     </>

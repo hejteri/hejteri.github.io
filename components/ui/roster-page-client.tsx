@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { Reveal } from "@/components/ui/reveal";
 import { RosterTabs } from "@/components/ui/roster-tabs";
-import { getRosterGroupsFromRow, fetchHejteriStorageRowClient, type RosterGroupsResult } from "@/lib/hejteri-live";
+import { fetchRosterGroupsClient, getRosterGroupsFromRow, type RosterGroupsResult } from "@/lib/hejteri-live";
 
 const fallbackRoster = getRosterGroupsFromRow(null);
 
@@ -15,12 +15,12 @@ export function RosterPageClient() {
   useEffect(() => {
     let cancelled = false;
 
-    void fetchHejteriStorageRowClient().then((row) => {
-      if (cancelled || !row) {
+    void fetchRosterGroupsClient().then((nextRoster) => {
+      if (cancelled) {
         return;
       }
 
-      setRoster(getRosterGroupsFromRow(row));
+      setRoster(nextRoster);
     });
 
     return () => {

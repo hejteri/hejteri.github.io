@@ -126,6 +126,19 @@ html.lenis body {
   }
 }
 
+@keyframes sponsor-marquee {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.sponsor-marquee {
+  animation: sponsor-marquee 30s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sponsor-marquee { animation: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

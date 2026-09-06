@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   basePath,
   assetPrefix: basePath || undefined,
+  allowedDevOrigins: ["localhost", "127.0.0.1"],
   images: {
     unoptimized: true,
   },
