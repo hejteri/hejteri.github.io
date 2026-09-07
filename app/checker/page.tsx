@@ -66,11 +66,12 @@ export default function CheckerPage() {
     if (!jwt) return;
     fetch(`${API}/credits`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jwt }) })
       .then((response) => response.json())
-      .then((body) => setCredits(body.credits ?? "0"))
+      .then((body) => { if (body.error === "invalid_jwt") return resetAuth(); setCredits(body.credits ?? "0"); })
       .catch(() => setCredits(null));
   }, [jwt]);
 
   const signIn = () => { if (authCode) void navigator.clipboard?.writeText(`!authme ${authCode}`); };
+  const resetAuth = () => { localStorage.removeItem("hejteri:jwt"); sessionStorage.removeItem("hejteri:authcode"); window.location.reload(); };
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -80,7 +81,7 @@ export default function CheckerPage() {
         if (!jwt) throw new Error("invalid_jwt");
         const response = await fetch(`${API}/getprofile`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: String(id), jwt }) });
         const body = await response.json();
-        if (!response.ok) throw new Error(body.error || "profile_failed");
+        if (!response.ok) { if (body.error === "invalid_jwt") return resetAuth(); throw new Error(body.error || "profile_failed"); }
         setCheckedId(id); setProfileData(body); setRequiresDiscord(false);
       } catch (err) { const code = err instanceof Error ? err.message : "profile_failed"; const networkError = code === "Failed to fetch" || code.toLowerCase().includes("network") || code.toLowerCase().includes("certificate"); setRequiresDiscord(code === "discord_server"); setError(networkError ? "Unable to connect to the profile service. Try disabling ad-blocking DNS or switching networks." : code === "discord_server" ? "This action requires you to be a member of the Discord server." : code === "no_credits" ? "You have no credits remaining." : code === "player_not_found" ? "Profile not found." : "Unable to load this profile."); } finally { if (jwt) fetch(`${API}/credits`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jwt }) }).then((response) => response.json()).then((body) => setCredits(body.credits ?? "0")).catch(() => undefined); setLoading(false); }
     }
