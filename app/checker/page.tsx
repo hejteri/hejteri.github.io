@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { FormEvent, useEffect, useState } from "react";
-import { Account, Client, OAuthProvider } from "appwrite";
 
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { Reveal } from "@/components/ui/reveal";
@@ -26,16 +25,7 @@ const rankThresholds = [[2100, "The Legend"], [1800, "Elite"], [1700, "Master"],
 function rankForMmr(mmr: string) { const value = Number(mmr.replace(/\s/g, "")); const threshold = rankThresholds.find(([minimum]) => value >= minimum); return threshold ? { rank: threshold[1], imageMmr: threshold[0] } : { rank: "Unranked", imageMmr: 0 }; }
 function relativeTime(timestamp?: string) { if (!timestamp) return "???"; const diff = Date.now() - Number(timestamp); if (!Number.isFinite(diff) || diff < 0) return "just now"; const units: [number, string][] = [[31536000000, "year"], [2592000000, "month"], [604800000, "week"], [86400000, "day"], [3600000, "hour"], [60000, "minute"]]; const unit = units.find(([ms]) => diff >= ms); if (!unit) return "just now"; const count = Math.floor(diff / unit[0]); return `${count} ${unit[1]}${count === 1 ? "" : "s"} ago`; }
 
-const appwriteClient = new Client().setEndpoint("https://fra.cloud.appwrite.io/v1").setProject("6a9d5be30036a20be894");
-const account = new Account(appwriteClient);
-const refreshCredits = async () => {
-  const response = await fetch(`https://fra.cloud.appwrite.io/v1/account?refresh=${Date.now()}`, { credentials: "include", cache: "no-store", headers: { "X-Appwrite-Project": "6a9d5be30036a20be894" } });
-  if (!response.ok) throw new Error("account_refresh_failed");
-  const user = await response.json();
-  const creditsValue = user.prefs?.credits;
-  const freeValue = user.prefs?.free_credits;
-  return creditsValue === "-1" ? "-1" : String(Number(creditsValue ?? 0) + Number(freeValue ?? 0));
-};
+const API = "https://api.hejteri.site";
 type ApiProfile = Record<string, string | number | null> & { profile_img?: string; nickname?: string; clan?: string; hours?: number; registered?: string; login_at?: string };
 
 export default function CheckerPage() {
@@ -47,59 +37,59 @@ export default function CheckerPage() {
   const [profileData, setProfileData] = useState<ApiProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [appwriteUserId, setAppwriteUserId] = useState<string | null>(null);
+  const [identity, setIdentity] = useState("");
+  const [authCode, setAuthCode] = useState<string | null>(null);
+  const [jwt, setJwt] = useState<string | null>(null);
   const [showBest, setShowBest] = useState(false);
   const profile = profileData ? { ...example, ...profileData, clan: profileData.clan ?? "???", hours: profileData.hours == null ? "???" : String(profileData.hours), registered: relativeTime(profileData.registered), lastLogin: relativeTime(profileData.login_at) } : example;
   const profileModes = ["5v5", "2v2", "1v1"].map((mode) => { const mmrKey = showBest ? `${mode}_best_mmr` : `${mode}_mmr`; const mmr = profileData?.[mmrKey] == null ? "0" : String(profileData[mmrKey]); const kills = profileData?.[`${mode}_kills`] == null ? "0" : String(profileData[`${mode}_kills`]); const deaths = profileData?.[`${mode}_deaths`] == null ? "0" : String(profileData[`${mode}_deaths`]); return { mode, mmr, kills, deaths, ...rankForMmr(mmr) }; });
 
   useEffect(() => {
-    const cacheKey = "hejteri:checker-auth";
-    const cached = window.sessionStorage.getItem(cacheKey);
-    if (cached === "signed-in") setAuthState("signed-in");
-    if (cached === "signed-out") setAuthState("signed-out");
-
-    account.get()
-      .then((user) => {
-        setAppwriteUserId(user.$id);
-        const creditsValue = user.prefs?.credits;
-        const freeValue = user.prefs?.free_credits;
-        const total = Number(creditsValue ?? 0) + Number(freeValue ?? 0);
-        setCredits(creditsValue === "-1" ? "-1" : String(total));
-        window.sessionStorage.setItem(cacheKey, "signed-in");
-        setAuthState("signed-in");
-      })
-      .catch(() => {
-        setCredits(null);
-        window.sessionStorage.removeItem(cacheKey);
-        setAuthState("signed-out");
-      });
+    const savedIdentity = window.localStorage.getItem("hejteri:identity") || crypto.randomUUID();
+    const savedJwt = window.localStorage.getItem("hejteri:jwt");
+    setIdentity(savedIdentity);
+    if (savedJwt) { setJwt(savedJwt); setAuthState("signed-in"); return; }
+    window.localStorage.setItem("hejteri:identity", savedIdentity);
+    let code = window.sessionStorage.getItem("hejteri:authcode") || "";
+    fetch(`${API}/auth`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ identity: savedIdentity }) })
+      .then((response) => response.json())
+      .then((body) => { if (body.authcode) { code = String(body.authcode); setAuthCode(code); window.sessionStorage.setItem("hejteri:authcode", code); if (!savedJwt) setAuthState("signed-out"); } else { setAuthState("signed-out"); setError("Unable to create a login code. Try disabling ad-blocking DNS or switching networks."); } })
+      .catch(() => { setAuthState("signed-out"); setError("Unable to connect to the login service. Try disabling ad-blocking DNS or switching networks."); });
+    const timer = window.setInterval(async () => {
+      if (!code) return;
+      try { const response = await fetch(`${API}/getjwt`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ identity: savedIdentity, authcode: code }) }); const body = await response.json(); if (body.jwt) { window.clearInterval(timer); window.localStorage.setItem("hejteri:jwt", body.jwt); setJwt(body.jwt); setAuthState("signed-in"); } } catch { /* retry on the next interval */ }
+    }, 2000);
+    return () => window.clearInterval(timer);
   }, []);
-  const signIn = () => {
-    const redirectUrl = `${window.location.origin}/checker/`;
-    account.createOAuth2Session(OAuthProvider.Discord, redirectUrl, redirectUrl);
-  };
+
+  useEffect(() => {
+    if (!jwt) return;
+    fetch(`${API}/credits`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jwt }) })
+      .then((response) => response.json())
+      .then((body) => setCredits(body.credits ?? "0"))
+      .catch(() => setCredits(null));
+  }, [jwt]);
+
+  const signIn = () => { if (authCode) void navigator.clipboard?.writeText(`!authme ${authCode}`); };
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (/^\d{3,16}$/.test(id)) {
       setError(null); setLoading(true);
       try {
-        const userId = appwriteUserId ?? (await account.get()).$id;
-        const identities = await account.listIdentities();
-        const discord = identities.identities.find((identity) => identity.provider === "discord")?.providerUid;
-        const payload = { id: String(id), discord_id: String(discord ?? "") };
-        const response = await fetch("https://api.hejteri.site/profile", { method: "POST", headers: { "Content-Type": "application/json", "x-appwrite-user-id": userId }, body: JSON.stringify(payload) });
+        if (!jwt) throw new Error("invalid_jwt");
+        const response = await fetch(`${API}/getprofile`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: String(id), jwt }) });
         const body = await response.json();
         if (!response.ok) throw new Error(body.error || "profile_failed");
         setCheckedId(id); setProfileData(body); setRequiresDiscord(false);
-      } catch (err) { const code = err instanceof Error ? err.message : "profile_failed"; const networkError = code === "Failed to fetch" || code.toLowerCase().includes("network") || code.toLowerCase().includes("certificate"); setRequiresDiscord(code === "discord_server"); setError(networkError ? "Unable to connect to the profile service. Try disabling ad-blocking DNS or switching networks." : code === "discord_server" ? "This action requires you to be a member of the Discord server." : code === "credit_none" ? "You have no credits remaining." : code === "player_not_found" ? "Profile not found." : "Unable to load this profile."); } finally { refreshCredits().then(setCredits).catch(() => undefined); setLoading(false); }
+      } catch (err) { const code = err instanceof Error ? err.message : "profile_failed"; const networkError = code === "Failed to fetch" || code.toLowerCase().includes("network") || code.toLowerCase().includes("certificate"); setRequiresDiscord(code === "discord_server"); setError(networkError ? "Unable to connect to the profile service. Try disabling ad-blocking DNS or switching networks." : code === "discord_server" ? "This action requires you to be a member of the Discord server." : code === "no_credits" ? "You have no credits remaining." : code === "player_not_found" ? "Profile not found." : "Unable to load this profile."); } finally { if (jwt) fetch(`${API}/credits`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ jwt }) }).then((response) => response.json()).then((body) => setCredits(body.credits ?? "0")).catch(() => undefined); setLoading(false); }
     }
   };
 
   return (
     <div className="container-shell section-space space-y-8">
       <Reveal delay={70}>
-        {authState === "loading" ? null : authState !== "signed-in" ? <GlassPanel className="relative isolate mx-auto max-w-lg overflow-hidden border-white/10 bg-[linear-gradient(135deg,rgba(12,27,50,0.98),rgba(5,11,23,0.99))] p-8 text-center"><div className="pointer-events-none absolute -right-16 -top-20 -z-10 size-48 rounded-full bg-sky-300/5 blur-3xl" /><div className="pointer-events-none absolute -bottom-24 -left-16 -z-10 size-48 rounded-full bg-indigo-400/5 blur-3xl" /><p className="text-sm text-white/65">Sign in with Discord to search player profiles.</p><button type="button" onClick={signIn} className="mt-5 rounded-xl border border-sky-100/25 bg-sky-200/10 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-sky-50 transition hover:border-sky-100/40 hover:bg-sky-200/15">Continue with Discord</button></GlassPanel> : (
+        {authState === "loading" ? null : authState !== "signed-in" ? <GlassPanel className="relative isolate mx-auto max-w-md overflow-hidden border-white/12 bg-[linear-gradient(145deg,rgba(18,31,56,0.98),rgba(5,10,21,0.99))] p-6 text-center sm:p-8"><div className="pointer-events-none absolute -right-20 -top-20 -z-10 size-56 rounded-full bg-sky-300/8 blur-3xl" /><div className="pointer-events-none absolute -bottom-24 -left-16 -z-10 size-48 rounded-full bg-indigo-400/8 blur-3xl" /><p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-sky-100/50">Discord verification</p><h2 className="mt-2 font-display text-2xl tracking-[-0.04em] text-white">Finish signing in</h2><p className="mx-auto mt-2 max-w-xs text-xs leading-relaxed text-white/55">Copy the command below and send it in the HEJTERI Discord server.</p>{authCode && <div className="mx-auto mt-5 flex max-w-xs items-center justify-between rounded-xl border border-white/10 bg-black/25 px-3 py-2"><code className="text-sm font-medium tracking-[0.08em] text-sky-100">!authme {authCode}</code><button type="button" onClick={signIn} className="rounded-lg border border-sky-100/20 bg-sky-100/10 px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-sky-50 transition hover:bg-sky-100/20">Copy</button></div>}{error && <p className="mt-3 text-[10px] leading-relaxed text-red-300/80">{error}</p>}</GlassPanel> : (
         <>
         <form onSubmit={submit} className="relative z-20 mx-auto -mb-px flex w-full max-w-lg flex-row items-center gap-0 rounded-t-2xl border border-b-0 border-white/10 bg-[linear-gradient(120deg,rgba(19,32,57,0.9),rgba(9,16,30,0.92))] p-1.5 sm:justify-center sm:rounded-t-3xl sm:p-2">
           {(requiresDiscord || error) && <p className="pointer-events-auto absolute -top-10 right-2 max-w-[85%] text-right text-[10px] leading-tight tracking-[0.04em] text-red-300/85">{error || "This action requires you to be a member of the Discord server."}</p>}
