@@ -2,5 +2,5 @@
 2:I[20842,["/_next/static/chunks/0_ryj16b1z6as.js","/_next/static/chunks/0d3shmwh5_nmn.js","/_next/static/chunks/0qxndygh07ku0.js"],"RosterListPageClient"]
 3:I[97367,["/_next/static/chunks/0_ryj16b1z6as.js","/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
 4:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],[["$","script","script-0",{"src":"/_next/static/chunks/0qxndygh07ku0.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"8dIemx8hDJf_SFNMT21fg"}
+0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{}],[["$","script","script-0",{"src":"/_next/static/chunks/0qxndygh07ku0.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"8mfut7ZLqZi_9cV-sI8gz"}
 5:null
